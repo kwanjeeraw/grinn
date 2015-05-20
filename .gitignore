@@ -1,3 +1,5 @@
+R/attach.R
+R/internal.R
 .Rproj.user
 .Rhistory
 .RData
