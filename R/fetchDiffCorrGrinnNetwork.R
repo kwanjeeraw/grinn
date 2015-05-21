@@ -1,14 +1,16 @@
-#' \code{fetchDiffCorrGrinnNetwork} compute a differential correlation network and expand the network with information from Grinn internal database
+#'Compute a differential correlation network and expand the network with information from grinn internal database
 #'@description from input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:
-#1. Compute a differential correlation network of input omics data from two conditions, see \code{datNormX1}, \code{datNormX2}, \code{datNormY1}, \code{datNormY2}.
-#'Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using \code{WGCNA::cor} and \code{WGCNA::corPvalueStudent}.
+#'
+#'1. Compute a differential correlation network of input omics data from two conditions, see \code{datNormX1}, \code{datNormX2}, \code{datNormY1}, \code{datNormY2}.
+#'Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
 #'The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
 #'Then correlation coefficients are test for differential correlations using Fisher's z-test based on \pkg{DiffCorr}.
 #'The differential correlation network is created by function \code{fetchDiffCorrNetwork}.
-#'2. Expand the differential correlation network using information from Grinn internal database.
-#'The nodes of the differential correlation network are the keywords input to query the Grinn database.
+#'
+#'2. Expand the differential correlation network using information from grinn internal database.
+#'The nodes of the differential correlation network are the keywords input to query the grinn database.
 #'Grinn internal database contains the networks of the following types that can get expanded to: 
-#'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{fetchGrinnNetwork}.
+#'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
 #'@usage fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource, organism)
 #'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
@@ -20,34 +22,37 @@
 #'@param datNormY2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
 #'Use the same format as \code{datNormX1}. If there is only one type of dataset, it can be NULL. See below for details.
 #'@param pDiff numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.
-#'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see \code{WGCNA::cor}.  
+#'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see \code{\link{cor}}.  
 #'@param returnAs string of output type. Specify the type of the returned network. 
 #'It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js
 #'@param sourceTo string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.
 #'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.
-#'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo} = "pathway".
+#'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
 #'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@details To calculate the differential correlation network, require the input data from two conditions; 1 and 2. 
 #'The input data are matrices in which rows are samples and columns are entities.
 #'For each condition, if datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed before testing.
 #'In this case: 
+#'
 #'- The differential correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{sourceTo}
+#'
 #'- The differential correlation network can be expand from datNormY entites to a specific node type, by providing a value to \code{targetTo}
+#'
 #'Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed before testing.
 #'In this case:
-#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{targetTo} and leave \code{sourceTo}=NULL.
+#'
+#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{targetTo} and leave \code{sourceTo = NULL}.
 #'The column names of the input data are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 #'@return list of nodes and edges. The list is with the following componens: edges and nodes. Output includes correlation coefficients, pvalues and relation directions of each conditions, 
 #'and the pvalues (pvalDiff) after testing. Return empty list if found nothing
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
-#'@references 
-#'Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
-#'Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
-#'Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
-#'Fukushima A. (2013) DiffCorr: an R package to analyze and visualize differential correlations in biological networks. Gene, 10;518(1):209-14.
+#'@references Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
+#'@references Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
+#'@references Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
+#'@references Fukushima A. (2013) DiffCorr: an R package to analyze and visualize differential correlations in biological networks. Gene, 10;518(1):209-14.
 #'@export
-#'@seealso \code{\link{WGCNA::cor}}, \code{\link{WGCNA::corPvalueStudent}}, \code{\link{fetchDiffCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \pkg{\link{DiffCorr}}, \url{http://js.cytoscape.org/}
+#'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{fetchDiffCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \pkg{\link{DiffCorr}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Compute a differential correlation network of metabolites and expand to a grinn network of metabolite-protein
 #'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
@@ -57,7 +62,8 @@
 #'colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
 #'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
 #'result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05, method="spearman", returnAs="tab", targetTo="protein")
-#'plot(igraph::graph.data.frame(result$edges[,1:2], directed=F))
+#'library(igraph)
+#'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Compute a differential correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene
 #'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
 #'colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1','X16962')

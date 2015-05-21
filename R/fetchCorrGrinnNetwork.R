@@ -1,12 +1,14 @@
-#' \code{fetchCorrGrinnNetwork} compute a weighted correlation network and expand the network with information from Grinn internal database
+#'Compute a weighted correlation network and expand the network with information from grinn internal database
 #'@description from input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:
-#'1. Compute a weighted correlation network of input omics data using WGCNA functions \code{WGCNA::cor} and \code{WGCNA::corPvalueStudent}. 
+#'
+#'1. Compute a weighted correlation network of input omics data using WGCNA functions \code{cor} and \code{corPvalueStudent}. 
 #'The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
 #'Then the correlation network is built by function \code{fetchCorrNetwork}.
-#'2. Expand the correlation network using information from Grinn internal database.
+#'
+#'2. Expand the correlation network using information from grinn internal database.
 #'The nodes of the correlation network are the keywords input to query the Grinn database.
 #'Grinn internal database contains the networks of the following types that can get expanded to: 
-#'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{fetchGrinnNetwork}.
+#'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
 #'@usage fetchCorrGrinnNetwork(datNormX, datNormY, corrCoef, pval, method, returnAs, sourceTo, targetTo, filterSource, organism)
 #'@param datNormX data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
@@ -15,37 +17,41 @@
 #'Use the same format as \code{datNormX} or it can be NULL. See below for details.
 #'@param corrCoef numerical value to define the minimum value of absolute correlation, from 0 to 1, to include edges in the output.
 #'@param pval numerical value to define the maximum value of pvalues, to include edges in the output.
-#'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman" (default), see \code{WGCNA::cor}.  
+#'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman" (default), see \code{\link{cor}}.  
 #'@param returnAs string of output type. Specify the type of the returned network. 
 #'It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js
 #'@param sourceTo string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.
 #'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.
-#'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo} = "pathway".
+#'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
 #'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@details datNormX and datNormY are matrices in which rows are samples and columns are entities.
 #'If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed.
 #'In this case: 
+#'
 #'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{sourceTo}
+#'
 #'- The correlation network can be expand from datNormY entites to a specific node type, by providing a value to \code{targetTo}
+#'
 #'Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed. 
 #'In this case:
-#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{targetTo} and leave \code{sourceTo}=NULL.
+#'
+#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{targetTo} and leave \code{sourceTo = NULL}.
 #'The column names of both datNormX and datNormY are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 #'@return list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
-#'@references 
-#'Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
-#'Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
-#'Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
+#'@references Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
+#'@references Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
+#'@references Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
 #'@export
-#'@seealso \code{\link{WGCNA::cor}}, \code{\link{WGCNA::corPvalueStudent}}, \code{\link{fetchCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
+#'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{fetchCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Compute a correlation network of metabolites and expand to a grinn network of metabolite-protein
 #'dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
 #'colnames(dummy) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 28)))
 #'result <- fetchCorrGrinnNetwork(datNormX=dummy, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab", targetTo="protein")
-#'plot(igraph::graph.data.frame(result$edges[,1:2], directed=F))
+#'library(igraph)
+#'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Compute a correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene
 #'dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
 #'colnames(dummyX) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 12)))

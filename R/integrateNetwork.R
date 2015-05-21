@@ -19,13 +19,13 @@
 #'@seealso \url{http://js.cytoscape.org/}
 #'@examples
 #'# Query metabolites by PubChem ids and build a network
-#'txtInput <- "['PubChem:3326','PubChem:3436','PubChem:7656']"
-#'organism <- "'Homo sapiens'"
-#'result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="PubChem")
+#'#txtInput <- "['PubChem:3326','PubChem:3436','PubChem:7656']"
+#'#organism <- "'Homo sapiens'"
+#'#result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="PubChem")
 #'# Query metabolites by grinn ids and build a network
-#'txtInput <- "['C00024','C00136','C05269']"
-#'organism <- "'Homo sapiens'"
-#'result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="grinn")
+#'#txtInput <- "['C00024','C00136','C05269']"
+#'#organism <- "'Homo sapiens'"
+#'#result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="grinn")
 integrateNetwork <- function(txtInput, organism, returnAs="json", searchBy="grinn"){   
   #generate 4 types of networks, add more types if db structure changed
   bcnw = createBiochemNetwork(txtInput,organism,searchBy)

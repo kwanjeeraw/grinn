@@ -1,4 +1,4 @@
-#' \code{fetchGrinnNetwork} compute an integrated network using information from Grinn internal database
+#'Compute an integrated network using information from grinn internal database
 #'@description from the list of keywords, build an integrated network (grinn network) by connecting these keywords to a specified node type.
 #'The keywords can be any of these node types: metabolite, protein, gene and pathway.
 #'Grinn internal database contains the networks of the following types that can be quried: 
@@ -8,7 +8,7 @@
 #'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
 #'@param to string of end node. It can be one of "metabolite","protein","gene","pathway".
-#'@param filterSource string or list of pathway databases. The argument is required, if \code{from} or \code{to} = "pathway", see \code{from} and \code{to}.
+#'@param filterSource string or list of pathway databases. The argument is required, if \code{from} or \code{to = "pathway"}, see \code{from} and \code{to}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").  
 #'@param returnAs string of output type. Specify the type of the returned network. 
 #'It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js
@@ -24,7 +24,8 @@
 #'# Query genes by ENSEMBL ids and build a grinn network of gene-protein-metabolite
 #'txtInput <- list('ENSG00000140459','ENSG00000143811','ENSG00000104524')
 #'result <- fetchGrinnNetwork(txtInput, from="gene", to="metabolite", returnAs="tab", dbXref="ensembl")
-#'plot(igraph::graph.data.frame(result$edges[,1:2], directed=F))
+#'library(igraph)
+#'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Query metabolites by grinn ids and build a grinn network of metabolite-pathway
 #'txtInput <- c('X371','X783')
 #'result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json", organism="'Homo sapiens'")
@@ -77,7 +78,7 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
     querystring = gsub("keyword", txtInput, querystring)
     querystring = gsub("species", organism, querystring)
   print(querystring)
-    cat("Querying network ...\n")
+    cat("Querying and returning network ...\n")
     network = curlRequestCypher(querystring)
     formatNetworkOutput(network,returnAs)
   },

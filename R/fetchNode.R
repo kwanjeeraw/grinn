@@ -1,20 +1,20 @@
-#' \code{fetchNode} query for an entity or list of entities from grinn internal database
+#'Query for an entity or list of entities from grinn internal database
 #'@description from the list of keywords, query for entities from the grinn internal database. Quried results include entity information and relationship information.
 #'The keywords can be any of these node types: metabolite, protein, gene and pathway.
 #'Relationship information includes information of adjacent nodes, name and additional attributes of relationships.
 #'@usage fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref, organism)
-#'@param txtInput list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list(name1, name2). 
+#'@param txtInput list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list('name1', 'name2'). 
 #'The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. X371.
 #'@param nodetype string of entity type. It can be one of "metabolite","protein","gene","pathway".
 #'@param searchField string of keyword property to search for, see \code{txtInput}. It can be one of "grinn","name","synonym","xref","inchi". Default is "grinn".
-#'If \code{searchField} = "xref", the argument \code{dbXref} is required, see \code{dbXref}.
-#'If \code{searchField} = "name" or "synonym", the argument \code{exactMatch} is required, see \code{exactMatch}.
-#'@param exactMatch boolean value. The argument is required if \code{searchField} = "name" or "synonym", see \code{searchField}. Default is TRUE.
+#'If \code{searchField = "xref"}, the argument \code{dbXref} is required, see \code{dbXref}.
+#'If \code{searchField = "name" or "synonym"}, the argument \code{exactMatch} is required, see \code{exactMatch}.
+#'@param exactMatch boolean value. The argument is required if \code{searchField = "name" or "synonym"}, see \code{searchField}. Default is TRUE.
 #'@param returnAs string of output type. It can be one of "list","json", default is "list".
-#'@param dbXref string of database name. Specify the database name used for the txtInput when the argument \code{searchField}="xref", see \code{txtInput} and \code{searchField}. 
+#'@param dbXref string of database name. Specify the database name used for the txtInput when the argument \code{searchField = "xref"}, see \code{txtInput} and \code{searchField}. 
 #'It can be one of "grinn",chebi","kegg","pubchem","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'". \code{organism} required, if \code{nodetype}="metabolite".
+#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'". \code{organism} required, if \code{nodetype = "metabolite"}.
 #'@return list of nodes and first neighborhoods. Return empty list if found nothing.
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@export
@@ -79,7 +79,8 @@ fetchNode <- function(txtInput, nodetype, searchField="grinn", exactMatch=TRUE, 
       querystring = paste(querystring,'AND node.organism =',organism)
     }
     querystring = paste(querystring,'RETURN DISTINCT node')  
-print(querystring)     
+print(querystring)    
+    cat("Querying and returning node ...\n")
     node = curlRequestCypher(querystring)
     formatNodeOutput(node,returnAs)
   },

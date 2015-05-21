@@ -20,13 +20,13 @@
 #'@seealso \url{http://js.cytoscape.org/}
 #'@examples
 #'# Query metabolites by PubChem ids and connect to Protein, Gene and Pathway
-#'txtInput <- "['PubChem:3326','PubChem:3436','PubChem:7656']"
-#'organism <- "'Homo sapiens'"
-#'result <- pairToNode(txtInput, organism, returnAs="all", searchBy="PubChem")
+#'#txtInput <- "['PubChem:3326','PubChem:3436','PubChem:7656']"
+#'#organism <- "'Homo sapiens'"
+#'#result <- pairToNode(txtInput, organism, returnAs="all", searchBy="PubChem")
 #'# Query metabolites by grinn ids and and connect to Gene and Pathway
-#'txtInput <- "['C00024','C00136','C05269']"
-#'organism <- "'Homo sapiens'"
-#'result <- pairToNode(txtInput, organism, label=c("Gene","Pathway"), returnAs="all", searchBy="grinn")
+#'#txtInput <- "['C00024','C00136','C05269']"
+#'#organism <- "'Homo sapiens'"
+#'#result <- pairToNode(txtInput, organism, label=c("Gene","Pathway"), returnAs="all", searchBy="grinn")
 pairToNode <- function(txtInput, organism, label=c("Protein","Gene","Pathway"), returnAs="json", searchBy="grinn"){
   pair = data.frame() #list of mapped nodes
   attb = data.frame() #list of node attributes

@@ -1,9 +1,8 @@
 #' \code{fetchNodeRelation} format get node relationships
 #'@description get node relationships as the output for further uses by \code{formatNodeOutput}.
 #'@seealso \code{formatNodeOutput}
-#'@examples
-#'result <- fetchNodeRelation("http://localhost:7474/db/data/node/53/relationships/in")
-#'return start-relation-end
+#'#result <- fetchNodeRelation("http://localhost:7474/db/data/node/53/relationships/in")
+#'#return start-relation-end
 
 fetchNodeRelation <- function(url){
   path = curlRequestUrlToList(url)

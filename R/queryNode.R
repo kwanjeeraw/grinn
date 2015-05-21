@@ -11,8 +11,8 @@
 #'@seealso \code{\link{curlRequestCypher}}, \code{\link{curlPerform}}
 #'@examples
 #'# Query metabolites by name 
-#'querystring = "UNWIND ['coa','co2','Malonyl-CoA'] AS x WITH x MATCH (n:Metabolite) WHERE lower(n.name) = lower(x) RETURN DISTINCT n" 
-#'result = queryNode(querystring)
+#'#querystring = "UNWIND ['coa','co2','Malonyl-CoA'] AS x WITH x MATCH (n:Metabolite) WHERE lower(n.name) = lower(x) RETURN DISTINCT n" 
+#'#result = queryNode(querystring)
 
 queryNode <- function(querystring, querytype="node") {
   result <- curlRequestCypher(querystring)

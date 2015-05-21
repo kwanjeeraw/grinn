@@ -1,9 +1,8 @@
-#' \code{fetchNodeRelation} get path information
+#' \code{fetchRelation} get path information
 #'@description get path information as the output for further uses by \code{formatNetworkOutput}.
 #'@seealso \code{formatNetworkOutput}
-#'@examples
-#'result <- fetchRelation("http://localhost:7474/db/data/relationship/53")
-#'return start-relation-end
+#'#result <- fetchRelation("http://localhost:7474/db/data/relationship/53")
+#'#return start-relation-end
 
 fetchRelation <- function(url){
   out <- tryCatch(
