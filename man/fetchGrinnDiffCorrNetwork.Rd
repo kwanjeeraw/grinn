@@ -27,7 +27,7 @@ If pubchem is used, it has to be pubchem SID (substance ID).}
 \item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".}
 
 \item{datNormX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
-Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors.
+Columns correspond to entities e.g. genes, metabolites, and rows to samples.
 Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.}
 
 \item{datNormX2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.

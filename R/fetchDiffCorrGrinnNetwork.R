@@ -13,7 +13,7 @@
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
 #'@usage fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource, organism)
 #'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
-#'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
+#'Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
 #'@param datNormX2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
 #'Use the same format as \code{datNormX1}.
