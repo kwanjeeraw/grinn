@@ -59,7 +59,7 @@ fetchModuGrinnNetwork <- function(datNorm, datPheno, sfPower=NULL, minModuleSize
       pair = rbind(basicnw$edges,modulenw$edges)
       attb = rbind(basicnw$nodes,modulenw$nodes)
       attb = attb[!duplicated(attb[,1]),]
-      colnames(attb) = c("id","nodename","xref","nodetype")
+      colnames(attb) = c("id","nodename","xref","nodetype","modulecolor")
       cat("Found ",nrow(pair)," relationships...\n")
     }else{#if only correlation network found
       cat("Formating and returning combined network ...\n")
