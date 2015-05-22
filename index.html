@@ -38,12 +38,13 @@
           <p>The tutorials provides the examples of how to use different grinn functions for the analysis of omics data. The following link is the datasets used in these tutorials <a>example datasets</a>.</p>
           <ol>
               <li><a href="fgrinn.html">fetchGrinnNetwork</a> - reconstruct a biological network (grinn network) using information from grinn internal database</li>
-              <li><a href="tbuild.html">fetchCorrGrinnNetwork</a> - connect given metabolites based on several kinds of relationships</li>
-              <li><a href="tpair.html">fetchDiffCorrGrinnNetwork</a> - generate an integrated network of metabolites, proteins, genes and pathways</li>
+              <li><a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> - compute a weighted correlation network and expand the network with information from grinn internal database</li>
+              <li><a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a> - compute a differential correlation network and expand the network with information from grinn internal database</li>
+              <li><a href="fmodule.html">fetchModuGrinnNetwork</a> - compute a network module correlated to a phenotypic feature and expand the network with information from grinn internal database</li>
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
-          <pre><code style="text-align:left">
-            install.packages("grinn")
+          <pre><code>
+install.packages("grinn")
           </code></pre>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
           <p>Correlation-based analyses apply methods from the following publications:</p>

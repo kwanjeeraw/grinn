@@ -18,19 +18,21 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="fetchCorrGrinnNetwork" class="anchor" href="#fetchCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchCorrGrinnNetwork</h2>
-          <p>To compute a weighted correlation network and expand the network with information from grinn internal database</p>
+          <h2><a id="fetchDiffCorrGrinnNetwork" class="anchor" href="#fetchDiffCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchDiffCorrGrinnNetwork</h2>
+          <p>To compute a differential correlation network and expand the network with information from grinn internal database</p>
           <ol>
             <li><b>INPUT</b><br>
             <p>The table summarizes important arguments</p>
             <table>
               <tr><th>Argument</th><th>Value</th><th>Description</th></tr>
-              <tr><td><em>datNormX</em></td><td>data frame containing normalized-omic data</td><td>Columns correspond to entities e.g. genes and rows to samples e.g. normals, tumors.
+              <tr><td><em>datNormX1</em></td><td>data frame containing normalized-omic data of one condition</td><td>Columns correspond to entities e.g. genes and rows to samples.
               Require 'nodetype' at the first row to indicate the type of entities in each column.</td></tr>
-              <tr><td><em>datNormY</em></td><td>data frame containing normalized-omic data</td><td>It uses the same format as <em>datNormX</em>.
-              Or it can be <em>NULL</em>, if there is only one omic dataset</td></tr>
-              <tr><td><em>corrCoef</em></td><td>numerical value from 0-1</td><td>The minimum absolute correlations to include edges in the output</td></tr>
-              <tr><td><em>pval</em></td><td>numerical value</td><td>The maximum pvalues, to include edges in the output</td></tr>                        
+              <tr><td><em>datNormX2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.</td></tr>
+              <tr><td><em>datNormY1</em></td><td>data frame containing normalized-omic data of one condition</td><td>It uses the same format as <em>datNormX1</em>.
+              Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
+              <tr><td><em>datNormY2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.
+              Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
+              <tr><td><em>pDiff</em></td><td>numerical value</td><td>The maximum pvalues (pvalDiff), to include edges in the output</td></tr>                        
               <tr><td><em>sourceTo</em></td><td>entity type e.g. metabolite</td><td>The correlation network can be expand from <em>datNormX</em> entites to a specific entity type,
               by providing a value to <em>sourceTo</em></td></tr>
               <tr><td><em>targetTo</em></td><td>entity type e.g. gene</td><td>The correlation network can be expand from <em>datNormY</em> entites (if not <em>NULL</em>) to a specific entity type,
@@ -38,13 +40,21 @@
             </table>
             </li><br>
             <li><b>EXECUTE FUNCTION</b><br>
-              <p>Compute a correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene</p>
+              <p>Compute a differential correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene</p>
               <pre><code>
-dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
-colnames(dummyX) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 12)))
-dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
-colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
-result <- fetchCorrGrinnNetwork(datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="tab", sourceTo="pathway", targetTo="gene")
+dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
+colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1','X16962')
+rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
+colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1','X16962')
+rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
+colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
+dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
+colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
+result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab", sourceTo="pathway", targetTo="gene")
               </code></pre>
             </li>
             <li><b>EXPORT OUTPUT</b><br>
