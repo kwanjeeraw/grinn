@@ -1,6 +1,6 @@
 R/attach.R
 R/internal.R
 R/curl**
-.Rproj.user
+.Rproj.user/**
 .Rhistory
 .RData
