@@ -37,6 +37,8 @@
               <pre><code>
 txtInput <- list('ENSG00000140459','ENSG00000143811','ENSG00000104524')
 result <- fetchGrinnNetwork(txtInput, from="gene", to="metabolite", returnAs="tab", dbXref="ensembl")
+#display the first 10 edgelists
+result$edges[1:10,]
               </code></pre>
             </li>
             <li><b>EXPORT OUTPUT</b><br>
@@ -51,7 +53,11 @@ write.table(as.matrix(result$nodes),"grinnNwNode.txt",sep="\t",row.names = F, qu
             </li>
             <div id="imgScale">
               <img src="images/grinnNw.png"><br>
-            </div>           
+            </div>
+              <p><em>Diagram legend</em></p>
+            <div id="imgScale">
+              <img src="images/legend.png" width="260"><br>
+            </div>
           </ol>
           <p>Go to <a href="index.html">HOME</a> | <a href="fgrinn.html">fetchGrinnNetwork</a> | <a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> | <a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a>
           | <a href="fmodule.html">fetchModuGrinnNetwork</a></p>

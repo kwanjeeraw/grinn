@@ -22,7 +22,7 @@
           <p>grinn is a bioinformatics platform containing an internal graph database (using Neo4j), and the R package for omics studies.
           grinn incorporates data from several databases including KEGG, SMPDB, HMDB, REACTOME and CheBI.
           We apply correlation-based analyses from widely used WGCNA and DiffCorr R package.</p>
-          <p>The grinn package provides R functions to:</p>
+          <p>The grinn package provides R functions for:</p>
           <ol>
             <li> Reconstruction of biological networks in different level e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway</li>
             <li> Correlation-based analysis independently from pathway information to estimate:
@@ -35,7 +35,7 @@
             <li> Rapid integration of domain knowledges to unknowns</li>
           </ol>
           <h3><a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials</h3>
-          <p>The tutorials provides the examples of how to use different grinn functions for the analysis of omics data. The following link is the datasets used in these tutorials <a>example datasets</a>.</p>
+          <p>The tutorials provides the examples of how to use different grinn functions for the analysis of omics data. Click <a href="#">here</a> for the datasets used in these tutorials.</p>
           <ol>
               <li><a href="fgrinn.html">fetchGrinnNetwork</a> - reconstruct a biological network (grinn network) using information from grinn internal database</li>
               <li><a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> - compute a weighted correlation network and expand the network with information from grinn internal database</li>
@@ -44,7 +44,8 @@
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
           <pre><code>
-install.packages("grinn")
+1. Require neo4j-community-2.2.0
+2. install.packages("grinn_2.0.tgz", repo = NULL)
           </code></pre>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
           <p>Correlation-based analyses apply methods from the following publications:</p>
@@ -56,9 +57,10 @@ install.packages("grinn")
           </ul>
           <p>Omics data used in our tutorials are taken from the following publications:</p>
           <ul>
-            <li>April W, <em>et al.</em> Metabolomics in psoriatic disease: pilot study reveals metabolite differences in psoriasis and psoriatic arthritis. <a href="http://f1000research.com/articles/10.12688/f1000research.4709.1/doi" target="_blank">F1000Res. 2014;3:248</a>.</li>
-            <li>Rosenberg A, <em>et al.</em> Divergent gene activation in peripheral blood and tissues of patients with rheumatoid arthritis, psoriatic arthritis and psoriasis following infliximab therapy. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110657" target="_blank">PLoS One. 2014;9(10)</a>.</li>
+            <!--li>April W, <em>et al.</em> Metabolomics in psoriatic disease: pilot study reveals metabolite differences in psoriasis and psoriatic arthritis. <a href="http://f1000research.com/articles/10.12688/f1000research.4709.1/doi" target="_blank">F1000Res. 2014;3:248</a>.</li-->
+            <!--li>Rosenberg A, <em>et al.</em> Divergent gene activation in peripheral blood and tissues of patients with rheumatoid arthritis, psoriatic arthritis and psoriasis following infliximab therapy. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0110657" target="_blank">PLoS One. 2014;9(10)</a>.</li-->
             <li>Wikoff WR, <em>et al.</em> Metabolomic markers of altered nucleotide metabolism in early stage adenocarcinoma. <a href="http://cancerpreventionresearch.aacrjournals.org/cgi/pmidlookup?view=long&pmid=25657018" target="_blank">Cancer Prev Res (Phila) 2015;8(5):410-8</a>.</li>
+            <li>Zakaria N, <em>et al.</em> Human non-small cell lung cancer expresses putative cancer stem cell markers and exhibits the transcriptomic profile of multipotent cells. <a href="http://www.biomedcentral.com/1471-2407/15/84" target="_blank">BMC Cancer 2015;15:84</a>.</li>
           </ul>
           <!--<h3><a id="citation" class="anchor" href="#citation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Citation</h3>
           <p><a href="#"></a></p>-->
