@@ -65,26 +65,28 @@ fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e
   if(nrow(corrnw$nodes)>0){
     nodetypes = tolower(unique(corrnw$nodes$nodetype))
     if(length(nodetypes)>1){#if there are two data types
-      basicnw1 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[1]), 1],from=nodetypes[1],
-                                   to=nodetypes[2],filterSource=list(),dbXref="grinn") #relations between datasets
-      basicnw2 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
-                                   to=nodetypes[1],filterSource=list(),dbXref="grinn") #relations between datasets
-      basicnw3 = rbind(basicnw1$edges,basicnw2$edges) #collect all edges
-      basicnw3 = basicnw3[duplicated(basicnw3[,1:2]),] #choose overlapping edges
-      basicnwNodes = rbind(basicnw1$nodes,basicnw2$nodes) #collect all nodes
-      basicnwNodes = basicnwNodes[duplicated(basicnwNodes[,1]),] #choose overlapping nodes
+      #basicnw1 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[1]), 1],from=nodetypes[1],
+      #                             to=nodetypes[2],filterSource=list(),dbXref="grinn") #relations between datasets
+      #basicnw2 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
+      #                             to=nodetypes[1],filterSource=list(),dbXref="grinn") #relations between datasets
+      #basicnw3 = rbind(basicnw1$edges,basicnw2$edges) #collect all edges
+      #basicnw3 = basicnw3[duplicated(basicnw3[,1:2]),] #choose overlapping edges
+      #basicnwNodes = rbind(basicnw1$nodes,basicnw2$nodes) #collect all nodes
+      #basicnwNodes = basicnwNodes[duplicated(basicnwNodes[,1]),] #choose overlapping nodes
       if(!is.null(sourceTo)){
         basicnw4 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[1]), 1],from=nodetypes[1],
                                    to=sourceTo,filterSource=filterSource,dbXref="grinn") #relations sources to others
-        basicnwNodes = rbind(basicnwNodes,basicnw4$nodes) #collect all nodes
+        basicnwNodes = basicnw4$nodes #collect all nodes
+        #basicnwNodes = rbind(basicnwNodes,basicnw4$nodes) #collect all nodes
       }else{
         basicnw4 = data.frame()
+        basicnwNodes = data.frame()
       }
       basicnw5 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
                                    to=targetTo,filterSource=filterSource,dbXref="grinn") #relations from targets to others
       basicnwNodes = rbind(basicnwNodes,basicnw5$nodes) #collect all nodes
-
-      basicnwEdges = rbind(basicnw3,basicnw4$edges,basicnw5$edges) #collect all edges
+      basicnwEdges = rbind(basicnw4$edges,basicnw5$edges) #collect all edges
+      #basicnwEdges = rbind(basicnw3,basicnw4$edges,basicnw5$edges) #collect all edges
       if(!is.null(basicnwEdges)){
         basicnwEdges = basicnwEdges[!duplicated(basicnwEdges[,1:ncol(basicnwEdges)]),] #remove duplicated edges
         basicnwNodes = basicnwNodes[!duplicated(basicnwNodes[,1]),] #remove duplicated nodes
