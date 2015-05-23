@@ -35,23 +35,58 @@ convertToGrinnID <- function(txtInput, nodetype, dbXref){
   #construct query string
   nodetype=Hmisc::capitalize(nodetype)
   txtInput = unique(stringr::str_trim(as.character(txtInput))) #remove whiteline, duplicate
-
-  if (tolower(dbXref) == 'inchi') {
-    querystring = nodeList["exactMatch"]
-    querystring = gsub("property", "inchi", querystring)
-    txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
-  }else{
-    querystring = nodeList["exactCollection"]
-    querystring = gsub("property", "xref", querystring)
-    txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
-  }
-  
-  querystring = gsub("keyword", txtInput, querystring)
-  querystring = gsub("label", nodetype, querystring)
-  querystring = paste(querystring,'RETURN DISTINCT x, node.GID') 
+  len = length(txtInput)
+  #blockwise, split txtInput for shorter quried time
+  if(len>1000){#txtInput > 1000    
+    bl = 500
+    tmpNode = data.frame()
+    x = floor(len/bl)
+    seqls = rep(1) + rep(seq(0,len-bl,bl), each=1)
+    for(i in 1:x){
+      sfr = seqls[i]
+      gto = (seqls[i]+bl)-1
+      if(i!=x){  
+        tmpkw = txtInput[sfr:gto]
+      } else{  
+        tmpkw = txtInput[sfr:len]
+      }
+      if (tolower(dbXref) == 'inchi') {
+        querystring = nodeList["exactMatch"]
+        querystring = gsub("property", "inchi", querystring)
+        tmpkw = paste0("['",paste0(tmpkw, collapse = "','"),"']")
+      }else{
+        querystring = nodeList["exactCollection"]
+        querystring = gsub("property", "xref", querystring)
+        tmpkw = paste0("['",paste0(dbXref,":", tmpkw, collapse = "','"),"']") 
+      }
+      querystring = gsub("label", nodetype, querystring)
+      querystring = paste(querystring,'RETURN DISTINCT x, node.GID')
+      querystring = gsub("keyword", tmpkw, querystring)
 print(querystring)
-  cat("Converting and returning mapped ids ...\n")
-  node = curlRequestCypher(querystring)
-  colnames(node) = c(paste0("FROM_",dbXref),"GRINNID")
-  out <- data.frame(gsub(paste0(dbXref,":"),"",node))
+      cat("Converting and returning mapped ids ...\n")
+      tmpq = curlRequestCypher(querystring)
+      tmpNode = rbind(tmpNode,data.frame(gsub(paste0(dbXref,":"),"",tmpq)))
+    }
+    node = tmpNode
+    colnames(node) = c(paste0("FROM_",dbXref),"GRINNID")
+    out <- node
+  }else{#txtInput less than 1000
+    if (tolower(dbXref) == 'inchi') {
+      querystring = nodeList["exactMatch"]
+      querystring = gsub("property", "inchi", querystring)
+      txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
+    }else{
+      querystring = nodeList["exactCollection"]
+      querystring = gsub("property", "xref", querystring)
+      txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
+    }
+    querystring = gsub("label", nodetype, querystring)
+    querystring = paste(querystring,'RETURN DISTINCT x, node.GID')
+    querystring = gsub("keyword", txtInput, querystring)
+print(querystring)
+    cat("Converting and returning mapped ids ...\n")
+    node = curlRequestCypher(querystring)
+    colnames(node) = c(paste0("FROM_",dbXref),"GRINNID")
+    out <- data.frame(gsub(paste0(dbXref,":"),"",node))
+  }
 }
