@@ -1,5 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 extra
-*.tgz
-*.tar.gz
+.tgz
+.tar.gz

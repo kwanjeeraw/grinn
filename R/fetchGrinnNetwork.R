@@ -58,8 +58,41 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
     cat("Constructing query ...\n")
     ft = paste0(Hmisc::capitalize(from),Hmisc::capitalize(to))    
     len = length(txtInput)
+    querystring = pathList[ft]
+    if(tolower(dbXref) == 'grinn'){
+      querystring = paste(querystring,'WHERE lower(from.GID) = lower(x)')
+      txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
+    }else if(tolower(dbXref) == 'inchi'){
+      querystring = paste(querystring,'WHERE from.InChI = x')
+      txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
+    }else{
+      querystring = paste(querystring,'WHERE ANY(y IN from.xref WHERE lower(y) = lower(x))')
+      txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
+    }
+    ##filter pathway sources
+    if(from == "pathway" || to == "pathway"){filterSource=filterSource}else{filterSource=list()}
+    if(length(filterSource)==0){
+      querystring = paste(querystring,'RETURN DISTINCT ptw')
+    }else{
+      querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
+    }
+    querystring = gsub("keyword", txtInput, querystring)
+    querystring = gsub("species", organism, querystring)
+  print(querystring)
+    cat("Querying and returning network ...\n")
+    network = curlRequestCypher(querystring)
+    formatNetworkOutput(network,returnAs)
+  },
+  error=function(e) {
+    message(e)
+    cat("\n..No network found, RETURN empty list\n")
+    cynetwork = list(nodes="", edges="")
+    return(list(nodes=data.frame(),edges=data.frame())) # Choose a return value in case of error
+  })    
+  return(out)
+}
 #     #blockwise, split txtInput for shorter quried time
-#     if(len>1000){#txtInput > 1000
+#     if(len>1000){#txtInput > 3900
 #       cat("Long keywords, Partitioning quries ...\n")
 #       bl = 500
 #       tmpNode = data.frame()
@@ -129,42 +162,4 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
 #       cat("Querying and returning network ...\n")
 #       network = curlRequestCypher(querystring)
 #       formatNetworkOutput(network,returnAs)
-#     }},    
-#     
-#     
-#     
-#     
-    
-    querystring = pathList[ft]
-    if(tolower(dbXref) == 'grinn'){
-      querystring = paste(querystring,'WHERE lower(from.GID) = lower(x)')
-      txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
-    }else if(tolower(dbXref) == 'inchi'){
-      querystring = paste(querystring,'WHERE from.InChI = x')
-      txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
-    }else{
-      querystring = paste(querystring,'WHERE ANY(y IN from.xref WHERE lower(y) = lower(x))')
-      txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
-    }
-    ##filter pathway sources
-    if(from == "pathway" || to == "pathway"){filterSource=filterSource}else{filterSource=list()}
-    if(length(filterSource)==0){
-      querystring = paste(querystring,'RETURN DISTINCT ptw')
-    }else{
-      querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
-    }
-    querystring = gsub("keyword", txtInput, querystring)
-    querystring = gsub("species", organism, querystring)
-  print(querystring)
-    cat("Querying and returning network ...\n")
-    network = curlRequestCypher(querystring)
-    formatNetworkOutput(network,returnAs)
-  },
-  error=function(e) {
-    message(e)
-    cat("\n..No network found, RETURN empty list\n")
-    cynetwork = list(nodes="", edges="")
-    return(list(nodes=data.frame(),edges=data.frame())) # Choose a return value in case of error
-  })    
-  return(out)
-}  
+#     }},
