@@ -37,7 +37,8 @@ convertToGrinnID <- function(txtInput, nodetype, dbXref){
   txtInput = unique(stringr::str_trim(as.character(txtInput))) #remove whiteline, duplicate
   len = length(txtInput)
   #blockwise, split txtInput for shorter quried time
-  if(len>1000){#txtInput > 1000    
+  if(len>1000){#txtInput > 1000
+    cat("Long keywords, Partitioning quries ...\n")
     bl = 500
     tmpNode = data.frame()
     x = floor(len/bl)
