@@ -18,29 +18,26 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="fetchDiffCorrGrinnNetwork" class="anchor" href="#fetchDiffCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchDiffCorrGrinnNetwork</h2>
-          <p>To compute a differential correlation network and expand the network with information from grinn internal database</p>
+          <h2><a id="fetchGrinnCorrNetwork" class="anchor" href="#fetchGrinnCorrNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchGrinnCorrNetwork</h2>
+          <p>To reconstruct a biological network (grinn network) using information from grinn internal database, then compute and combine with a weighted correlation network</p>
           <ol>
             <li><b>INPUT</b><br>
             <p>The table summarizes important arguments</p>
             <table>
               <tr><th>Argument</th><th>Value</th><th>Description</th></tr>
-              <tr><td><em>datNormX1</em></td><td>data frame containing normalized-omic data of one condition</td><td>Columns correspond to entities e.g. genes and rows to samples.
+              <tr><td><em>txtInput</em></td><td>list of keywords e.g. ENSG00000143811</td><td>Keywords are IDs from a specific database.</td></tr>
+              <tr><td><em>from</em></td><td>type of keyword e.g. metabolite</td><td>Type of starting points in the network. It can be one of metabolite, protein, gene, pathway.</td></tr>
+              <tr><td><em>to</em></td><td>type of end nodes e.g. pathway</td><td>Type of endpoints in the network. It can be one of metabolite, protein, gene, pathway.</td></tr>
+              <tr><td><em>datNormX</em></td><td>data frame containing normalized-omic data</td><td>Columns correspond to entities e.g. genes and rows to samples e.g. normals, tumors.
               Require 'nodetype' at the first row to indicate the type of entities in each column.</td></tr>
-              <tr><td><em>datNormX2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.</td></tr>
-              <tr><td><em>datNormY1</em></td><td>data frame containing normalized-omic data of one condition</td><td>It uses the same format as <em>datNormX1</em>.
-              Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
-              <tr><td><em>datNormY2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.
-              Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
-              <tr><td><em>pDiff</em></td><td>numerical value</td><td>The maximum pvalues (pvalDiff), to include edges in the output</td></tr>                        
-              <tr><td><em>sourceTo</em></td><td>entity type e.g. metabolite</td><td>The correlation network can be expand from <em>datNormX</em> entites to a specific entity type,
-              by providing a value to <em>sourceTo</em></td></tr>
-              <tr><td><em>targetTo</em></td><td>entity type e.g. gene</td><td>The correlation network can be expand from <em>datNormY</em> entites (if not <em>NULL</em>) to a specific entity type,
-              by providing a value to <em>targetTo</em></td></tr>
+              <tr><td><em>datNormY</em></td><td>data frame containing normalized-omic data</td><td>It uses the same format as <em>datNormX</em>.
+              Or it can be <em>NULL</em>, if there is only one omic dataset</td></tr>
+              <tr><td><em>corrCoef</em></td><td>numerical value from 0-1</td><td>The minimum absolute correlations to include edges in the output</td></tr>
+              <tr><td><em>pval</em></td><td>numerical value</td><td>The maximum pvalues, to include edges in the output</td></tr>                        
             </table>
             </li><br>
             <li><b>EXECUTE FUNCTION</b><br>
-              <p>Compute a differential correlation network of metabolites in normal and cancer tissue and expand to the grinn network of metabolite-gene</p>
+              <p>Build a grinn network of pathway-metabolite using the list of SMPDB pathways, then combine with a correlation network of metabolites</p>
               <pre><code>
 #1. load metabolomics data from a csv file
 datMet = read.csv("Lung_MET.csv", header=TRUE, row.names=1, stringsAsFactors=FALSE)
@@ -55,32 +52,30 @@ grinnID = grinnID[!duplicated(grinnID[,1]),] #keep the first mapped id
 colnames(datMet) = lapply(colnames(datMet),function(x) ifelse(length(which(grinnID$FROM_kegg == x))>0,as.character(grinnID$GRINNID[which(grinnID$FROM_kegg == x)]),x))
 #---------- END id conversion ----------#
 
-datMetNormal = datMet[1:40,] #normal condition
-datMetTumor = rbind(nodetype=rep("metabolite"),datMet[41:79,]) #tumor condition
-result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, pDiff=1e-4, method="spearman", returnAs="tab", targetTo="gene")
+#4. load pathway keywords from a text file (.txt)
+ptwKw = unlist(read.csv("pathwayList.csv", stringsAsFactors=FALSE, header=FALSE))
+#5. show length of keywords
+length(ptwKw)
+#6. show the first 2 keywords
+ptwKw[1:2]
+#7. execute function
+result <- fetchGrinnCorrNetwork(txtInput=ptwKw, from="pathway", to="metabolite", datNormX=datMet, corrCoef=0.7, pval=1e-5, method="spearman", dbXref = "smpdb")
 #display the first 10 edgelists
 result$edges[1:10,]
-datMet2 = datMet[c(1:7,42:50),]
-datMetNormal = datMet2[1:7,]
-datMetTumor = rbind(nodetype=rep("metabolite"),datMet2[8:13,])
-datGeneNormal = datGene[1:7,]
-datGeneTumor = rbind(nodetype=rep("gene"),datGene[8:13,])
-result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, datNormY1=datGeneNormal, datNormY2=datGeneTumor, pDiff=1e-5, method="spearman", returnAs="tab", sourceTo="protein", targetTo="pathway")
- 
-             </code></pre>
+            </code></pre>
             </li>
             <li><b>EXPORT OUTPUT</b><br>
               <p>Export the network as tab-delimited files to visualize in <a href="http://cytoscape.org/" target="_blank">Cytoscape</a></p>
               <pre><code>
-write.table(as.matrix(result$edges),"diffcorrNwEdge.txt",sep="\t",row.names = F, quote = FALSE)
-write.table(as.matrix(result$nodes),"diffcorrNwNode.txt",sep="\t",row.names = F, quote = FALSE)
+write.table(as.matrix(result$edges),"grCorrNwEdge.txt",sep="\t",row.names = F, quote = FALSE)
+write.table(as.matrix(result$nodes),"grCorrNwNode.txt",sep="\t",row.names = F, quote = FALSE)
               </code></pre>
             </li>
             <li><b>VISUALIZATION</b>
-              <p>The figure is generated by Cytoscape 3.1.1 using grinn style (grinn.xml). It is corresponding to the cytoscape file <em>diffcorrNw.cys</em>.</p>
+              <p>The figure is generated by Cytoscape 3.1.1 using grinn style (grinn.xml). It is corresponding to the cytoscape file <em>grCorrNw.cys</em>.</p>
             </li>
             <div id="imgScale">
-              <img src="images/diffcorrNw.png"><br>
+              <img src="images/grCorrNw.png"><br>
             </div>
             <p><em>Diagram legend</em></p>
             <div id="imgScale">
@@ -88,11 +83,7 @@ write.table(as.matrix(result$nodes),"diffcorrNwNode.txt",sep="\t",row.names = F,
             </div>
           </ol>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
-          <p>Correlation-based analysis apply the Fisher's z-test method from the following publication:</p>
-          <ul>
-            <li>Fukushima A DiffCorr: an R package to analyze and visualize differential correlations in biological networks. <a href="http://www.sciencedirect.com/science/article/pii/S0378111912014497" target="_blank">Gene 2013;10;518(1):209-14</a>.</li>
-          </ul>
-          <p>Metabolomics data used in this example are taken from the following publication:</p>
+          <p>Metabolomics and transcriptomics data used in this example are taken from the following publication:</p>
           <ul>
             <li>Wikoff WR, <em>et al.</em> Metabolomic markers of altered nucleotide metabolism in early stage adenocarcinoma. <a href="http://cancerpreventionresearch.aacrjournals.org/cgi/pmidlookup?view=long&pmid=25657018" target="_blank">Cancer Prev Res (Phila) 2015;8(5):410-8</a>.</li>
           </ul>

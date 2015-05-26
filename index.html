@@ -41,6 +41,7 @@
               <li><a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> - compute a weighted correlation network and expand the network with information from grinn internal database</li>
               <li><a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a> - compute a differential correlation network and expand the network with information from grinn internal database</li>
               <li><a href="fmodule.html">fetchModuGrinnNetwork</a> - compute a network module correlated to a phenotypic feature and expand the network with information from grinn internal database</li>
+              <li><a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> - reconstruct a biological network (grinn network) using information from grinn internal database, then compute and combine with a weighted correlation network</li>
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
           <pre><code>
@@ -48,12 +49,20 @@
 2. install.packages("grinn_2.0.tgz", repo = NULL)
           </code></pre>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
+          <p></p>
+          <ul>
+            <li>Croft D, <em>et al.</em> The Reactome pathway knowledgebase. <a href="http://nar.oxfordjournals.org/content/42/D1/D472.abstract" target="_blank">Nucleic Acids Res. 2014 Jan;42(Database issue):D472-7</a>.</li>
+            <li>Degtyarenko K, <em>et al.</em> ChEBI: a database and ontology for chemical entities of biological interest. <a href="http://nar.oxfordjournals.org/content/36/suppl_1/D344.abstract" target="_blank">Nucleic Acids Res 2008. 36, D344-D350</a>.</li>
+            <li>Jewison T, <em>et al.</em> SMPDB 2.0: Big Improvements to the Small Molecule Pathway Database. <a href="http://nar.oxfordjournals.org/content/42/D1/D478.abstract" target="_blank">Nucleic Acids Res 2014 Jan;42(Database issue):D478-84</a>.</li>
+            <li>Kanehisa M, <em>et al.</em> Data, information, knowledge and principle: back to metabolism in KEGG. <a href="http://nar.oxfordjournals.org/content/42/D1/D199.abstract" target="_blank">Nucleic Acids Res 2014. 42, D199-D205</a>.</li>
+            <li>Wishart DS, <em>et al.</em> HMDB 3.0 - The Human Metabolome Database in 2013. <a href="http://nar.oxfordjournals.org/content/41/D1/D801.abstract" target="_blank">Nucleic Acids Res 2013. Jan 1;41(D1):D801-7</a>.</li>
+          </ul>
           <p>Correlation-based analyses apply methods from the following publications:</p>
           <ul>
-            <li>Langfelder P, <em>et al.</em> WGCNA: an R package for weighted correlation network analysis. <a href="http://www.biomedcentral.com/1471-2105/9/559" target="_blank">BMC Bioinformatics 2008;9:559</a>.</li>
             <li>Dudoit S, <em>et al.</em> Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.117.9702" target="_blank">STATISTICA SINICA 2002;12:111</a>.</li>
-            <li>Langfelder P, <em>et al.</em> Tutorials for the WGCNA package, <a href="http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html" target="_blank"> click here</a></li>
             <li>Fukushima A DiffCorr: an R package to analyze and visualize differential correlations in biological networks. <a href="http://www.sciencedirect.com/science/article/pii/S0378111912014497" target="_blank">Gene 2013;10;518(1):209-14</a>.</li>
+            <li>Langfelder P, <em>et al.</em> WGCNA: an R package for weighted correlation network analysis. <a href="http://www.biomedcentral.com/1471-2105/9/559" target="_blank">BMC Bioinformatics 2008;9:559</a>.</li>
+            <li>Langfelder P, <em>et al.</em> Tutorials for the WGCNA package, <a href="http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html" target="_blank"> click here</a></li> 
           </ul>
           <p>Omics data used in our tutorials are taken from the following publications:</p>
           <ul>
