@@ -49,7 +49,9 @@
           <li>Download grinn R package, click <a href="extra/grinn_2.0.tgz">here</a></li>
             <pre><code>
 #1. install dependent R packages, if not exist
-install.packages("packagename")
+install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
+source("http://bioconductor.org/biocLite.R") 
+biocLite(c("GO.db", "preprocessCore", "impute"))
 #2. install grinn package
 install.packages("grinn_2.0.tgz", repo = NULL)
             </code></pre>
