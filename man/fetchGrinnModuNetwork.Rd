@@ -50,10 +50,10 @@ Grinn internal database contains the networks of the following types that can be
 metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
 
 2. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight.
-The network module is the output of function \code{fetchWGCNAodule}. The function wraps around important aspects of \pkg{WGCNA} including
+The network module is the output of function \code{fetchWGCNAModule}. The function wraps around important aspects of \pkg{WGCNA} including
 \code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
 These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations.
-A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAodule}}.
+A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAModule}}.
 
 3. Combine the grinn network to the network module.
 }
@@ -80,6 +80,6 @@ Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.ge
 }
 \seealso{
 \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{pickSoftThreshold}}, \code{\link{blockwiseModules}}, \code{\link{labeledHeatmap}},
-\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAodule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
+\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAModule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 }
 

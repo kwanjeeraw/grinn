@@ -36,10 +36,10 @@ list of nodes and edges. The list is with the following componens: edges and nod
 from input omics data e.g. normalized expression data or metabolomics data, and phenotypic data it is a one step function to:
 
 1. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight.
-The network module is the output of function \code{fetchWGCNAodule}. The function wraps around important aspects of \pkg{WGCNA} including
+The network module is the output of function \code{fetchWGCNAModule}. The function wraps around important aspects of \pkg{WGCNA} including
 \code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
 These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations.
-A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAodule}}.
+A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAModule}}.
 
 2. Expand the network module using information from Grinn internal database.
 The nodes of the network module are the keywords input to query the grinn database.
@@ -68,6 +68,6 @@ Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.ge
 }
 \seealso{
 \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{pickSoftThreshold}}, \code{\link{blockwiseModules}}, \code{\link{labeledHeatmap}},
-\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAodule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
+\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAModule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 }
 
