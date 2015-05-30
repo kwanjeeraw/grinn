@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>grinn R package</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <img src="images/logo.png" alt="" width="450px">
+      <a href="https://github.com/kwanjeeraw/grinn" class="btn">View on GitHub</a>
+      <a href="https://github.com/kwanjeeraw/grinn/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/kwanjeeraw/grinn/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+    <section class="main-content">
+      <hr>
+          <h2><a id="fetchGrinnNetwork" class="anchor" href="#fetchGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchGrinnNetwork - Reconstruct a biological network (grinn network) using information from grinn internal database</h2>
+          <h3>Description</h3>
+          <p>from the list of keywords, build an integrated network (grinn network) by connecting these keywords to a specified node type. The keywords can be any of these node types: metabolite, protein, gene and pathway.
+          Grinn internal database contains the networks of the following types that can be quried: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.</p>
+          <h3>Usage</h3>
+          <p>fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism)</p>
+          <h3>Arguments</h3>
+          <table>
+            <tr><td>txtInput</td><td>vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. X371.</td></tr>
+            <tr><td>from</td><td>string of start node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
+            <tr><td>to</td><td>string of end node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
+            <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if from or to = "pathway", see from and to. The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
+            <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
+            <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput ids, see txtInput. It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn". If pubchem is used, it has to be pubchem SID (substance ID).</td></tr>
+            <tr><td>organism</td><td>string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".</td></tr>
+          </table>   
+          <h3>Value</h3>
+          <p>list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing</p>
+          <h3>Examples</h3>
+          <pre><code>
+# Query genes by ENSEMBL ids and build a grinn network of gene-protein-metabolite
+txtInput <- list('ENSG00000140459','ENSG00000143811','ENSG00000104524')
+result <- fetchGrinnNetwork(txtInput, from="gene", to="metabolite", returnAs="tab", dbXref="ensembl")
+library(igraph)
+plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
+
+# Query metabolites by grinn ids and build a grinn network of metabolite-pathway
+txtInput <- c('X371','X783')
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json", organism="'Homo sapiens'")
+
+# Query metabolites by grinn ids and build a network of metabolite-pathway using information from KEGG and REACTOME
+txtInput <- c('X371','X783')
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab", organism="'Homo sapiens'")
+
+# Query proteins by uniprot ids and build a network of protein-pathway using information from SMPDB
+txtInput <- list('P05108','Q53H96','P18463')
+result <- fetchGrinnNetwork(txtInput, from="protein", to="pathway", filterSource="SMPDB", returnAs="cytoscape", dbXref="uniprot")
+          </pre></code>
+          <p>Go to <a href="index.html">HOME</a> | <a href="document.html">Documentation</a> | <a href="fgrinn.html">fetchGrinnNetwork</a> | <a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> | <a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a>
+          | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a></p>
+        <hr>
+        <footer>
+          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+      </section>
+          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-61396514-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>grinn R package</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <img src="images/logo.png" alt="" width="450px">
+      <a href="https://github.com/kwanjeeraw/grinn" class="btn">View on GitHub</a>
+      <a href="https://github.com/kwanjeeraw/grinn/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/kwanjeeraw/grinn/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+    <section class="main-content">
+      <hr>
+          <h2><a id="fetchGrinnDiffCorrNetwork" class="anchor" href="#fetchGrinnDiffCorrNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchGrinnDiffCorrNetwork - Reconstruct a grinn network queried from grinn internal database, then compute and combine with a differential correlation network</h2>
+          <h3>Description</h3>
+          <p>from the list of keywords and input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:
+          <br>1. Build an integrated network (grinn network) by connecting these keywords to a specified node type, see fetchGrinnNetwork. The keywords can be any of these node types: metabolite, protein, gene and pathway. Grinn internal database contains the networks of the following types that can be quried: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
+          <br>2. Compute a differential correlation network of input omics data from two conditions, see datNormX1, datNormX2, datNormY1, datNormY2. Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions cor and corPvalueStudent. The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated. Then correlation coefficients are test for differential correlations using Fisher's z-test based on DiffCorr. The differential correlation network is created by function fetchDiffCorrNetwork.
+          <br>3. Combine the grinn network to the correlation network.</p>
+          <h3>Usage</h3>
+          <p>fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)</p>
+          <h3>Arguments</h3>
+          <table>
+            <tr><td>txtInput</td><td>list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. X371.</td></tr>
+            <tr><td>from</td><td>string of start node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
+            <tr><td>to</td><td>string of end node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
+            <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if from or to = "pathway", see from and to. The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
+            <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
+            <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput ids, see txtInput. It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn". If pubchem is used, it has to be pubchem SID (substance ID).</td></tr>
+            <tr><td>organism</td><td>string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".</td></tr>
+            <tr><td>datNormX1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Columns correspond to entities e.g. genes, metabolites, and rows to samples. Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.</td></tr>
+            <tr><td>datNormX2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datNormX1.</td></tr>
+            <tr><td>datNormY1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Use the same format as datNormX1. If there is only one type of dataset, it can be NULL. See below for details.</td></tr>
+            <tr><td>datNormY2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datNormX1. If there is only one type of dataset, it can be NULL. See below for details.</td></tr>
+            <tr><td>pDiff</td><td>numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.</td></tr>
+            <tr><td>method</td><td>string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see cor.</td></tr>
+          </table>   
+          <h3>Details</h3>
+          <p>To calculate the differential correlation network, require the input data from two conditions; 1 and 2. The input data are matrices in which rows are samples and columns are entities. For each condition, if datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed. Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed. Then correlation coefficients are test for significant correlation pairs.
+          The column names of the input data are required to use grinn ids. convertToGrinnID is provided for id conversion, see convertToGrinnID.</p>
+          <h3>Value</h3>
+          <p>list of nodes and edges. The list is with the following componens: edges and nodes. Output includes correlation coefficients, pvalues and relation directions of each conditions, and the pvalues (pvalDiff) after testing. Return empty list if found nothing</p>
+          <h3>Examples</h3>
+          <pre><code>
+# Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites
+kw <- c('X160','X300','X371')
+dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
+colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
+colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05)
+library(igraph)
+plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
+
+# Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites and proteins
+dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
+colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1','X16962')
+rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
+colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1','X16962')
+rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
+colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
+dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
+colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
+result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05)
+         </pre></code>
+          <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
+          <p>Correlation-based analyses apply methods from the following publications:</p>
+          <ul>
+            <li>Dudoit S, <em>et al.</em> Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.117.9702" target="_blank">STATISTICA SINICA 2002;12:111</a>.</li>
+            <li>Fukushima A DiffCorr: an R package to analyze and visualize differential correlations in biological networks. <a href="http://www.sciencedirect.com/science/article/pii/S0378111912014497" target="_blank">Gene 2013;10;518(1):209-14</a>.</li>
+            <li>Langfelder P, <em>et al.</em> WGCNA: an R package for weighted correlation network analysis. <a href="http://www.biomedcentral.com/1471-2105/9/559" target="_blank">BMC Bioinformatics 2008;9:559</a>.</li>
+            <li>Langfelder P, <em>et al.</em> Tutorials for the WGCNA package, <a href="http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html" target="_blank"> click here</a></li> 
+          </ul>
+          <p>Go to <a href="index.html">HOME</a> | <a href="document.html">Documentation</a> | <a href="fgrinn.html">fetchGrinnNetwork</a> | <a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> | <a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a>
+          | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a></p>
+        <hr>
+        <footer>
+          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+      </section>
+          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-61396514-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+  </body>
+</html>
