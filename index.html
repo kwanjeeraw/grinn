@@ -35,25 +35,36 @@
             <li> Rapid integration of domain knowledges to unknowns</li>
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
-          <ol>
+          <ul>
           <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software and dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.</li>
-          <li>Download grinn R package, click <a href="extra/grinn_2.0_server.zip">here</a></li>
             <pre><code>
-#1. install dependent R packages, if not exist
+#Install dependent R packages, if not exist
 install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
 source("http://bioconductor.org/biocLite.R") 
 biocLite(c("GO.db", "preprocessCore", "impute"))
-#2. install grinn package
-install.packages("grinn_2.0_server.zip", repos = NULL)
             </code></pre>
-          <li>Alternatively, grinn internal database is available for local use. Please send us an email for the database file.
-          <ul>
-          <li>Require <a href="http://neo4j.com/download/" target="_blank">neo4j-community-2.2.0</a>, download and unzip.</li>
-          <li>Extract and move the database file to neo4j directory</li>
-          <li>Start neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start. for more details see <a href="http://neo4j.com/docs/stable/server-installation.html" target="_blank">here</a></li>
-          </ul>
+          <li>To use grinn internal database (server version):
+            <ul>
+              <li>Download grinn R package (server version), click <a href="extra/grinn_2.0_server.zip">here</a> and install</li>
+              <pre><code>
+#Install grinn package server version
+install.packages("grinn_2.0_server.zip", repos = NULL)
+              </code></pre>
+            </ul>
           </li>
-          </ol>
+          <li>Alternatively, grinn internal database is available for local use. Please send us an email for the database file.
+            <ul>
+              <li>Require <a href="http://neo4j.com/download/" target="_blank">neo4j-community-2.2.0</a>, download and then unzip.</li>
+              <li>Extract and move the database file to neo4j directory</li>
+              <li>Start neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start. for more details see <a href="http://neo4j.com/docs/stable/server-installation.html" target="_blank">here</a></li>
+              <li>Download grinn R package (local version), click <a href="extra/grinn_2.0.zip">here</a> and install</li>
+              <pre><code>
+#Install grinn package local version
+install.packages("grinn_2.0.zip", repos = NULL)
+              </code></pre>
+            </ul>
+          </li>
+          </ul>
           <h3><a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h3>
           <p>Click <a href="document.html">here</a> for list of functions in grinn.</p>
           <h3><a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials</h3>
