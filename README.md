@@ -12,20 +12,33 @@ grinn applies different correlation-based network analyses to estimate relations
 
 Installation
 =========
-* Install grinn R package for grinn database query, correlation analysis and network construction.
+* To use grinn internal database (local version):
+  1. Require Neo4j-community >= 2.2.0 for the grinn internal database (local version), please send us an email for the grinn database files.
 
+    - Download and then unzip [Neo4j server](http://neo4j.com/download/)
+
+    - Extract and move the grinn database files to the Neo4j server directory
+
+    - Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
+for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
+  2. Install grinn R package for grinn database query, correlation analysis and network construction.
 ```
 install.packages("devtools")
 devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
 ```
+* To use grinn internal database (server version, human database only):
+  1. Require R software and dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.
+  2. Download grinn R package (server version), click here and install
+```
+#Install dependent R packages, if not exist
+install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
+source("http://bioconductor.org/biocLite.R") 
+biocLite(c("GO.db", "preprocessCore", "impute"))
 
-* Require [Neo4j-community](http://neo4j.com/download/) >= 2.2.0 for the grinn internal database (local version)
-please send us an email for the grinn database files.
-** Download and then unzip Neo4j server.
-** Extract and move the grinn database files to the Neo4j server directory
-** Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
-for more details see [here](http://neo4j.com/docs/stable/server-installation.html)
+#Install grinn package server version
+install.packages("grinn_2.0_server.zip", repos = NULL)
+```
 
 Documentation
 =========
