@@ -21,7 +21,7 @@ Installation
 
     - Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
 for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
-  2. Install grinn R package for grinn database query, correlation analysis and network construction.
+  2. Install grinn R package using the following commands.
 ```
 install.packages("devtools")
 
