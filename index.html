@@ -39,7 +39,7 @@
             <li>To use grinn internal database (server version, human database only):
               <ul>
                 <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software and dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.</li>
-                <li>Download grinn R package (server version), click <a href="extra/grinn_2.1_server.zip">here</a> and install</li>
+                <li>Download grinn R package (server version): for windows click <a href="extra/grinn_2.1_server.zip">here</a>, for linux click <a href="extra/grinn_2.1_server.tgz">here</a>, and install</li>
                 <pre><code>
 #Install dependent R packages, if not exist
 install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
@@ -47,7 +47,7 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("GO.db", "preprocessCore", "impute"))
 
 #Install grinn package server version
-install.packages("grinn_2.1_server.zip", repos = NULL)
+install.packages("[path to grinn_2.1_server]", repos = NULL)
 library(grinn)
                 </code></pre>
               </ul>
