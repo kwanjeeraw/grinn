@@ -13,7 +13,7 @@
 #'The differential correlation network is created by function \code{fetchDiffCorrNetwork}.
 #'
 #'3. Combine the grinn network to the correlation network.
-#'@usage fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
+#'@usage fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
 #'@param txtInput list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
 #'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
@@ -25,7 +25,6 @@
 #'@param dbXref string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}. 
 #'It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
@@ -78,9 +77,8 @@
 #'rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
 #'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05)
 
-fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", organism="'Homo sapiens'", 
-                                  datNormX1=datNormX1, datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman"){
-  basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref,organism=organism)
+fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNormX1=datNormX1, datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman"){
+  basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   corrnw = fetchDiffCorrNetwork(datNormX1=datNormX1,datNormY1=datNormY1,datNormX2=datNormX2,datNormY2=datNormY2,pDiff=pDiff,method=method,returnAs=returnAs)
   if(nrow(basicnw$nodes)>0 && nrow(corrnw$nodes)>0){
     cat("Formating and returning combined network ...\n")

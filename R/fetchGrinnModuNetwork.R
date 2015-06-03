@@ -13,7 +13,7 @@
 #'A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAModule}}. 
 #'
 #'3. Combine the grinn network to the network module.
-#'@usage fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNorm, datPheno, sfPower, minModuleSize, threshold)
+#'@usage fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNorm, datPheno, sfPower, minModuleSize, threshold)
 #'@param txtInput list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
 #'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
@@ -25,7 +25,6 @@
 #'@param dbXref string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}. 
 #'It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@param datNorm data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 #'The column names of datNorm are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column.
@@ -52,9 +51,8 @@
 #'library(igraph)
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 
-fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", organism="'Homo sapiens'", 
-                                  datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5){
-  basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref,organism=organism)
+fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5){
+  basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   modulenw = fetchWGCNAModule(datNorm=datNorm, datPheno=datPheno, sfPower=sfPower, minModuleSize=minModuleSize, threshold=threshold, returnAs=returnAs)
   if(nrow(basicnw$nodes)>0 && nrow(modulenw$nodes)>0){
     cat("Formating and returning combined network ...\n")

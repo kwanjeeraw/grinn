@@ -4,7 +4,7 @@
 \alias{fetchGrinnModuNetwork}
 \title{Combine a grinn network queried from grinn internal database to a network module correlated to a phenotypic feature}
 \usage{
-fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNorm, datPheno, sfPower, minModuleSize, threshold)
+fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNorm, datPheno, sfPower, minModuleSize, threshold)
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
@@ -23,8 +23,6 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 \item{dbXref}{string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}.
 It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
-
-\item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".}
 
 \item{datNorm}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
 The column names of datNorm are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.

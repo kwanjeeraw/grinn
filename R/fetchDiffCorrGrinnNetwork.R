@@ -11,7 +11,7 @@
 #'The nodes of the differential correlation network are the keywords input to query the grinn database.
 #'Grinn internal database contains the networks of the following types that can get expanded to: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
-#'@usage fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource, organism)
+#'@usage fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource)
 #'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
@@ -29,7 +29,6 @@
 #'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.
 #'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@details To calculate the differential correlation network, require the input data from two conditions; 1 and 2. 
 #'The input data are matrices in which rows are samples and columns are entities.
 #'For each condition, if datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed before testing.
@@ -80,7 +79,7 @@
 #'result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab", sourceTo="pathway", targetTo="gene")
 
 fetchDiffCorrGrinnNetwork <- function(datNormX1=datNormX1,  datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman", returnAs="tab",
-                                      sourceTo=NULL, targetTo=NULL, filterSource=list(), organism="'Homo sapiens'"){
+                                      sourceTo=NULL, targetTo=NULL, filterSource=list()){
   corrnw = fetchDiffCorrNetwork(datNormX1=datNormX1,datNormX2=datNormX2,datNormY1=datNormY1,datNormY2=datNormY2,pDiff=pDiff,method=method,returnAs="tab")
   if(nrow(corrnw$nodes)>0){
     nodetypes = tolower(unique(corrnw$nodes$nodetype))

@@ -4,7 +4,7 @@
 \alias{fetchGrinnNetwork}
 \title{Compute an integrated network using information from grinn internal database}
 \usage{
-fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism)
+fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)
 }
 \arguments{
 \item{txtInput}{vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
@@ -23,8 +23,6 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 \item{dbXref}{string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}.
 It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
-
-\item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".}
 }
 \value{
 list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing
@@ -43,10 +41,10 @@ library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Query metabolites by grinn ids and build a grinn network of metabolite-pathway
 txtInput <- c('X371','X783')
-result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json", organism="'Homo sapiens'")
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json")
 # Query metabolites by grinn ids and build a network of metabolite-pathway using information from KEGG and REACTOME
 txtInput <- c('X371','X783')
-result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab", organism="'Homo sapiens'")
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab")
 # Query proteins by uniprot ids and build a network of protein-pathway using information from SMPDB
 txtInput <- list('P05108','Q53H96','P18463')
 result <- fetchGrinnNetwork(txtInput, from="protein", to="pathway", filterSource="SMPDB", returnAs="cytoscape", dbXref="uniprot")

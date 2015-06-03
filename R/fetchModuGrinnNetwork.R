@@ -11,7 +11,7 @@
 #'The nodes of the network module are the keywords input to query the grinn database.
 #'Grinn internal database contains the networks of the following types that can get expanded to: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
-#'@usage fetchModuGrinnNetwork(datNorm, datPheno, sfPower, minModuleSize, threshold, returnAs, targetTo, filterSource, organism)
+#'@usage fetchModuGrinnNetwork(datNorm, datPheno, sfPower, minModuleSize, threshold, returnAs, targetTo, filterSource)
 #'@param datNorm data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 #'The column names of datNorm are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column.
@@ -24,7 +24,6 @@
 #'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, the network module will expand to pathways.
 #'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@return list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@references Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
@@ -43,8 +42,7 @@
 #'#library(igraph)
 #'#plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 
-fetchModuGrinnNetwork <- function(datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5, returnAs="tab", 
-                                  targetTo, filterSource=list(), organism="'Homo sapiens'"){
+fetchModuGrinnNetwork <- function(datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5, returnAs="tab", targetTo, filterSource=list()){
   modulenw = fetchWGCNAModule(datNorm=datNorm, datPheno=datPheno, sfPower=sfPower, minModuleSize=minModuleSize, threshold=threshold, returnAs="tab")
   
   if(nrow(modulenw$nodes)>0){

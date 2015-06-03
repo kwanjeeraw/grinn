@@ -4,7 +4,7 @@
 \alias{fetchNode}
 \title{Query for an entity or list of entities from grinn internal database}
 \usage{
-fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref, organism)
+fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref)
 }
 \arguments{
 \item{txtInput}{list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list('name1', 'name2').
@@ -23,8 +23,6 @@ If \code{searchField = "name" or "synonym"}, the argument \code{exactMatch} is r
 \item{dbXref}{string of database name. Specify the database name used for the txtInput when the argument \code{searchField = "xref"}, see \code{txtInput} and \code{searchField}.
 It can be one of "grinn",chebi","kegg","pubchem","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
-
-\item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'". \code{organism} required, if \code{nodetype = "metabolite"}.}
 }
 \value{
 list of nodes and first neighborhoods. Return empty list if found nothing.
@@ -40,10 +38,10 @@ txtInput <- list('X371','X783')
 result <- fetchNode(txtInput, nodetype="metabolite")
 # Query genes by KEGG ids
 txtInput <- list('hsa:4514','hsa:4537')
-result <- fetchNode(txtInput, nodetype="gene", searchField="xref", dbXref="kegg", returnAs="list", organism="'Homo sapiens'")
+result <- fetchNode(txtInput, nodetype="gene", searchField="xref", dbXref="kegg", returnAs="list")
 # Query proteins by names
 txtInput <- list('14-3-3 protein beta/alpha','ARL14 effector protein-like','6-phosphogluconolactonase')
-result <- fetchNode(txtInput, nodetype="protein", searchField="name", returnAs="list", organism="'Homo sapiens'")
+result <- fetchNode(txtInput, nodetype="protein", searchField="name", returnAs="list")
 }
 \author{
 Kwanjeera W \email{kwanich@ucdavis.edu}

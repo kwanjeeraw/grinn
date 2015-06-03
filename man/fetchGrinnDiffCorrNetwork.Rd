@@ -4,7 +4,7 @@
 \alias{fetchGrinnDiffCorrNetwork}
 \title{Combine a grinn network queried from grinn internal database to a differential correlation network}
 \usage{
-fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
+fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
@@ -23,8 +23,6 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 \item{dbXref}{string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}.
 It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
-
-\item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".}
 
 \item{datNormX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
 Columns correspond to entities e.g. genes, metabolites, and rows to samples.

@@ -9,7 +9,7 @@
 #'The nodes of the correlation network are the keywords input to query the Grinn database.
 #'Grinn internal database contains the networks of the following types that can get expanded to: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
-#'@usage fetchCorrGrinnNetwork(datNormX, datNormY, corrCoef, pval, method, returnAs, sourceTo, targetTo, filterSource, organism)
+#'@usage fetchCorrGrinnNetwork(datNormX, datNormY, corrCoef, pval, method, returnAs, sourceTo, targetTo, filterSource)
 #'@param datNormX data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
@@ -24,7 +24,6 @@
 #'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.
 #'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@details datNormX and datNormY are matrices in which rows are samples and columns are entities.
 #'If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed.
 #'In this case: 
@@ -60,7 +59,7 @@
 #'result <- fetchCorrGrinnNetwork(datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="json", sourceTo="pathway", targetTo="gene")
 
 fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e-9, method="spearman", returnAs="tab", 
-                                  sourceTo=NULL, targetTo=NULL, filterSource=list(), organism="'Homo sapiens'"){
+                                  sourceTo=NULL, targetTo=NULL, filterSource=list()){
   corrnw = fetchCorrNetwork(datNormX=datNormX,datNormY=datNormY,corrCoef=corrCoef,pval=pval,method=method,returnAs="tab")
   if(nrow(corrnw$nodes)>0){
     nodetypes = tolower(unique(corrnw$nodes$nodetype))

@@ -2,7 +2,7 @@
 #'@description from the list of keywords, query for entities from the grinn internal database. Quried results include entity information and relationship information.
 #'The keywords can be any of these node types: metabolite, protein, gene and pathway.
 #'Relationship information includes information of adjacent nodes, name and additional attributes of relationships.
-#'@usage fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref, organism)
+#'@usage fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref)
 #'@param txtInput list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list('name1', 'name2'). 
 #'The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. X371.
 #'@param nodetype string of entity type. It can be one of "metabolite","protein","gene","pathway".
@@ -14,7 +14,6 @@
 #'@param dbXref string of database name. Specify the database name used for the txtInput when the argument \code{searchField = "xref"}, see \code{txtInput} and \code{searchField}. 
 #'It can be one of "grinn",chebi","kegg","pubchem","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'". \code{organism} required, if \code{nodetype = "metabolite"}.
 #'@return list of nodes and first neighborhoods. Return empty list if found nothing.
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@export
@@ -24,12 +23,12 @@
 #'result <- fetchNode(txtInput, nodetype="metabolite")
 #'# Query genes by KEGG ids
 #'txtInput <- list('hsa:4514','hsa:4537')
-#'result <- fetchNode(txtInput, nodetype="gene", searchField="xref", dbXref="kegg", returnAs="list", organism="'Homo sapiens'")
+#'result <- fetchNode(txtInput, nodetype="gene", searchField="xref", dbXref="kegg", returnAs="list")
 #'# Query proteins by names
 #'txtInput <- list('14-3-3 protein beta/alpha','ARL14 effector protein-like','6-phosphogluconolactonase')
-#'result <- fetchNode(txtInput, nodetype="protein", searchField="name", returnAs="list", organism="'Homo sapiens'")
+#'result <- fetchNode(txtInput, nodetype="protein", searchField="name", returnAs="list")
 
-fetchNode <- function(txtInput, nodetype, searchField="grinn", exactMatch=TRUE, returnAs="list", dbXref="grinn", organism="'Homo sapiens'"){ 
+fetchNode <- function(txtInput, nodetype, searchField="grinn", exactMatch=TRUE, returnAs="list", dbXref="grinn"){ 
   out <- tryCatch(
   {
 
@@ -75,9 +74,9 @@ fetchNode <- function(txtInput, nodetype, searchField="grinn", exactMatch=TRUE, 
     
     querystring = gsub("keyword", txtInput, querystring)
     querystring = gsub("label", nodetype, querystring)
-    if(nodetype!="Metabolite"){
-      querystring = paste(querystring,'AND node.organism =',organism)
-    }
+#     if(nodetype!="Metabolite"){
+#       querystring = paste(querystring,'AND node.organism =',organism)
+#     }
     querystring = paste(querystring,'RETURN DISTINCT node')  
 print(querystring)    
     cat("Querying and returning node ...\n")

@@ -3,7 +3,7 @@
 #'The keywords can be any of these node types: metabolite, protein, gene and pathway.
 #'Grinn internal database contains the networks of the following types that can be quried: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
-#'@usage fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism)
+#'@usage fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)
 #'@param txtInput vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
 #'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
@@ -15,7 +15,6 @@
 #'@param dbXref string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}. 
 #'It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param organism string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".
 #'@return list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@export
@@ -28,15 +27,15 @@
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Query metabolites by grinn ids and build a grinn network of metabolite-pathway
 #'txtInput <- c('X371','X783')
-#'result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json", organism="'Homo sapiens'")
+#'result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json")
 #'# Query metabolites by grinn ids and build a network of metabolite-pathway using information from KEGG and REACTOME
 #'txtInput <- c('X371','X783')
-#'result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab", organism="'Homo sapiens'")
+#'result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab")
 #'# Query proteins by uniprot ids and build a network of protein-pathway using information from SMPDB
 #'txtInput <- list('P05108','Q53H96','P18463')
 #'result <- fetchGrinnNetwork(txtInput, from="protein", to="pathway", filterSource="SMPDB", returnAs="cytoscape", dbXref="uniprot")
 
-fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", organism="'Homo sapiens'"){ 
+fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn"){ 
   out <- tryCatch(
   {
     tmparg <- try(from <- match.arg(from, c("metabolite","protein","gene","pathway"), several.ok = FALSE), silent = TRUE)
@@ -77,7 +76,7 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
       querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
     }
     querystring = gsub("keyword", txtInput, querystring)
-    querystring = gsub("species", organism, querystring)
+#    querystring = gsub("species", organism, querystring)
   print(querystring)
     cat("Querying and returning network ...\n")
     network = curlRequestCypher(querystring)
@@ -130,7 +129,7 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
 #           querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
 #         }
 #         querystring = gsub("keyword", tmpkw, querystring)
-#         querystring = gsub("species", organism, querystring)
+##        querystring = gsub("species", organism, querystring)
 # print(querystring)
 #         cat("Querying and returning network ...\n")
 #         tmpq = curlRequestCypher(querystring)
@@ -157,7 +156,7 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
 #         querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
 #       }
 #       querystring = gsub("keyword", txtInput, querystring)
-#       querystring = gsub("species", organism, querystring)
+##     querystring = gsub("species", organism, querystring)
 # print(querystring)
 #       cat("Querying and returning network ...\n")
 #       network = curlRequestCypher(querystring)

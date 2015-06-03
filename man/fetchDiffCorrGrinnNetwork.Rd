@@ -4,7 +4,7 @@
 \alias{fetchDiffCorrGrinnNetwork}
 \title{Compute a differential correlation network and expand the network with information from grinn internal database}
 \usage{
-fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource, organism)
+fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource)
 }
 \arguments{
 \item{datNormX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
@@ -33,8 +33,6 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 
 \item{filterSource}{string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
 The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").}
-
-\item{organism}{string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".}
 }
 \value{
 list of nodes and edges. The list is with the following componens: edges and nodes. Output includes correlation coefficients, pvalues and relation directions of each conditions,
