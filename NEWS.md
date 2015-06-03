@@ -1,4 +1,4 @@
-### New features and Fixes
+### Features
 #### version 2.1 (03/06/15)
 * Exclude organism specific
 * Mouse database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
