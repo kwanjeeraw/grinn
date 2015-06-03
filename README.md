@@ -29,7 +29,7 @@ install.packages("devtools")
 devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
 ```
-* OR, To use grinn internal database (server version, human database only):
+* <b>OR</b> to use grinn internal database (server version, human database only):
   1. Require dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.
   2. Download grinn R package (server version) click [here](http://kwanjeeraw.github.io/grinn/extra/grinn_2.1_server.zip) and install using the following commands.
 ```
