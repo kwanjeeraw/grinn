@@ -1,7 +1,4 @@
 extra
-R/attach.R
-R/internal.R
-R/curl**
 .Rproj.user/**
 .Rhistory
 .RData
