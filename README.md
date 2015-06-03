@@ -24,12 +24,14 @@ for more details see [here](http://neo4j.com/docs/stable/server-installation.htm
   2. Install grinn R package for grinn database query, correlation analysis and network construction.
 ```
 install.packages("devtools")
+
+#Install grinn package
 devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
 ```
 * To use grinn internal database (server version, human database only):
   1. Require R software and dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.
-  2. Download grinn R package (server version), click here and install
+  2. Download grinn R package (server version) click [here](http://kwanjeeraw.github.io/grinn/extra/grinn_2.1_server.zip) and install using the following commands.
 ```
 #Install dependent R packages, if not exist
 install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
@@ -37,7 +39,8 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("GO.db", "preprocessCore", "impute"))
 
 #Install grinn package server version
-install.packages("grinn_2.0_server.zip", repos = NULL)
+install.packages("grinn_2.1_server.zip", repos = NULL)
+library(grinn)
 ```
 
 Documentation
