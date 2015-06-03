@@ -14,6 +14,10 @@ Documentation
 =========
 see [homepage](http://kwanjeeraw.github.io/grinn/)
 
+Updates
+=========
+see [here](NEWS.md)
+
 License
 =========
 [GNU General Public License (v3)](https://github.com/kwanjeeraw/grinn/blob/master/LICENSE)
