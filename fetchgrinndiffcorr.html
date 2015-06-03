@@ -25,7 +25,7 @@
           <br>2. Compute a differential correlation network of input omics data from two conditions, see datNormX1, datNormX2, datNormY1, datNormY2. Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions cor and corPvalueStudent. The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated. Then correlation coefficients are test for differential correlations using Fisher's z-test based on DiffCorr. The differential correlation network is created by function fetchDiffCorrNetwork.
           <br>3. Combine the grinn network to the correlation network.</p>
           <h3>Usage</h3>
-          <p>fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)</p>
+          <p>fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)</p>
           <h3>Arguments</h3>
           <table>
             <tr><td>txtInput</td><td>list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. X371.</td></tr>
@@ -34,7 +34,6 @@
             <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if from or to = "pathway", see from and to. The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
             <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
             <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput ids, see txtInput. It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn". If pubchem is used, it has to be pubchem SID (substance ID).</td></tr>
-            <tr><td>organism</td><td>string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".</td></tr>
             <tr><td>datNormX1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Columns correspond to entities e.g. genes, metabolites, and rows to samples. Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.</td></tr>
             <tr><td>datNormX2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datNormX1.</td></tr>
             <tr><td>datNormY1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Use the same format as datNormX1. If there is only one type of dataset, it can be NULL. See below for details.</td></tr>

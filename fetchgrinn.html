@@ -23,7 +23,7 @@
           <p>from the list of keywords, build an integrated network (grinn network) by connecting these keywords to a specified node type. The keywords can be any of these node types: metabolite, protein, gene and pathway.
           Grinn internal database contains the networks of the following types that can be quried: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.</p>
           <h3>Usage</h3>
-          <p>fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref, organism)</p>
+          <p>fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)</p>
           <h3>Arguments</h3>
           <table>
             <tr><td>txtInput</td><td>vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. X371.</td></tr>
@@ -32,7 +32,6 @@
             <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if from or to = "pathway", see from and to. The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
             <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
             <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput ids, see txtInput. It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn". If pubchem is used, it has to be pubchem SID (substance ID).</td></tr>
-            <tr><td>organism</td><td>string of species in the following format: organism = "'species'". Default is "'Homo sapiens'".</td></tr>
           </table>   
           <h3>Value</h3>
           <p>list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing</p>
@@ -46,11 +45,11 @@ plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 
 # Query metabolites by grinn ids and build a grinn network of metabolite-pathway
 txtInput <- c('X371','X783')
-result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json", organism="'Homo sapiens'")
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json")
 
 # Query metabolites by grinn ids and build a network of metabolite-pathway using information from KEGG and REACTOME
 txtInput <- c('X371','X783')
-result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab", organism="'Homo sapiens'")
+result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab")
 
 # Query proteins by uniprot ids and build a network of protein-pathway using information from SMPDB
 txtInput <- list('P05108','Q53H96','P18463')
