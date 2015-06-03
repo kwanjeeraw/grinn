@@ -49,7 +49,11 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-see [features](NEWS.md)
+#### version 2.1 (03/06/15)
+* Exclude organism specific
+* Mouse database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
+
+see all [features](NEWS.md)
 
 License
 =========
