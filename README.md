@@ -1,7 +1,7 @@
 # grinn
 Graph database and R package for omics integration
 
-Version: 2.1 (03 June 2015)
+Version: 2.2 (11 June 2015)
 
 Description
 =========
@@ -49,9 +49,8 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-#### version 2.1 (03/06/15)
-* Exclude organism specific
-* Mouse database V.1 incorporating data from KEGG, SMPDB, HMDB, REACTOME, CheBI, UniProt and ENSEMBL.
+#### version 2.2 (11/06/15)
+* Add node attributes to correlation networks
 
 see all [features](NEWS.md)
 
