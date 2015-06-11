@@ -96,6 +96,15 @@ fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e
     }else{#if there is only one data type
       basicnw = fetchGrinnNetwork(txtInput=corrnw$nodes$id,from=nodetypes,to=targetTo,filterSource=filterSource,dbXref="grinn")
     }
+    #collect node info
+    corrattb = data.frame()
+    for(i in 1:nrow(corrnw$nodes)){
+      querystring <- paste0("MATCH (node:",corrnw$nodes$nodetype[i],") WHERE lower(node.GID) = lower('",corrnw$nodes$id[i],"') RETURN DISTINCT node")
+      result <- curlRequestCypher(querystring)
+      if(length(result)>0){
+        corrattb = rbind(corrattb,data.frame(id=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=corrnw$nodes$nodetype[i],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||")))
+      }
+    }
     if(nrow(basicnw$nodes)>0){
       cat("Formating and returning combined network ...\n")
       basicnw$edges$corr_coef = 1
@@ -104,14 +113,15 @@ fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e
       corrnw$edges$relsource = ""
       corrnw$nodes$xref = ""
       pair = rbind(basicnw$edges,corrnw$edges)
-      attb = rbind(basicnw$nodes,corrnw$nodes)
+      if(nrow(corrattb)>0){attb = rbind(basicnw$nodes,corrattb,corrnw$nodes)}else{attb = rbind(basicnw$nodes,corrnw$nodes)}
       attb = attb[!duplicated(attb[,1]),]
       colnames(attb) = c("id","nodename","xref","nodetype")
       cat("Found ",nrow(pair)," relationships...\n")
     }else{#if only correlation network found
       cat("Formating and returning combined network ...\n")
       pair = corrnw$edges
-      attb = corrnw$nodes
+      if(nrow(corrattb)>0){attb = rbind(corrattb,corrnw$nodes)}else{attb = corrnw$nodes}
+      attb = attb[!duplicated(attb[,1]),]
       cat("Found ",nrow(pair)," relationships...\n")
     }
   }else{#if no correlation network found

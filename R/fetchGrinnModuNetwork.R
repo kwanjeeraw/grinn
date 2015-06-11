@@ -54,6 +54,18 @@
 fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5){
   basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   modulenw = fetchWGCNAModule(datNorm=datNorm, datPheno=datPheno, sfPower=sfPower, minModuleSize=minModuleSize, threshold=threshold, returnAs=returnAs)
+  if(nrow(modulenw$nodes)>0{
+    #collect node info
+    moduattb = data.frame()
+    for(i in 1:nrow(modulenw$nodes)){
+      querystring <- paste0("MATCH (node:",modulenw$nodes$nodetype[i],") WHERE lower(node.GID) = lower('",modulenw$nodes$id[i],"') RETURN DISTINCT node")
+      result <- curlRequestCypher(querystring)
+      if(length(result)>0){
+        moduattb = rbind(moduattb,data.frame(id=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=modulenw$nodes$nodetype[i],
+                                             modulecolor=modulenw$nodes$modulecolor[i],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||")))
+      }
+    }
+  }
   if(nrow(basicnw$nodes)>0 && nrow(modulenw$nodes)>0){
     cat("Formating and returning combined network ...\n")
     basicnw$edges$corr_coef = 1
@@ -61,7 +73,7 @@ fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), retur
     modulenw$edges$relsource = ""
     modulenw$nodes$xref = ""
     pair = rbind(basicnw$edges,modulenw$edges)
-    attb = rbind(basicnw$nodes,modulenw$nodes)
+    if(nrow(moduattb)>0){attb = rbind(basicnw$nodes,moduattb,modulenw$nodes)}else{attb = rbind(basicnw$nodes,modulenw$nodes)}
     attb = attb[!duplicated(attb[,1]),]
     colnames(attb) = c("id","nodename","xref","nodetype","modulecolor")
     cat("Found ",nrow(pair)," relationships...\n")
@@ -73,7 +85,8 @@ fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), retur
   }else if(nrow(basicnw$nodes)==0 && nrow(modulenw$nodes)>0){
     cat("Formating and returning combined network ...\n")
     pair = modulenw$edges
-    attb = modulenw$nodes
+    if(nrow(moduattb)>0){attb = rbind(moduattb,modulenw$nodes)}else{attb = modulenw$nodes}
+    attb = attb[!duplicated(attb[,1]),]
     cat("Found ",nrow(pair)," relationships...\n")
   }else{# if no mapped node found
     print("Returning no data...")

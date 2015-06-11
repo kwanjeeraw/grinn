@@ -80,6 +80,17 @@
 fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNormX1=datNormX1, datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman"){
   basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   corrnw = fetchDiffCorrNetwork(datNormX1=datNormX1,datNormY1=datNormY1,datNormX2=datNormX2,datNormY2=datNormY2,pDiff=pDiff,method=method,returnAs=returnAs)
+  if(nrow(corrnw$nodes)>0{
+    #collect node info
+    corrattb = data.frame()
+    for(i in 1:nrow(corrnw$nodes)){
+      querystring <- paste0("MATCH (node:",corrnw$nodes$nodetype[i],") WHERE lower(node.GID) = lower('",corrnw$nodes$id[i],"') RETURN DISTINCT node")
+      result <- curlRequestCypher(querystring)
+      if(length(result)>0){
+        corrattb = rbind(corrattb,data.frame(id=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=corrnw$nodes$nodetype[i],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||")))
+      }
+    }
+  }
   if(nrow(basicnw$nodes)>0 && nrow(corrnw$nodes)>0){
     cat("Formating and returning combined network ...\n")
     basicnw$edges$corr_coef = 1
@@ -90,7 +101,7 @@ fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), r
     corrnw$edges$relsource = ""
     corrnw$nodes$xref = ""
     pair = rbind(basicnw$edges,corrnw$edges)
-    attb = rbind(basicnw$nodes,corrnw$nodes)
+    if(nrow(corrattb)>0){attb = rbind(basicnw$nodes,corrattb,corrnw$nodes)}else{attb = rbind(basicnw$nodes,corrnw$nodes)}
     attb = attb[!duplicated(attb[,1]),]
     colnames(attb) = c("id","nodename","xref","nodetype")
     cat("Found ",nrow(pair)," relationships...\n")
@@ -102,7 +113,8 @@ fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), r
   }else if(nrow(basicnw$nodes)==0 && nrow(corrnw$nodes)>0){
     cat("Formating and returning combined network ...\n")
     pair = corrnw$edges
-    attb = corrnw$nodes
+    if(nrow(corrattb)>0){attb = rbind(corrattb,corrnw$nodes)}else{attb = corrnw$nodes}
+    attb = attb[!duplicated(attb[,1]),]
     cat("Found ",nrow(pair)," relationships...\n")
   }else{# if no mapped node found
     print("Returning no data...")
