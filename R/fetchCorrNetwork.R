@@ -29,13 +29,13 @@
 #'@examples
 #'# Compute a correlation network of metabolites
 #'dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
-#'colnames(dummy) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 28)))
+#'colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
 #'result <- fetchCorrNetwork(datNormX=dummy, datNormY=NULL, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab")
 #'library(igraph)
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Compute a correlation network of metabolites and proteins
 #'dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
-#'colnames(dummyX) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 12)))
+#'colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
 #'dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
 #'colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
 #'result <- fetchCorrNetwork(datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="tab")

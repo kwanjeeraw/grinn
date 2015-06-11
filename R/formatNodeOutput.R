@@ -1,7 +1,7 @@
 #' \code{formatNodeOutput} format resulting node
 #'@description Format node output for further uses by \code{fetchNode}. Retrieve also node relationships using \code{fetchNodeRelation}.
 #'@seealso \code{fetchNode}, \code{fetchNodeRelation}
-#'#querystring="UNWIND ['X371','X783'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node"
+#'#querystring="UNWIND ['G371','G783'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node"
 #'#node = curlRequestCypher(querystring)
 #'#formatNodeOutput(node,returnAs="list")
 

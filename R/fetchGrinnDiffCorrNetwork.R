@@ -15,7 +15,7 @@
 #'3. Combine the grinn network to the correlation network.
 #'@usage fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
 #'@param txtInput list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
-#'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
+#'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
 #'@param to string of end node. It can be one of "metabolite","protein","gene","pathway".
 #'@param filterSource string or list of pathway databases. The argument is required, if \code{from} or \code{to = "pathway"}, see \code{from} and \code{to}.
@@ -52,22 +52,22 @@
 #'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{link{fetchDiffCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \pkg{\link{DiffCorr}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites
-#'kw <- c('X160','X300','X371')
+#'kw <- c('G160','G300','G371')
 #'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
-#'colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+#'colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 #'rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 #'dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
-#'colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+#'colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 #'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
 #'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05)
 #'library(igraph)
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites and proteins
 #'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
-#'colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1','X16962')
+#'colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
 #'rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 #'dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
-#'colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1','X16962')
+#'colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
 #'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
 #'dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
 #'colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
@@ -80,7 +80,7 @@
 fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNormX1=datNormX1, datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman"){
   basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   corrnw = fetchDiffCorrNetwork(datNormX1=datNormX1,datNormY1=datNormY1,datNormX2=datNormX2,datNormY2=datNormY2,pDiff=pDiff,method=method,returnAs=returnAs)
-  if(nrow(corrnw$nodes)>0{
+  if(nrow(corrnw$nodes)>0){
     #collect node info
     corrattb = data.frame()
     for(i in 1:nrow(corrnw$nodes)){

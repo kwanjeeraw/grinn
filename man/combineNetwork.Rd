@@ -29,20 +29,20 @@ The function combines a grinn network computed from \code{fetchGrinnNetwork} to 
 }
 \examples{
 # Create metabolite-protein network from the list of metabolites using grinn ids and combine the grinn network to a correlation network
-kw <- c('X160','X300','X371')
+kw <- c('G160','G300','G371')
 grinnnw <- fetchGrinnNetwork(txtInput=kw, from="metabolite", to="protein")
 dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
-colnames(dummy) <- c('X160','X300','X371','X367',paste0('X',sample(400:22000, 28)))
+colnames(dummy) <- c('G160','G300','G371','G367',paste0('G',sample(400:22000, 28)))
 corrnw <- fetchCorrNetwork(datNormX=dummy, datNormY=NULL, corrCoef=0.5, pval= 1e-12, method="pearson", returnAs="tab")
 result <- combineNetwork(grinnnw,corrnw)
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Create metabolite-protein network from the list of metabolites using grinn ids and combine the grinn network to a provided network
-txtInput <- list('X371','X783','X1.1')
+txtInput <- list('G371','G783','G1.1')
 grinnnw <- fetchGrinnNetwork(txtInput, from="metabolite", to="protein")
 othernw = list()
-othernw$nodes = data.frame(id=c("X371","X783","XXX","YYY"),nodename=c("X371","X783","XXX","YYY"),nodetype=c("metabolite","metabolite","protein","protein"),stringsAsFactors = FALSE)
-othernw$edges = data.frame(source=c("X371","X783"),target=c("XXX","YYY"),corr_coef=c(-0.368,0.385),pval=c(0.000927,0.000497),reltype=c("Metabolite_Protein","Metabolite_Protein"),relname=c("CORRELATION","CORRELATION"),stringsAsFactors = FALSE)
+othernw$nodes = data.frame(id=c("G371","G783","XXX","YYY"),nodename=c("G371","G783","XXX","YYY"),nodetype=c("metabolite","metabolite","protein","protein"),stringsAsFactors = FALSE)
+othernw$edges = data.frame(source=c("G371","G783"),target=c("XXX","YYY"),corr_coef=c(-0.368,0.385),pval=c(0.000927,0.000497),reltype=c("Metabolite_Protein","Metabolite_Protein"),relname=c("CORRELATION","CORRELATION"),stringsAsFactors = FALSE)
 result <- combineNetwork(grinnnw,othernw)
 }
 \author{

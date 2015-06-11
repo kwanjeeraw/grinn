@@ -4,7 +4,7 @@
 #'Relationship information includes information of adjacent nodes, name and additional attributes of relationships.
 #'@usage fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref)
 #'@param txtInput list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list('name1', 'name2'). 
-#'The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. X371.
+#'The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. G371.
 #'@param nodetype string of entity type. It can be one of "metabolite","protein","gene","pathway".
 #'@param searchField string of keyword property to search for, see \code{txtInput}. It can be one of "grinn","name","synonym","xref","inchi". Default is "grinn".
 #'If \code{searchField = "xref"}, the argument \code{dbXref} is required, see \code{dbXref}.
@@ -19,7 +19,7 @@
 #'@export
 #'@examples
 #'# Query metabolites by grinn ids
-#'txtInput <- list('X371','X783')
+#'txtInput <- list('G371','G783')
 #'result <- fetchNode(txtInput, nodetype="metabolite")
 #'# Query genes by KEGG ids
 #'txtInput <- list('hsa:4514','hsa:4537')

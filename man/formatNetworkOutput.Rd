@@ -11,7 +11,7 @@ Format network output for further uses by \code{fetchGrinnNetwork}. Retrieve als
 }
 \seealso{
 \code{fetchGrinnNetwork}, \code{fetchNodeRelation}
-#querystring="UNWIND ['X371','X783'] AS x WITH x MATCH ptw = (from:Metabolite)<-[rel:MAP_TO]-(to:Pathway)
+#querystring="UNWIND ['G371','G783'] AS x WITH x MATCH ptw = (from:Metabolite)<-[rel:MAP_TO]-(to:Pathway)
 #WHERE lower(from.GID) = lower(x) RETURN DISTINCT ptw"
 #network = curlRequestCypher(querystring)
 #formatNetworkOutput(network,returnAs="tab")

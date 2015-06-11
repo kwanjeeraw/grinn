@@ -8,7 +8,7 @@ fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)
 }
 \arguments{
 \item{txtInput}{vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
-The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.}
+The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.}
 
 \item{from}{string of start node. It can be one of "metabolite","protein","gene","pathway".}
 
@@ -40,10 +40,10 @@ result <- fetchGrinnNetwork(txtInput, from="gene", to="metabolite", returnAs="ta
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Query metabolites by grinn ids and build a grinn network of metabolite-pathway
-txtInput <- c('X371','X783')
+txtInput <- c('G371','G783')
 result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", returnAs="json")
 # Query metabolites by grinn ids and build a network of metabolite-pathway using information from KEGG and REACTOME
-txtInput <- c('X371','X783')
+txtInput <- c('G371','G783')
 result <- fetchGrinnNetwork(txtInput, from="metabolite", to="pathway", filterSource=list("KEGG","REACTOME"), returnAs="tab")
 # Query proteins by uniprot ids and build a network of protein-pathway using information from SMPDB
 txtInput <- list('P05108','Q53H96','P18463')

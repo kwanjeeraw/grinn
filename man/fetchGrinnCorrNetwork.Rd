@@ -8,7 +8,7 @@ fetchGrinnCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNor
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
-The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.}
+The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.}
 
 \item{from}{string of start node. It can be one of "metabolite","protein","gene","pathway".}
 
@@ -63,15 +63,15 @@ The column names of both datNormX and datNormY are required to use grinn ids. \c
 }
 \examples{
 # Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a correlation network of metabolites
-kw <- c('X160','X300','X371')
+kw <- c('G160','G300','G371')
 dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
-colnames(dummy) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 28)))
+colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
 result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX=dummy, corrCoef=0.7, pval=1e-10, method="spearman")
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a correlation network of metabolites and proteins
 dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
-colnames(dummyX) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 12)))
+colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
 dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
 colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
 result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman")

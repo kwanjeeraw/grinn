@@ -8,7 +8,7 @@ fetchNode(txtInput, nodetype, searchField, exactMatch, returnAs, dbXref)
 }
 \arguments{
 \item{txtInput}{list of keywords, can be one of grinn id, name, synonym, database xref, inchi e.g. txtInput = list('name1', 'name2').
-The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. X371.}
+The type of keywords needs to be provided in the argument \code{searchField}, see \code{searchField}. Default is grinn id e.g. G371.}
 
 \item{nodetype}{string of entity type. It can be one of "metabolite","protein","gene","pathway".}
 
@@ -34,7 +34,7 @@ Relationship information includes information of adjacent nodes, name and additi
 }
 \examples{
 # Query metabolites by grinn ids
-txtInput <- list('X371','X783')
+txtInput <- list('G371','G783')
 result <- fetchNode(txtInput, nodetype="metabolite")
 # Query genes by KEGG ids
 txtInput <- list('hsa:4514','hsa:4537')

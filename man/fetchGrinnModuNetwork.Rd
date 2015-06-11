@@ -8,7 +8,7 @@ fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNor
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2').
-The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.}
+The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.}
 
 \item{from}{string of start node. It can be one of "metabolite","protein","gene","pathway".}
 
@@ -57,7 +57,7 @@ A module or the combination of modules can be selected from the heatmap of modul
 }
 \examples{
 # Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a correlation of metabolite module to phenotypic data
-kw <- c('X160','X300','X371','X16414','X17191')
+kw <- c('G160','G300','G371','G16414','G17191')
 library(grinn)
 data(dummy)
 data(dummyPheno)

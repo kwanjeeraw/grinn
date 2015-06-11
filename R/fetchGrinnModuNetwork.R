@@ -15,7 +15,7 @@
 #'3. Combine the grinn network to the network module.
 #'@usage fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNorm, datPheno, sfPower, minModuleSize, threshold)
 #'@param txtInput list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
-#'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. X371.
+#'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
 #'@param to string of end node. It can be one of "metabolite","protein","gene","pathway".
 #'@param filterSource string or list of pathway databases. The argument is required, if \code{from} or \code{to = "pathway"}, see \code{from} and \code{to}.
@@ -42,7 +42,7 @@
 #'\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAModule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a correlation of metabolite module to phenotypic data
-#'kw <- c('X160','X300','X371','X16414','X17191')
+#'kw <- c('G160','G300','G371','G16414','G17191')
 #'library(grinn)
 #'data(dummy)
 #'data(dummyPheno)
@@ -54,7 +54,7 @@
 fetchGrinnModuNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5){
   basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
   modulenw = fetchWGCNAModule(datNorm=datNorm, datPheno=datPheno, sfPower=sfPower, minModuleSize=minModuleSize, threshold=threshold, returnAs=returnAs)
-  if(nrow(modulenw$nodes)>0{
+  if(nrow(modulenw$nodes)>0){
     #collect node info
     moduattb = data.frame()
     for(i in 1:nrow(modulenw$nodes)){
