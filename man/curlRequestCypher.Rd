@@ -20,7 +20,7 @@ Need to set db location
 }
 \examples{
 # Query metabolites by database id
-#querystring <- "UNWIND ['X7','X8'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node"
+#querystring <- "UNWIND ['G7','G8'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node"
 #result <- curlRequestCypher(querystring)
 }
 \author{
