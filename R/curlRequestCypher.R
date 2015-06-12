@@ -9,7 +9,7 @@
 #'@seealso \code{\link{curlRequestUrlToDF}}, \code{\link{curlRequestUrlToList}}, \code{\link{curlPerform}}, \url{http://neo4j.com/docs/milestone/introduction.html}
 #'@examples
 #'# Query metabolites by database id 
-#'#querystring <- "UNWIND ['X7','X8'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node" 
+#'#querystring <- "UNWIND ['G7','G8'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node" 
 #'#result <- curlRequestCypher(querystring)
 
 curlRequestCypher <- function(querystring){
