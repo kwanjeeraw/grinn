@@ -1,7 +1,7 @@
 # grinn
 Graph database and R package for omics integration
 
-Version: 2.2 (11 June 2015)
+Version: 2.2 (18 June 2015)
 
 Description
 =========
