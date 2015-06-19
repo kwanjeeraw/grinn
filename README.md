@@ -13,7 +13,7 @@ grinn applies different correlation-based network analyses to estimate relations
 Installation
 =========
 * To use grinn internal database (local version):
-  1. Require Neo4j-community >= 2.2.0 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Mouse database and Human database.
+  1. Require Neo4j-community >= 2.2.0 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Arabidopsis database, Mouse database and Human database.
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
 
