@@ -50,6 +50,7 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 Updates
 =========
 #### version 2.2 (11/06/15)
+* Arabidopsis database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
 * Add node attributes to correlation networks
 
 see all [features](NEWS.md)

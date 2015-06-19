@@ -1,5 +1,6 @@
 ### Features
-#### version 2.2 (11/06/15)
+#### version 2.2 (18/06/15)
+* Arabidopsis database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
 * Add node attributes to correlation networks
 
 #### version 2.1 (03/06/15)
