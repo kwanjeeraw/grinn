@@ -18,35 +18,19 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="convertToGrinnID" class="anchor" href="#convertToGrinnID" aria-hidden="true"><span class="octicon octicon-link"></span></a>convertToGrinnID - convert other database IDs to grinn IDs</h2>
-          <h3>Description</h3>
-          <p>Convert the list of ids to grinn IDs grinn IDs are recommended to be used in several functions
-          including combineNetwork, fetchGrinnCorrNetwork, fetchGrinnModuNetwork, fetchGrinnDiffCorrNetwork, fetchCorrGrinnNetwork, fetchModuGrinnNetwork, fetchDiffCorrGrinnNetwork.</p>
-          <h3>Usage</h3>
-          <p>convertToGrinnID(txtInput, nodetype, dbXref)</p>
-          <h3>Arguments</h3>
-          <table>
-            <tr><td>txtInput</td><td>list of keywords containing ids e.g. txtInput = list('id1', 'id2'). The ids are from a database, see dbXref.</td></tr>
-            <tr><td>nodetype</td><td>string of entity type. It can be one of "metabolite","protein","gene","pathway".</td></tr>
-            <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput, see txtInput. It can be one of "chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene".</td></tr>
-          </table>
-          <h3>Value</h3>
-          <p>data frame of ids. Return empty list if found nothing.</p>
-          <h3>Examples</h3>
-          <pre><code>
-# Convert genes from ENSEMBL ids to grinn ids
-txtInput <- list('ENSG00000140459','ENSG00000143811','ENSG00000104524')
-result <- convertToGrinnID(txtInput, nodetype="gene", dbXref="ensembl")
-          
-# Convert metabolites from chebi ids to Grinn ids
-txtInput <- c(371,783)
-result <- convertToGrinnID(txtInput, nodetype="metabolite", dbXref="chebi")
-          
-# Convert metabolites from kegg ids to Grinn ids, read input from csv or txt file
-library(grinn)
-data(keggids)
-result <- convertToGrinnID(unlist(keggids), nodetype="metabolite", dbXref="kegg")
-          </pre></code>
+          <h2><a id="fetchGrinnNetwork" class="anchor" href="#fetchGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>input formats</h2>
+          <p>Grinn accepts input in .txt or .csv file format. This page shows screenshot of different input formats.</p>
+          <ol>
+            <li><b>ARGUMENT:</b> txtInput - list of keywords<br>
+              <img src="images/txtinput.png"><br>
+            </li><br>
+            <li><b>ARGUMENT:</b> datNorm - table of measured-omic data<br>
+              <img src="images/datnorm.png"><br>
+            </li><br>
+            <li><b>ARGUMENT:</b> datPheno - table of meta-data<br>
+              <img src="images/datpheno.png"><br>
+            </li><br>
+          </ol>
           <p>Go to <a href="index.html">HOME</a> | <a href="document.html">Documentation</a> | <a href="fgrinn.html">fetchGrinnNetwork</a> | <a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> | <a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a>
           | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>

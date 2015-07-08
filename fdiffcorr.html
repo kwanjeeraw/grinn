@@ -60,6 +60,13 @@ datMetTumor = rbind(nodetype=rep("metabolite"),datMet[41:79,]) #tumor condition
 result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, pDiff=1e-4, method="spearman", returnAs="tab", targetTo="gene")
 #display the first 10 edgelists
 result$edges[1:10,]
+datMet2 = datMet[c(1:7,42:50),]
+datMetNormal = datMet2[1:7,]
+datMetTumor = rbind(nodetype=rep("metabolite"),datMet2[8:13,])
+datGeneNormal = datGene[1:7,]
+datGeneTumor = rbind(nodetype=rep("gene"),datGene[8:13,])
+result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, datNormY1=datGeneNormal, datNormY2=datGeneTumor, pDiff=1e-5, method="spearman", returnAs="tab", sourceTo="protein", targetTo="pathway")
+ 
              </code></pre>
             </li>
             <li><b>EXPORT OUTPUT</b><br>
@@ -90,7 +97,7 @@ write.table(as.matrix(result$nodes),"diffcorrNwNode.txt",sep="\t",row.names = F,
             <li>Wikoff WR, <em>et al.</em> Metabolomic markers of altered nucleotide metabolism in early stage adenocarcinoma. <a href="http://cancerpreventionresearch.aacrjournals.org/cgi/pmidlookup?view=long&pmid=25657018" target="_blank">Cancer Prev Res (Phila) 2015;8(5):410-8</a>.</li>
           </ul>
           <p>Go to <a href="index.html">HOME</a> | <a href="document.html">Documentation</a> | <a href="fgrinn.html">fetchGrinnNetwork</a> | <a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> | <a href="fdiffcorr.html">fetchDiffCorrGrinnNetwork</a>
-          | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a></p>
+          | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>
         <footer>
           &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
