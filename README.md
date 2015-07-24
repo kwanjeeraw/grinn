@@ -12,7 +12,20 @@ grinn applies different correlation-based network analyses to estimate relations
 
 Installation
 =========
-* To use grinn internal database (local version):
+* To use grinn internal database (server version, access human database only):
+  1. Require R software and dependent R packages including RCurl, WGCNA, stringi, igraph, jsonlite, preprocessCore, impute, GO.db.
+  2. Download grinn R package (server version): for windows click [here](http://kwanjeeraw.github.io/grinn/extra/server/grinn_2.2.zip), for linux click [here](http://kwanjeeraw.github.io/grinn/extra/server/grinn_2.2.tgz), and install using the following commands.
+```
+#Install dependent R packages, if not exist
+source("http://bioconductor.org/biocLite.R") 
+biocLite(c("GO.db", "preprocessCore", "impute"))
+install.packages(c("RCurl", "jsonlite", "igraph", "WGCNA", "stringi")) 
+
+#Install grinn package server version
+install.packages("[path to grinn_2.2]", repos = NULL)
+library(grinn)
+```
+* <b>Alternatively,</b> grinn internal databases are available for local use: Arabidopsis database, Mouse database and Human database. Please send us an email for the database files.
   1. Require Neo4j-community >= 2.2.0 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Arabidopsis database, Mouse database and Human database.
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
@@ -23,23 +36,11 @@ Installation
 for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
   2. Install grinn R package using the following commands.
 ```
+#Install devtools R package, if not exist
 install.packages("devtools")
 
 #Install grinn package
 devtools::install_github("kwanjeeraw/grinn")
-library(grinn)
-```
-* <b>OR</b> to use grinn internal database (server version, human database only):
-  1. Require dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.
-  2. Download grinn R package (server version): for windows click [here](http://kwanjeeraw.github.io/grinn/extra/grinn_2.2_server.zip), for linux click [here](http://kwanjeeraw.github.io/grinn/extra/grinn_2.2_server.tgz), and install using the following commands.
-```
-#Install dependent R packages, if not exist
-install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
-source("http://bioconductor.org/biocLite.R") 
-biocLite(c("GO.db", "preprocessCore", "impute"))
-
-#Install grinn package server version
-install.packages("[path to grinn_2.2_server]", repos = NULL)
 library(grinn)
 ```
 
