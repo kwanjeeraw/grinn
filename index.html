@@ -36,18 +36,18 @@
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
           <ul>
-            <li>To use grinn internal database (server version, human database only):
+            <li>To use grinn internal database (server version, access human database only):
               <ul>
-                <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software and dependent R packages including RCurl, jsonlite, igraph, WGCNA, Hmisc, plyr, stringr, reshape2.</li>
-                <li>Download grinn R package (server version): for windows click <a href="extra/grinn_2.2_server.zip">here</a>, for linux click <a href="extra/grinn_2.2_server.tgz">here</a>, and install</li>
+                <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software and dependent R packages including RCurl, WGCNA, stringi, igraph, jsonlite, preprocessCore, impute, GO.db.</li>
+                <li>Download grinn R package (server version): for windows click <a href="extra/server/grinn_2.2.zip">here</a>, for linux click <a href="extra/server/grinn_2.2.tgz">here</a>, and install</li>
                 <pre><code>
 #Install dependent R packages, if not exist
-install.packages(c("matrixStats", "Hmisc", "splines", "foreach", "doParallel", "reshape", "fastcluster", "dynamicTreeCut", "survival", "RCurl", "jsonlite", "igraph", "WGCNA", "plyr", "stringr", "reshape2") 
 source("http://bioconductor.org/biocLite.R") 
 biocLite(c("GO.db", "preprocessCore", "impute"))
+install.packages(c("RCurl", "jsonlite", "igraph", "WGCNA", "stringi")) 
 
-#Install grinn package server version
-install.packages("[path to grinn_2.2_server]", repos = NULL)
+#Install grinn package
+install.packages("[path to grinn_2.2]", repos = NULL)
 library(grinn)
                 </code></pre>
               </ul>
@@ -59,6 +59,7 @@ library(grinn)
                 <li>Start Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start. for more details see <a href="http://neo4j.com/docs/stable/server-installation.html" target="_blank">here</a></li>
                 <li>Install grinn R package using the following commands.</li>
                 <pre><code>
+#Install devtools R package, if not exist
 install.packages("devtools")
 
 #Install grinn package
