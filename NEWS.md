@@ -3,7 +3,8 @@
 * Saccharomyces cerevisiae database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
 * Escherichia coli k-12 database V.1 incorporating data from KEGG, SMPDB, CheBI and UniProt.
 * Bug fixed, return number of edges
-* Include functions to get and set grinn database location
+* Include functions to get and set Grinn database location
+* Include a dataset for the tutorial
 
 #### version 2.2 (18/06/15)
 * Arabidopsis database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, and UniProt.
