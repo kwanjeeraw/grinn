@@ -31,6 +31,7 @@ Grinn databases
 =========
 Grinn human database is provided by default and can be accessed directly after package installation. 
 <b>Alternatively</b> grinn databases are available for <b>local use</b>: Human database, Arabidopsis database, Mouse database Saccharomyces cerevisiae database and Escherichia coli k-12 database.
+
 <b>Local database installation</b>
   1. Require Neo4j-community >= 2.2.0 for the grinn internal database, please send us an email for the database files
 
