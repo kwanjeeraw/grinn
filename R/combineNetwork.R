@@ -45,7 +45,8 @@ combineNetwork <- function(grinnw, othernw, returnAs="tab"){
     
     attb = plyr::rbind.fill(grinnw$nodes,othernw$nodes)
     pair = plyr::rbind.fill(grinnw$edges,othernw$edges)
-    attb = attb[!duplicated(attb[,1]),]
+    pair = pair[!duplicated(pair[c("source","target")]), ] #remove duplicate edges
+    attb = attb[!duplicated(attb[,1]),] #remove duplicate nodes
     colbs = colnames(grinnw$nodes)
     colot = colnames(othernw$nodes)
     cat("Found ",nrow(pair)," relationships...\n")

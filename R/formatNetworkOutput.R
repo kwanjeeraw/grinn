@@ -11,7 +11,6 @@ formatNetworkOutput <- function(network,returnAs){
   attb = data.frame() #list of node attributes
   cat("Formating and returning queried network ...\n")
   if(length(network)<6000){
-    cat("Found ",length(network)," relationships...\n")
     for(i in 1:length(network)){   
       path = lapply(unlist(network[[i]]$relationships),fetchRelation)
       tmppair = data.frame(t(sapply(path,c)))
@@ -20,7 +19,7 @@ formatNetworkOutput <- function(network,returnAs){
       attb = rbind(attb,as.matrix(tmppair[,c(1:4)]),as.matrix(tmppair[,c(5:8)]))
       tmppair = tmppair[,c(1,5,10,9)]
       pair = rbind(pair,cbind(tmppair,reltype)) #from-to-relname-reltype 
-    } 
+    }
   }else{
     cat("Found ",length(network)," but returning 6000 of all relationships...\n")
     for(i in 1:6000){   
@@ -36,6 +35,7 @@ formatNetworkOutput <- function(network,returnAs){
   if(length(pair)>0){
     pair <- unique(pair)
     attb <- unique(attb)
+    cat("Found ",nrow(pair)," relationships...\n")
     colnames(pair) = c("source","target","relsource","relname","reltype")
     colnames(attb) = c("id","nodename","xref","nodetype") 
     #network in cytoscapeJS format

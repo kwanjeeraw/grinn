@@ -1,7 +1,7 @@
 # grinn
 Graph database and R package for omics integration
 
-Version: 2.2 (18 June 2015)
+Version: 2.3 (22 September 2015)
 
 Description
 =========
@@ -12,21 +12,27 @@ grinn applies different correlation-based network analyses to estimate relations
 
 Installation
 =========
-* To use grinn internal database (server version, access human database only):
-  1. Require R software and dependent R packages including RCurl, WGCNA, stringi, igraph, jsonlite, preprocessCore, impute, GO.db.
-  2. Download grinn R package (server version): for windows click [here](http://kwanjeeraw.github.io/grinn/extra/server/grinn_2.2.zip), for linux click [here](http://kwanjeeraw.github.io/grinn/extra/server/grinn_2.2.tgz), and install using the following commands.
+  1. Require [R software](https://www.r-project.org/)
+  2. Install grinn R package and dependent R packages using the following commands
 ```
 #Install dependent R packages, if not exist
 source("http://bioconductor.org/biocLite.R") 
 biocLite(c("GO.db", "preprocessCore", "impute"))
 install.packages(c("RCurl", "jsonlite", "igraph", "WGCNA", "stringi")) 
 
-#Install grinn package server version
-install.packages("[path to grinn_2.2]", repos = NULL)
+#Install devtools R package, if not exist
+install.packages("devtools")
+
+#Install grinn package
+devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
 ```
-* <b>Alternatively,</b> grinn internal databases are available for local use: Arabidopsis database, Mouse database and Human database. Please send us an email for the database files.
-  1. Require Neo4j-community >= 2.2.0 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Arabidopsis database, Mouse database and Human database.
+Grinn databases
+=========
+Grinn human database is provided by default and can be accessed directly after package installation. 
+<b>Alternatively</b> grinn databases are available for <b>local use</b>: Human database, Arabidopsis database, Mouse database Saccharomyces cerevisiae database and Escherichia coli k-12 database.
+<b>Local database installation</b>
+  1. Require Neo4j-community >= 2.2.0 for the grinn internal database, please send us an email for the database files
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
 
@@ -34,14 +40,13 @@ library(grinn)
 
     - Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
 for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
-  2. Install grinn R package using the following commands.
+  2. Switch between databases
 ```
-#Install devtools R package, if not exist
-install.packages("devtools")
+#Change grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
+setGrinnDb("http://localhost:7474/db/data/cypher")
 
-#Install grinn package
-devtools::install_github("kwanjeeraw/grinn")
-library(grinn)
+#Check current grinn internal database
+getGrinnDb()
 ```
 
 Documentation
@@ -50,9 +55,11 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-#### version 2.2 (18/06/15)
-* Arabidopsis database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
-* Add node attributes to correlation networks
+#### version 2.3 (22/09/15)
+* Saccharomyces cerevisiae database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
+* Escherichia coli k-12 database V.1 incorporating data from KEGG, SMPDB, CheBI and UniProt.
+* Bug fixed, return number of edges
+* Include functions to get and set grinn database location
 
 see all [features](NEWS.md)
 
