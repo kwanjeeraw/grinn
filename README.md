@@ -1,11 +1,11 @@
 # grinn
-Graph database and R package for omics data integration
+a Graph database and R package for omic data integration
 
 Version: 2.3 (22 September 2015)
 
 Description
 =========
-Grinn is a bioinformatics platform contains an internal graph database (Neo4j), and the R package for omics studies.
+Grinn is a bioinformatics platform contains an internal graph database (Neo4j), and the R package for -omic studies.
 Grinn databases incorporate data from several databases including KEGG, SMPDB, HMDB, REACTOME, CheBI, UniProt and ENSEMBL.
 The R package allows reconstruction of different network types e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
 Grinn applies different correlation-based network analyses to estimate relationships among different omics levels independently from domain knowledge, and with the internal graph database it provides rapid integration of domain knowledge i.e. to aid annotation of unknown metabolites.
@@ -36,8 +36,13 @@ Alternatively the Grinn databases can be installed <b>locally</b>, please send u
 
     - Extract and move the grinn database files to the Neo4j server directory
 
-    - Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
-for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
+    - Start the Neo4j server, 
+    
+    for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat 
+    
+    for linux: ./bin/neo4j start 
+    
+    for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
   2. Switch between databases
 ```
 #Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
