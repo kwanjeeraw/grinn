@@ -25,7 +25,7 @@ library(grinn)
 ```
 Grinn databases
 =========
-Grinn internal database is a part of the Grinn software to compute the networks. Avaiable Grinn databases include Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
+Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
 
 Alternatively the Grinn databases can be installed <b>locally</b>, please send us an email for the database files.
 
