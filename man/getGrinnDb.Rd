@@ -2,16 +2,16 @@
 % Please edit documentation in R/getGrinnDb.R
 \name{getGrinnDb}
 \alias{getGrinnDb}
-\title{Get grinn DB location}
+\title{Get Grinn database location}
 \usage{
 getGrinnDb()
 }
 \value{
-string grinn DB location.
+url of Grinn database location.
 }
 \description{
-get grinn DB location of the current working envornment.
-By default grinn DB lacation is http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher
+get Grinn database location of the current working envornment.
+By default Grinn database lacation is http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher
 which contains only human database.
 }
 \author{

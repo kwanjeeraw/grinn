@@ -2,17 +2,18 @@
 % Please edit documentation in R/setGrinnDb.R
 \name{setGrinnDb}
 \alias{setGrinnDb}
-\title{Set grinn DB location}
+\title{Set Grinn database location}
 \usage{
 setGrinnDb()
 }
 \arguments{
-\item{url}{grinn DB location}
+\item{url}{of Grinn database location}
 }
 \description{
-set grinn DB location for the currently working environment.
+set Grinn database location for the currently working environment.
 }
 \examples{
+# Set Grinn database location to local server
 setGrinnDb("http://localhost:7474/db/data/cypher")
 }
 \author{
