@@ -19,10 +19,12 @@
 <section class="main-content">
       <hr>
           <h2><a id="grinn" class="anchor" href="#grinn" aria-hidden="true"><span class="octicon octicon-link"></span></a>grinn</h2>
-          <p>grinn is a bioinformatics platform containing an internal graph database (using Neo4j), and the R package for omics studies.
-          grinn incorporates data from several databases including KEGG, SMPDB, HMDB, REACTOME and CheBI.
-          We apply correlation-based analyses from widely used WGCNA and DiffCorr R package.</p>
-          <p>The grinn package provides R functions for:</p>
+          <p>Grinn is a bioinformatics platform contains an internal graph database (Neo4j), and the R package for omics studies.
+          Grinn databases incorporate data from several databases including KEGG, SMPDB, HMDB, REACTOME, CheBI, UniProt and ENSEMBL.
+          The R package allows reconstruction of different network types e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
+          Grinn applies different correlation-based network analyses to estimate relationships among different omics levels independently from domain knowledge,
+          and with the internal graph database it provides rapid integration of domain knowledge i.e. to aid annotation of unknown metabolites.</p>
+          <p>The grinn R package provides several functions for:</p>
           <ol>
             <li> Reconstruction of biological networks in different level e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway</li>
             <li> Correlation-based analysis independently from pathway information to estimate:
@@ -36,43 +38,44 @@
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
           <ul>
-            <li>To use grinn internal database (server version, access human database only):
-              <ul>
-                <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software and dependent R packages including RCurl, WGCNA, stringi, igraph, jsonlite, preprocessCore, impute, GO.db.</li>
-                <li>Download grinn R package (server version): for windows click <a href="extra/server/grinn_2.2.zip">here</a>, for linux click <a href="extra/server/grinn_2.2.tgz">here</a>, and install</li>
-                <pre><code>
-#Install dependent R packages, if not exist
-source("http://bioconductor.org/biocLite.R") 
-biocLite(c("GO.db", "preprocessCore", "impute"))
-install.packages(c("RCurl", "jsonlite", "igraph", "WGCNA", "stringi")) 
-
-#Install grinn package
-install.packages("[path to grinn_2.2]", repos = NULL)
-library(grinn)
-                </code></pre>
-              </ul>
-            </li>
-            <li><b>Alternatively</b>, grinn internal databases are available for local use: Arabidopsis database, Mouse database and Human database. Please send us an email for the database files.
-              <ul>
-                <li>Require <a href="http://neo4j.com/download/" target="_blank">Neo4j-community server</a> >=2.2.0, download and then unzip.</li>
-                <li>Extract and move the database files to Neo4j server directory</li>
-                <li>Start Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start. for more details see <a href="http://neo4j.com/docs/stable/server-installation.html" target="_blank">here</a></li>
-                <li>Install grinn R package using the following commands.</li>
+            <li>Require <a href="http://www.r-project.org/" target="_blank">R</a> software</li>
+            <li>Download and install grinn R package using the following commands</li>
                 <pre><code>
 #Install devtools R package, if not exist
 install.packages("devtools")
 
 #Install grinn package
+library(devtools)
 devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
                 </code></pre>
+          </ul>
+          <h3><a id="grinndb" class="anchor" href="#grinndb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grinn databases</h3>
+          <p>Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12.
+          The human database is provided by default and can be accessed directly after package installation.
+          Alternatively the Grinn databases can be installed locally, please send us an email for the database files.</p>
+          <h4>Local database installation</h4>
+          <ul>
+            <li>Require Neo4j-community >= 2.2.0 for the Grinn internal database, please send us an email for the database files
+              <ul>
+                <li>Download and then unzip <a href="http://neo4j.com/download/" target="_blank">Neo4j server</a></li>
+                <li>Extract and move the grinn database files to the Neo4j server directory</li>
+                <li>Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start for more details see <a href="http://neo4j.com/docs/stable/server-installation.html" target="_blank">here</a></li>
               </ul>
             </li>
+            <li>Switch between databases</li>
+                <pre><code>
+#Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
+setGrinnDb("http://localhost:7474/db/data/cypher")
+
+#Check current Grinn internal database location
+getGrinnDb()
+                </code></pre>
           </ul>
           <h3><a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h3>
-          <p>Click <a href="document.html">here</a> for list of functions in grinn.</p>
+          <p>Click <a href="document.html">here</a> for list of functions in grinn R package.</p>
           <h3><a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials</h3>
-          <p>The tutorials provides the examples of how to use different grinn functions for the analysis of human omics data. Click <a href="extra/grinn_data.zip">here</a> for the datasets used in these tutorials.</p>
+          <p>The tutorials provides the examples of how to use different functions for the analysis of human omics data. Click <a href="extra/grinn_data.zip">here</a> for the datasets used in these tutorials.</p>
           <ol>
               <li><a href="fgrinn.html">fetchGrinnNetwork</a> - reconstruct a biological network (grinn network) using information from grinn internal database</li>
               <li><a href="fcorrgrinn.html">fetchCorrGrinnNetwork</a> - compute a weighted correlation network and expand the network with information from grinn internal database</li>
@@ -82,7 +85,7 @@ library(grinn)
               <li><a href="finput.html">input formats</a> - figures of different input formats used in Grinn</li>
           </ol>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
-          <p>grinn database integrates data from the following resources:</p>
+          <p>Grinn databases integrate data from the following resources:</p>
           <ul>
             <li>Croft D, <em>et al.</em> The Reactome pathway knowledgebase. <a href="http://nar.oxfordjournals.org/content/42/D1/D472.abstract" target="_blank">Nucleic Acids Res. 2014 Jan;42(Database issue):D472-7</a>.</li>
             <li>Degtyarenko K, <em>et al.</em> ChEBI: a database and ontology for chemical entities of biological interest. <a href="http://nar.oxfordjournals.org/content/36/suppl_1/D344.abstract" target="_blank">Nucleic Acids Res 2008. 36, D344-D350</a>.</li>
