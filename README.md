@@ -67,10 +67,6 @@ Updates
 
 see all [features](NEWS.md)
 
-Citation
-=========
-[Wanichthanarak K, Fahrmann JF, Grapov D (2015) Genomic, Proteomic, and Metabolomic Data Integration Strategies. Biomark Insights. 10(Suppl 4):1-6.](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4562606/)
-
 License
 =========
 [GNU General Public License (v3)](https://github.com/kwanjeeraw/grinn/blob/master/LICENSE)
