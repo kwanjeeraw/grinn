@@ -27,10 +27,10 @@ Grinn databases
 =========
 Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
 
-Alternatively the Grinn databases can be installed <b>locally</b>, please send us an email for the database files.
+Alternatively the Grinn databases can be installed <b>locally</b>. The Grinn databases are available at https://sourceforge.net/projects/grinn/files/grinnDatabases/. 
 
 <b>Local database installation</b>
-  1. Require Neo4j-community >= 2.2.0 for the Grinn internal database, please send us an email for the database files
+  1. Require Neo4j-community >= 2.2.0 for the Grinn internal database
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
 
