@@ -3,5 +3,5 @@ extra
 .Rhistory
 .RData
 .Rproj
-.gitignore
+gitweb
 dev
