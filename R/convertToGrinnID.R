@@ -1,4 +1,4 @@
-#'Convert other database IDs to grinn IDs
+#'Convert other database IDs to Neo4j internal IDs and grinn IDs
 #'@description Convert the list of ids to grinn IDs
 #'grinn IDs are recommended to be used in several functions including \code{combineNetwork}, \code{fetchGrinnCorrNetwork}, \code{fetchGrinnModuNetwork},
 #'\code{fetchGrinnDiffCorrNetwork}, \code{fetchCorrGrinnNetwork}, \code{fetchModuGrinnNetwork}, \code{fetchDiffCorrGrinnNetwork}. 
@@ -61,7 +61,7 @@ convertToGrinnID <- function(txtInput, nodetype, dbXref){
         tmpkw = paste0("['",paste0(dbXref,":", tmpkw, collapse = "','"),"']") 
       }
       querystring = gsub("label", nodetype, querystring)
-      querystring = paste(querystring,'RETURN DISTINCT x, node.GID')
+      querystring = paste(querystring,'RETURN DISTINCT x, ID(node), node.GID')
       querystring = gsub("keyword", tmpkw, querystring)
 print(querystring)
       cat("Converting and returning mapped ids ...\n")
@@ -69,7 +69,7 @@ print(querystring)
       tmpNode = rbind(tmpNode,data.frame(gsub(paste0(dbXref,":"),"",tmpq)))
     }
     node = tmpNode
-    colnames(node) = c(paste0("FROM_",dbXref),"GRINNID")
+    colnames(node) = c(paste0("FROM_",dbXref),"Neo4jID","GRINNID")
     out <- node
   }else{#txtInput less than 1000
     if (tolower(dbXref) == 'inchi') {
@@ -82,12 +82,12 @@ print(querystring)
       txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
     }
     querystring = gsub("label", nodetype, querystring)
-    querystring = paste(querystring,'RETURN DISTINCT x, node.GID')
+    querystring = paste(querystring,'RETURN DISTINCT x, ID(node), node.GID')
     querystring = gsub("keyword", txtInput, querystring)
 print(querystring)
     cat("Converting and returning mapped ids ...\n")
     node = curlRequestCypher(querystring)
-    colnames(node) = c(paste0("FROM_",dbXref),"GRINNID")
+    colnames(node) = c(paste0("FROM_",dbXref),"Neo4jID","GRINNID")
     out <- data.frame(gsub(paste0(dbXref,":"),"",node))
   }
 }

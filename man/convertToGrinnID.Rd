@@ -2,7 +2,7 @@
 % Please edit documentation in R/convertToGrinnID.R
 \name{convertToGrinnID}
 \alias{convertToGrinnID}
-\title{Convert other database IDs to grinn IDs}
+\title{Convert other database IDs to Neo4j internal IDs and grinn IDs}
 \usage{
 convertToGrinnID(txtInput, nodetype, dbXref)
 }
