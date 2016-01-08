@@ -44,36 +44,32 @@
 
 fetchModuGrinnNetwork <- function(datNorm, datPheno, sfPower=NULL, minModuleSize = 10, threshold = 0.5, returnAs="tab", targetTo, filterSource=list()){
   modulenw = fetchWGCNAModule(datNorm=datNorm, datPheno=datPheno, sfPower=sfPower, minModuleSize=minModuleSize, threshold=threshold, returnAs="tab")
-  
   if(nrow(modulenw$nodes)>0){
     nodetypes = tolower(unique(modulenw$nodes$nodetype))
     basicnw = fetchGrinnNetwork(txtInput=modulenw$nodes$id,from=nodetypes,to=targetTo,filterSource=filterSource,dbXref="grinn")
     #collect node info
     moduattb = data.frame()
-    for(i in 1:nrow(modulenw$nodes)){
-      querystring <- paste0("MATCH (node:",modulenw$nodes$nodetype[i],") WHERE lower(node.GID) = lower('",modulenw$nodes$id[i],"') RETURN DISTINCT node")
-      result <- curlRequestCypher(querystring)
-      if(length(result)>0){
-        moduattb = rbind(moduattb,data.frame(id=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=modulenw$nodes$nodetype[i],
-                                             modulecolor=modulenw$nodes$modulecolor[i],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||")))
-      }
-    }
+    moduattb = plyr::ldply (apply(modulenw$nodes, MARGIN = 1, FUN=getModuleInfo, x = "id", y = "nodetype")) #format nodelist
+    modulenw$edges$source = lapply(modulenw$edges$source, FUN=formatId, y = moduattb) #format edgelist
+    modulenw$edges$target = lapply(modulenw$edges$target, FUN=formatId, y = moduattb) #format edgelist
     if(nrow(basicnw$nodes)>0){
       cat("Formating and returning combined network ...\n")
       basicnw$edges$corr_coef = 1
       basicnw$nodes$modulecolor = ""
       modulenw$edges$relsource = ""
       modulenw$nodes$xref = ""
+      modulenw$nodes$gid = modulenw$nodes$id #same ids
       pair = rbind(basicnw$edges,modulenw$edges)
       if(nrow(moduattb)>0){attb = rbind(basicnw$nodes,moduattb,modulenw$nodes)}else{attb = rbind(basicnw$nodes,modulenw$nodes)}
-      attb = attb[!duplicated(attb[,1]),]
-      colnames(attb) = c("id","nodename","xref","nodetype","modulecolor")
+      attb = attb[!duplicated(attb[,2]),]
       cat("Found ",nrow(pair)," relationships...\n")
     }else{#if only correlation network found
       cat("Formating and returning combined network ...\n")
       pair = modulenw$edges
+      modulenw$nodes$xref = ""
+      modulenw$nodes$gid = modulenw$nodes$id #same ids
       if(nrow(moduattb)>0){attb = rbind(moduattb,modulenw$nodes)}else{attb = modulenw$nodes}
-      attb = attb[!duplicated(attb[,1]),]
+      attb = attb[!duplicated(attb[,2]),]
       cat("Found ",nrow(pair)," relationships...\n")
     }
   }else{#if no correlation network found

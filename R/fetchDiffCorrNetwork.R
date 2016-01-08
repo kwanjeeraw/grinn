@@ -59,10 +59,6 @@
 #'result <- fetchDiffCorrNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab")
 
 fetchDiffCorrNetwork <- function(datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method, returnAs){
-  #format reltype
-  maptype = function(x){
-    rtype = paste0(Hmisc::capitalize(gsub(".+TYPE_","",x[1])),"_",Hmisc::capitalize(gsub(".+TYPE_","",x[2])))
-  }
   n1 = nrow(datNormX1) - 1 #number of samples in condition 1, remove first row = it is nodetype
   n2 = nrow(datNormX2) - 1 #number of samples in condition 2, remove first row = it is nodetype
   corrnw1 = getCorrAdjacency(datNormX=datNormX1,datNormY=datNormY1,method=method)
@@ -80,7 +76,6 @@ fetchDiffCorrNetwork <- function(datNormX1, datNormX2, datNormY1, datNormY2, pDi
   if(length(ind)>0){
     cat("Formating and returning differential correlation network ...\n")
     corDF = corrnw1[ind,]
-    corDF$reltype = apply(corDF,1,maptype)    
     lnodes = unique(c(as.character(corDF$source),as.character(corDF$target)))
     attb = data.frame(id=gsub("_TYPE.+","",lnodes),name=gsub("_TYPE.+","",lnodes),nodetype=Hmisc::capitalize(gsub(".+TYPE_","",lnodes)), stringsAsFactors = F)
     if(length(ind) != 1){ 
@@ -89,7 +84,7 @@ fetchDiffCorrNetwork <- function(datNormX1, datNormX2, datNormY1, datNormY2, pDi
       st = t(as.matrix(apply(corDF[,1:2],2,function(x) gsub("_TYPE.+","",x))))
     }
     pair = data.frame(st,corDF[,3:ncol(corDF)], stringsAsFactors = F)
-    tmpPair = data.frame(pair[,1:2],corrnw2[ind,3:ncol(corrnw2)],reltype=pair[,"reltype"])
+    tmpPair = data.frame(pair[,1:2],corrnw2[ind,3:ncol(corrnw2)])
     pair = rbind(pair,tmpPair)
     pair$relname = "DIFF_CORRELATION"
     colnames(attb) = c("id","nodename","nodetype")

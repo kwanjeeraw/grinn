@@ -51,10 +51,6 @@ fetchCorrNetwork <- function(datNormX, datNormY, corrCoef, pval, method, returnA
     upmt <- upper.tri(mt)
     data.frame(from = rownames(mt)[row(mt)[upmt]], to = rownames(mt)[col(mt)[upmt]], val = t(mt)[upmt], stringsAsFactors = F)
   }
-  #format reltype
-  maptype = function(x){
-    rtype = paste0(Hmisc::capitalize(gsub(".+TYPE_","",x[1])),"_",Hmisc::capitalize(gsub(".+TYPE_","",x[2])))
-  }
   corAdj = getCorrAdjacency(datNormX,datNormY,method)
   #filter by corr_coef and pval
   ix = which(abs(corAdj$corr_coef) > corrCoef)
@@ -63,7 +59,6 @@ fetchCorrNetwork <- function(datNormX, datNormY, corrCoef, pval, method, returnA
   if(length(it)>0){
     cat("Formating and returning correlation network ...\n")
     corDF = corAdj[it,]
-    corDF$reltype = apply(corDF,1,maptype)    
     lnodes = unique(c(as.character(corDF$source),as.character(corDF$target)))
     attb = data.frame(id=gsub("_TYPE.+","",lnodes),name=gsub("_TYPE.+","",lnodes),nodetype=Hmisc::capitalize(gsub(".+TYPE_","",lnodes)), stringsAsFactors = F)
     if(length(it) != 1){ 

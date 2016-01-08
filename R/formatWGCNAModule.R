@@ -30,9 +30,8 @@ formatWGCNAModule <- function(datNorm, softPower, mdColors, threshold, nodetype,
   if(nrow(cyt$nodeData) > 0){
     cat("Formating and returning network module ...\n")
     pair = cyt$edgeData[,1:3]
-    pair$reltype = paste0(Hmisc::capitalize(nodetype),"_",Hmisc::capitalize(nodetype))
     pair$relname = "MODULE"
-    colnames(pair) = c("source","target","corr_coef","reltype","relname")
+    colnames(pair) = c("source","target","corr_coef","relname")
     attb = cyt$nodeData[,c(1,3)]
     attb$id = attb$nodeName
     attb$nodetype = Hmisc::capitalize(nodetype)

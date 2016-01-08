@@ -14,7 +14,7 @@ set Grinn database location for the currently working environment.
 }
 \examples{
 # Set Grinn database location to local server
-setGrinnDb("http://localhost:7474/db/data/cypher")
+setGrinnDb("http://localhost:7474/db/data/")
 }
 \author{
 Kwanjeera W \email{kwanich@ucdavis.edu}

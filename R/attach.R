@@ -1,4 +1,4 @@
-#'@import RCurl jsonlite igraph WGCNA
+#'@import RCurl jsonlite igraph WGCNA RJSONIO
 #'@importFrom Hmisc capitalize
 #'@importFrom plyr rbind.fill
 #'@importFrom stringr str_trim
@@ -36,6 +36,29 @@ propertyList <- list(
   listVal = c("xref","synonym","tissue_locations","cellular_locations","biofluid_locations"),
   numericVal = c("averageMass","geneStart","geneEnd")
 )
+
+getNodeInfo = function(z, x, y){
+  querystring <- paste0("MATCH (node:",z[y],") WHERE node.GID = '",z[x],"' RETURN DISTINCT node")
+  result <- curlRequestCypher(querystring)
+  if(length(result)>0){
+    data.frame(id=result[[1]]$metadata$id,gid=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=result[[1]]$metadata$labels[[1]],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||"), stringsAsFactors = FALSE)
+  }else{
+    data.frame()
+  }
+}
+getModuleInfo = function(z, x, y){
+  querystring <- paste0("MATCH (node:",z[y],") WHERE node.GID = '",z[x],"' RETURN DISTINCT node")
+  result <- curlRequestCypher(querystring)
+  if(length(result)>0){
+    data.frame(id=result[[1]]$metadata$id,gid=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=result[[1]]$metadata$labels[[1]],modulecolor=z["modulecolor"],xref=paste0(unlist(result[[1]]$data$xref),collapse = "||"), stringsAsFactors = FALSE)
+  }else{
+    data.frame()
+  }
+}
+formatId = function(x, y) {
+  ind = which(y$gid == x)
+  x = ifelse(length(ind)>0,y$id[ind],x)
+}
 
 ###for enrichment analysis
 #x = combGeneNetwork$edges[1:30,]
