@@ -34,9 +34,7 @@ curlRequestCypher <- function(querystring){
 curlRequest.TRANSACTION <- function(cypher){
   h = RCurl::basicTextGatherer()
   tryCatch({
-    #cypher = "MATCH ptw = (from:Protein)-[:CONTROL]->(to:Gene) WHERE from.GID = 'P14859' RETURN DISTINCT ptw LIMIT 2"
     url = paste0(nld,"transaction/commit")
-    #url = "http://localhost:7474/db/data/transaction/commit"
     body = paste0("{\"statements\":[{\"statement\":\"",cypher,"\",\"resultDataContents\":[\"graph\"]}]}")
     RCurl::curlPerform(url=url,
                        userpwd = neu,
