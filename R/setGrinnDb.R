@@ -6,7 +6,7 @@
 #'@export
 #'@examples
 #'# Set Grinn database location to local server
-#'setGrinnDb("http://localhost:7474/db/data/cypher")
+#'setGrinnDb("http://localhost:7474/db/data/")
 setGrinnDb <- function(url){
   assign("nld", url, envir = .GlobalEnv)
 }
