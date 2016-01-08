@@ -1,4 +1,8 @@
 ### Features
+#### version 2.3.1 (07/01/16)
+* Improve query speed
+* Change parameters
+
 #### version 2.3 (22/09/15)
 * Saccharomyces cerevisiae database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
 * Escherichia coli k-12 database V.1 incorporating data from KEGG, SMPDB, CheBI and UniProt.

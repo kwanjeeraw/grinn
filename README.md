@@ -1,7 +1,7 @@
 # grinn
 a Graph database and R package for omic data integration
 
-Version: 2.3 (22 September 2015)
+Version: 2.3.1 (07 January 2016)
 
 Description
 =========
@@ -58,12 +58,9 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-#### version 2.3 (22/09/15)
-* Saccharomyces cerevisiae database V.1 incorporating data from KEGG, SMPDB, REACTOME, CheBI, UniProt and ENSEMBL.
-* Escherichia coli k-12 database V.1 incorporating data from KEGG, SMPDB, CheBI and UniProt.
-* Bug fixed, return number of edges
-* Include functions to get and set Grinn database location
-* Include a dataset for the tutorial
+#### version 2.3.1 (07/01/16)
+* Improve query speed
+* Change parameters
 
 see all [features](NEWS.md)
 
