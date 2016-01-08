@@ -1,5 +1,5 @@
 ### Features
-#### version 2.3.1 (07/01/16)
+#### version 2.4 (07/01/16)
 * Improve query speed
 * Change parameters
 
