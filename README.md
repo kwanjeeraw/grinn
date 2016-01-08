@@ -45,8 +45,8 @@ Alternatively the Grinn databases can be installed <b>locally</b>. The Grinn dat
     for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
   2. Switch between databases
 ```
-#Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
-setGrinnDb("http://localhost:7474/db/data/cypher")
+#Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
+setGrinnDb("http://localhost:7474/db/data/")
 
 #Check current Grinn internal database location
 getGrinnDb()
@@ -60,7 +60,7 @@ Updates
 =========
 #### version 2.3.1 (07/01/16)
 * Improve query speed
-* Change parameters
+* Change database parameters
 
 see all [features](NEWS.md)
 

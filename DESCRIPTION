@@ -26,6 +26,5 @@ Imports:
     plyr,
     stringr,
     reshape2,
-    doParallel,
     RJSONIO
 RoxygenNote: 5.0.1
