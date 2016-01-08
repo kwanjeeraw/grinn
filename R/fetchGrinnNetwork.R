@@ -59,7 +59,7 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
     len = length(txtInput)
     querystring = pathList[ft]
     if(tolower(dbXref) == 'grinn'){
-      querystring = paste(querystring,'WHERE lower(from.GID) = lower(x)')
+      querystring = paste(querystring,'WHERE from.GID = x')
       txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
     }else if(tolower(dbXref) == 'inchi'){
       querystring = paste(querystring,'WHERE from.InChI = x')
@@ -78,8 +78,10 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
     querystring = gsub("keyword", txtInput, querystring)
 #    querystring = gsub("species", organism, querystring)
   print(querystring)
-    cat("Querying and returning network ...\n")
-    network = curlRequestCypher(querystring)
+    cat("Querying network...\n")
+    #network = curlRequestCypher(querystring)
+    #formatNetworkOutput(network,returnAs)
+    network = curlRequest.TRANSACTION(querystring)
     formatNetworkOutput(network,returnAs)
   },
   error=function(e) {
@@ -90,75 +92,3 @@ fetchGrinnNetwork <- function(txtInput, from, to, filterSource=list(), returnAs=
   })    
   return(out)
 }
-#     #blockwise, split txtInput for shorter quried time
-#     if(len>1000){#txtInput > 3900
-#       cat("Long keywords, Partitioning quries ...\n")
-#       bl = 500
-#       tmpNode = data.frame()
-#       x = floor(len/bl)
-#       seqls = rep(1) + rep(seq(0,len-bl,bl), each=1)
-#       for(i in 1:x){
-#         sfr = seqls[i]
-#         gto = (seqls[i]+bl)-1
-#         if(i!=x){  
-#           tmpkw = txtInput[sfr:gto]
-#         } else{  
-#           tmpkw = txtInput[sfr:len]
-#         }
-#         querystring = pathList[ft]
-# 
-#         cat("Converting and returning mapped ids ...\n")
-#         tmpq = curlRequestCypher(querystring)
-#         tmpNode = rbind(tmpNode,data.frame(gsub(paste0(dbXref,":"),"",tmpq)))
-#         
-#         if(tolower(dbXref) == 'grinn'){
-#           querystring = paste(querystring,'WHERE lower(from.GID) = lower(x)')
-#           tmpkw = paste0("['",paste0(tmpkw, collapse = "','"),"']")
-#         }else if(tolower(dbXref) == 'inchi'){
-#           querystring = paste(querystring,'WHERE from.InChI = x')
-#           tmpkw = paste0("['",paste0(tmpkw, collapse = "','"),"']")
-#         }else{
-#           querystring = paste(querystring,'WHERE ANY(y IN from.xref WHERE lower(y) = lower(x))')
-#           tmpkw = paste0("['",paste0(dbXref,":", tmpkw, collapse = "','"),"']") 
-#         }
-#         ##filter pathway sources
-#         if(from == "pathway" || to == "pathway"){filterSource=filterSource}else{filterSource=list()}
-#         if(length(filterSource)==0){
-#           querystring = paste(querystring,'RETURN DISTINCT ptw')
-#         }else{
-#           querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
-#         }
-#         querystring = gsub("keyword", tmpkw, querystring)
-##        querystring = gsub("species", organism, querystring)
-# print(querystring)
-#         cat("Querying and returning network ...\n")
-#         tmpq = curlRequestCypher(querystring)
-#       }#end for
-#       node = tmpNode
-#       formatNetworkOutput(tmpq,returnAs)
-#     }else{#txtInput less than 1000
-#       querystring = pathList[ft]
-#       if(tolower(dbXref) == 'grinn'){
-#         querystring = paste(querystring,'WHERE lower(from.GID) = lower(x)')
-#         txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
-#       }else if(tolower(dbXref) == 'inchi'){
-#         querystring = paste(querystring,'WHERE from.InChI = x')
-#         txtInput = paste0("['",paste0(txtInput, collapse = "','"),"']")
-#       }else{
-#         querystring = paste(querystring,'WHERE ANY(y IN from.xref WHERE lower(y) = lower(x))')
-#         txtInput = paste0("['",paste0(dbXref,":", txtInput, collapse = "','"),"']") 
-#       }
-#       ##filter pathway sources
-#       if(from == "pathway" || to == "pathway"){filterSource=filterSource}else{filterSource=list()}
-#       if(length(filterSource)==0){
-#         querystring = paste(querystring,'RETURN DISTINCT ptw')
-#       }else{
-#         querystring = paste0(querystring,' AND (lower(rel.source) = lower(\'',paste0(filterSource, collapse = "\') OR lower(rel.source) = lower(\'"),'\')) RETURN DISTINCT ptw')
-#       }
-#       querystring = gsub("keyword", txtInput, querystring)
-##     querystring = gsub("species", organism, querystring)
-# print(querystring)
-#       cat("Querying and returning network ...\n")
-#       network = curlRequestCypher(querystring)
-#       formatNetworkOutput(network,returnAs)
-#     }},

@@ -15,7 +15,8 @@
 curlRequestCypher <- function(querystring){
   h = RCurl::basicTextGatherer()
   tryCatch({
-    RCurl::curlPerform(url=nld,
+    url = paste0(nld,"cypher")
+    RCurl::curlPerform(url=url,
                        userpwd = neu,
                        httpheader = c(Authorization = paste("Basic",RCurl::base64(neu))),
                        postfields=paste('query',RCurl::curlEscape(querystring), sep='='),
@@ -28,4 +29,25 @@ curlRequestCypher <- function(querystring){
     print(err)
     result <- NULL #return NULL if not found
   }) # END tryCatch
+}
+
+curlRequest.TRANSACTION <- function(cypher){
+  h = RCurl::basicTextGatherer()
+  tryCatch({
+    #cypher = "MATCH ptw = (from:Protein)-[:CONTROL]->(to:Gene) WHERE from.GID = 'P14859' RETURN DISTINCT ptw LIMIT 2"
+    url = paste0(nld,"transaction/commit")
+    #url = "http://localhost:7474/db/data/transaction/commit"
+    body = paste0("{\"statements\":[{\"statement\":\"",cypher,"\",\"resultDataContents\":[\"graph\"]}]}")
+    RCurl::curlPerform(url=url,
+                       userpwd = neu,
+                       httpheader = c(Authorization = paste("Basic",RCurl::base64(neu)), 'Content-Type' = "application/json"),
+                       postfields=body,
+                       writefunction = h$update,
+                       verbose = FALSE
+    ) 
+    result <- RJSONIO::fromJSON(h$value())$results[[1]]$data
+  }, error = function(err) {
+    message(err)
+    result <- list() #return empty if not found
+  })
 }

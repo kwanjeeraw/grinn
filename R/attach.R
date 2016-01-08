@@ -23,7 +23,7 @@ pathList <- list(
 
 ##list of Cypher to query nodes
 nodeList <- list(
-  exactMatch = "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(str(node.property)) = lower(str(x))",
+  exactMatch = "UNWIND keyword AS x WITH x MATCH (node:label) WHERE node.property = x",
   exactCollection = "UNWIND keyword AS x WITH x MATCH (node:label) WHERE ANY(y IN node.property WHERE lower(y) = lower(x))",
   regexMatch = "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(str(node.property)) =~ lower(\'.*\'+x+\'.*\')",
   regexCollection = "UNWIND keyword AS x WITH x MATCH (node:label) WHERE ANY(y IN node.property WHERE lower(y) =~ lower(\'.*\'+x+\'.*\'))"

@@ -9,41 +9,18 @@
 formatNetworkOutput <- function(network,returnAs){
   pair = data.frame() #list of mapped nodes
   attb = data.frame() #list of node attributes
-  cat("Formating and returning queried network ...\n")
-  if(length(network)<6000){
-    for(i in 1:length(network)){   
-      path = lapply(unlist(network[[i]]$relationships),fetchRelation)
-      tmppair = data.frame(t(sapply(path,c)))
-      reltype = paste0(tmppair[,4],"_",tmppair[,8])
-      tmppair = unname(tmppair)
-      attb = rbind(attb,as.matrix(tmppair[,c(1:4)]),as.matrix(tmppair[,c(5:8)]))
-      tmppair = tmppair[,c(1,5,10,9)]
-      pair = rbind(pair,cbind(tmppair,reltype)) #from-to-relname-reltype 
-    }
+  if(length(network)<10000){
+    cat("Formating and returning network of size", length(network),"...\n")
+    pair = data.frame(t(sapply(network, function(x) fetchRelation.TRANSACTION(x))))
+    attbs = data.frame(t(sapply(network, function(x) fetchNode.TRANSACTION(x$graph$nodes[[1]]))))
+    attbt = data.frame(t(sapply(network, function(x) fetchNode.TRANSACTION(x$graph$nodes[[2]]))))
+    attb = unique(rbind(attbs,attbt))
   }else{
-    cat("Found ",length(network)," but returning 6000 of all relationships...\n")
-    for(i in 1:6000){   
-      path = lapply(unlist(network[[i]]$relationships),fetchRelation)
-      tmppair = data.frame(t(sapply(path,c)))
-      reltype = paste0(tmppair[,4],"_",tmppair[,8])
-      tmppair = unname(tmppair)
-      attb = rbind(attb,as.matrix(tmppair[,c(1:4)]),as.matrix(tmppair[,c(5:8)]))
-      tmppair = tmppair[,c(1,5,10,9)]
-      pair = rbind(pair,cbind(tmppair,reltype)) #from-to-relname-reltype 
-    }
-  }
-  if(length(pair)>0){
-    pair <- unique(pair)
-    attb <- unique(attb)
-    cat("Found ",nrow(pair)," relationships...\n")
-    colnames(pair) = c("source","target","relsource","relname","reltype")
-    colnames(attb) = c("id","nodename","xref","nodetype") 
-    #network in cytoscapeJS format
-    #cynetwork = createCyNetwork(attb, pair) 
-
-  }else{# if no mapped node found
-    print("Returning no data...")
-    cynetwork = list(nodes="", edges="")
+    cat("Found ",length(network)," but returning network of size 10000...\n")
+    pair = data.frame(t(sapply(network[1:10000], function(x) fetchRelation.TRANSACTION(x))))
+    attbs = data.frame(t(sapply(network[1:10000], function(x) fetchNode.TRANSACTION(x$graph$nodes[[1]]))))
+    attbt = data.frame(t(sapply(network[1:10000], function(x) fetchNode.TRANSACTION(x$graph$nodes[[2]]))))
+    attb = unique(rbind(attbs,attbt))
   }
 
   out = switch(returnAs,
