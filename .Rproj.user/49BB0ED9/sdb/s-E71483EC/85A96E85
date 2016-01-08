@@ -1,0 +1,18 @@
+{
+    "contents" : "# ptm <- proc.time()\n# mptwNW <- fetchGrinnNetwork(txtInput=colnames(sigMet), from=\"metabolite\", to=\"pathway\", returnAs=\"tab\")\n# t1 = proc.time() - ptm\n# user  system elapsed \n# 32.834   2.596  71.604\n# \n# ptm <- proc.time()\n# network = curlRequestCypher(querystring)\n# t2 = proc.time() - ptm\n# user  system elapsed \n# 0.817   0.043  23.993 \n# \n# ptm <- proc.time()\n# network = curlRequest.TRANSACTION(querystring)\n# nn = formatNetworkOutput(network,returnAs = \"tab\")\n# t3 = proc.time() - ptm\n# user  system elapsed \n# 0.804   0.112  23.981\n# user  system elapsed \n# 1.447   0.141  24.694\n\n# ptm <- proc.time()\n# #apply(corrnw$nodes, MARGIN = 1, FUN=getNodeInfo, x = \"id\", y = \"nodetype\")\n# for(i in 1:nrow(corrnw$nodes)){\n#   querystring <- paste0(\"MATCH (node:\",corrnw$nodes$nodetype[i],\") WHERE lower(node.GID) = lower('\",corrnw$nodes$id[i],\"') RETURN DISTINCT node\")\n#   cat(querystring)      \n#   result <- curlRequestCypher(querystring)\n#   if(length(result)>0){\n#     corrattb = rbind(corrattb,data.frame(id=result[[1]]$data$GID,nodename=result[[1]]$data$name,nodetype=corrnw$nodes$nodetype[i],xref=paste0(unlist(result[[1]]$data$xref),collapse = \"||\")))\n#   }\n# }\n# t3 = proc.time() - ptm\n# user  system elapsed \n# 0.089   0.015   0.148\n# user  system elapsed \n# 0.083   0.013   3.817 ",
+    "created" : 1452281778091.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4056893051",
+    "id" : "85A96E85",
+    "lastKnownWriteTime" : 1452284099,
+    "path" : "~/Documents/grinn/R/timing.R",
+    "project_path" : "R/timing.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
