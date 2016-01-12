@@ -76,7 +76,7 @@ rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
 colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchDiffCorrGrinnNetwork(datX1=dummyX1, datX2=dummyX2, pDiff=0.05, method="spearman", returnAs="tab", yTo="protein")
+result <- fetchDiffCorrGrinnNetwork(datX1=dummyX1, datX2=dummyX2, pDiff=0.05, method="spearman", returnAs="tab", xTo="protein")
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Compute a differential correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene
