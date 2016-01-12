@@ -10,17 +10,17 @@ formatNetworkOutput <- function(network,returnAs){
   pair = data.frame() #list of mapped nodes
   attb = data.frame() #list of node attributes
   if(length(network)<30000){
-    cat("Formating and returning network of size", length(network),"...\n")
-    pair = data.frame(t(sapply(network, function(x) fetchRelation.TRANSACTION(x))))
-    attbs = data.frame(t(sapply(network, function(x) fetchNode.TRANSACTION(x$graph$nodes[[1]]))))
-    attbt = data.frame(t(sapply(network, function(x) fetchNode.TRANSACTION(x$graph$nodes[[2]]))))
-    attb = unique(rbind(attbs,attbt))
+    cat("Formating and returning network of approximate size", length(network),"...\n")
+    pair = plyr::rbind.fill(lapply(network, function(x) fetchRelation.TRANSACTION(x)))
+    attb = plyr::rbind.fill(lapply(network, function(x) fetchNode.TRANSACTION(x$graph$nodes)))
+    pair = unique(pair)
+    attb = unique(attb)
   }else{
     cat("Found ",length(network)," but returning network of size 30000...\n")
-    pair = data.frame(t(sapply(network[1:30000], function(x) fetchRelation.TRANSACTION(x))))
-    attbs = data.frame(t(sapply(network[1:30000], function(x) fetchNode.TRANSACTION(x$graph$nodes[[1]]))))
-    attbt = data.frame(t(sapply(network[1:30000], function(x) fetchNode.TRANSACTION(x$graph$nodes[[2]]))))
-    attb = unique(rbind(attbs,attbt))
+    pair = plyr::rbind.fill(lapply(network[1:30000], function(x) fetchRelation.TRANSACTION(x)))
+    attb = plyr::rbind.fill(lapply(network[1:30000], function(x) fetchNode.TRANSACTION(x$graph$nodes)))
+    pair = unique(pair)
+    attb = unique(attb)
   }
 
   out = switch(returnAs,
