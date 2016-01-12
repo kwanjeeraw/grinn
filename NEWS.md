@@ -1,4 +1,9 @@
 ### Features
+#### version 2.5 (12/01/16)
+* Change parameter names in all correlation-related functions
+* Update manual
+* Bug fixed
+
 #### version 2.4 (07/01/16)
 * Improve query speed
 * Change parameters

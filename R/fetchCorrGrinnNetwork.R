@@ -1,54 +1,55 @@
-#'Compute a weighted correlation network and expand the network with information from grinn internal database
+#'Compute a weighted correlation network and expand the network with information from Grinn internal database
 #'@description from input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:
 #'
 #'1. Compute a weighted correlation network of input omics data using WGCNA functions \code{cor} and \code{corPvalueStudent}. 
 #'The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
-#'Then the correlation network is built by function \code{fetchCorrNetwork}.
 #'
-#'2. Expand the correlation network using information from grinn internal database.
-#'The nodes of the correlation network are the keywords input to query the Grinn database.
-#'Grinn internal database contains the networks of the following types that can get expanded to: 
+#'2. Expand the correlation network using information from the Grinn internal database.
+#'The nodes of the correlation network are the keywords input to query the Grinn internal database.
+#'The Grinn internal database contains the networks of the following types that can get expanded to: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
-#'@usage fetchCorrGrinnNetwork(datNormX, datNormY, corrCoef, pval, method, returnAs, sourceTo, targetTo, filterSource)
-#'@param datNormX data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
+#'@usage fetchCorrGrinnNetwork(datX, datY, corrCoef, pval, method, returnAs, xTo, yTo, filterSource)
+#'@param datX data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
-#'@param datNormY data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
-#'Use the same format as \code{datNormX} or it can be NULL. See below for details.
+#'@param datY data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
+#'Use the same format as \code{datX} or it can be NULL. See below for details.
 #'@param corrCoef numerical value to define the minimum value of absolute correlation, from 0 to 1, to include edges in the output.
 #'@param pval numerical value to define the maximum value of pvalues, to include edges in the output.
 #'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman" (default), see \code{\link{cor}}.  
 #'@param returnAs string of output type. Specify the type of the returned network. 
 #'It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js
-#'@param sourceTo string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.
-#'@param targetTo string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.
-#'@param filterSource string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
+#'@param xTo string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.
+#'@param yTo string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details. 
+#'@param filterSource string or list of pathway databases. The argument is required, if \code{xTo} or \code{yTo = "pathway"}.
 #'The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").
-#'@details datNormX and datNormY are matrices in which rows are samples and columns are entities.
-#'If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed.
+#'@details datX and datY are matrices in which rows are samples and columns are entities. 
+#'
+#'If datY is given, then the correlations between the columns of datX and the columns of datY are computed.
 #'In this case: 
 #'
-#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{sourceTo}
+#'- The correlation network can be expand from datX (by providing a value to \code{xTo}) or datY (by providing a value to \code{yTo}) or both entities to the specified nodetype.
 #'
-#'- The correlation network can be expand from datNormY entites to a specific node type, by providing a value to \code{targetTo}
-#'
-#'Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed. 
+#'Otherwise if datY is not given, the correlations of the columns of datX are computed. 
 #'In this case:
 #'
-#'- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to \code{targetTo} and leave \code{sourceTo = NULL}.
-#'The column names of both datNormX and datNormY are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
+#'- The correlation network can be expand from datX entites to a specific nodetype, by providing a value to \code{xTo}.
+#'
+#'If \code{xTo} or \code{yTo} or both is given, the columns of both datX and datY are required to use grinn ids for extended queries on the Grinn internal database, see \code{\link{convertToGrinnID}} for id conversion.
+#'
+#'If \code{xTo} = NULL and \code{yTo} = NULL, only the correlation network will be returned.
 #'@return list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing
 #'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@references Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559 
 #'@references Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
 #'@references Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
 #'@export
-#'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{fetchCorrNetwork}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
+#'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Compute a correlation network of metabolites and expand to a grinn network of metabolite-protein
 #'dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
 #'colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
-#'result <- fetchCorrGrinnNetwork(datNormX=dummy, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab", targetTo="protein")
+#'result <- fetchCorrGrinnNetwork(datX=dummy, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab", xTo="protein")
 #'library(igraph)
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Compute a correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene
@@ -56,37 +57,29 @@
 #'colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
 #'dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
 #'colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
-#'result <- fetchCorrGrinnNetwork(datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="json", sourceTo="pathway", targetTo="gene")
+#'result <- fetchCorrGrinnNetwork(datX=dummyX, datY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="json", xTo="pathway", yTo="gene")
 
-fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e-9, method="spearman", returnAs="tab", 
-                                  sourceTo=NULL, targetTo=NULL, filterSource=list()){
-  corrnw = fetchCorrNetwork(datNormX=datNormX,datNormY=datNormY,corrCoef=corrCoef,pval=pval,method=method,returnAs="tab")
+fetchCorrGrinnNetwork <- function(datX, datY=NULL, corrCoef=0.5, pval=1e-9, method="spearman", returnAs="tab", 
+                                  xTo=NULL, yTo=NULL, filterSource=list()){
+  corrnw = fetchCorrNetwork(datX=datX,datY=datY,corrCoef=corrCoef,pval=pval,method=method,returnAs="tab")
   if(nrow(corrnw$nodes)>0){
     nodetypes = tolower(unique(corrnw$nodes$nodetype))
     if(length(nodetypes)>1){#if there are two data types
-      #basicnw1 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[1]), 1],from=nodetypes[1],
-      #                             to=nodetypes[2],filterSource=list(),dbXref="grinn") #relations between datasets
-      #basicnw2 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
-      #                             to=nodetypes[1],filterSource=list(),dbXref="grinn") #relations between datasets
-      #basicnw3 = rbind(basicnw1$edges,basicnw2$edges) #collect all edges
-      #basicnw3 = basicnw3[duplicated(basicnw3[,1:2]),] #choose overlapping edges
-      #basicnwNodes = rbind(basicnw1$nodes,basicnw2$nodes) #collect all nodes
-      #basicnwNodes = basicnwNodes[duplicated(basicnwNodes[,1]),] #choose overlapping nodes
-      if(!is.null(sourceTo)){
+      if(!is.null(xTo)){
         basicnw4 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[1]), 1],from=nodetypes[1],
-                                   to=sourceTo,filterSource=filterSource,dbXref="grinn") #relations sources to others
-        basicnwNodes = basicnw4$nodes #collect all nodes
-        #basicnwNodes = rbind(basicnwNodes,basicnw4$nodes) #collect all nodes
+                                   to=xTo,filterSource=filterSource,dbXref="grinn") #relations sources to others
       }else{
-        basicnw4 = data.frame()
-        basicnwNodes = data.frame()
+        basicnw4 = list(nodes=data.frame(),edges=data.frame())
       }
-      basicnw5 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
-                                   to=targetTo,filterSource=filterSource,dbXref="grinn") #relations from targets to others
-      basicnwNodes = rbind(basicnwNodes,basicnw5$nodes) #collect all nodes
+      if(!is.null(yTo)){
+        basicnw5 = fetchGrinnNetwork(txtInput=corrnw$nodes[which(tolower(corrnw$nodes$nodetype)==nodetypes[2]), 1],from=nodetypes[2],
+                                     to=yTo,filterSource=filterSource,dbXref="grinn") #relations from targets to others
+      }else{
+        basicnw5 = list(nodes=data.frame(),edges=data.frame())
+      }
+      basicnwNodes = rbind(basicnw4$nodes,basicnw5$nodes) #collect all nodes
       basicnwEdges = rbind(basicnw4$edges,basicnw5$edges) #collect all edges
-      #basicnwEdges = rbind(basicnw3,basicnw4$edges,basicnw5$edges) #collect all edges
-      if(!is.null(basicnwEdges)){
+      if(nrow(basicnwEdges)>0){
         basicnwEdges = basicnwEdges[!duplicated(basicnwEdges[,1:ncol(basicnwEdges)]),] #remove duplicated edges
         basicnwNodes = basicnwNodes[!duplicated(basicnwNodes[,1]),] #remove duplicated nodes
         basicnw = list(nodes=basicnwNodes, edges=basicnwEdges)
@@ -94,7 +87,11 @@ fetchCorrGrinnNetwork <- function(datNormX, datNormY=NULL, corrCoef=0.5, pval=1e
         basicnw = list(nodes=data.frame(),edges=data.frame())
       }
     }else{#if there is only one data type
-      basicnw = fetchGrinnNetwork(txtInput=corrnw$nodes$id,from=nodetypes,to=targetTo,filterSource=filterSource,dbXref="grinn")
+      if(!is.null(xTo)){
+        basicnw = fetchGrinnNetwork(txtInput=corrnw$nodes$id,from=nodetypes,to=xTo,filterSource=filterSource,dbXref="grinn")
+      }else{
+        basicnw = list(nodes=data.frame(),edges=data.frame())
+      }
     }
     #collect node info
     corrattb = data.frame()

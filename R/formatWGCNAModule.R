@@ -7,7 +7,7 @@
 #'Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
 #'@seealso \code{\link{exportNetworkToCytoscape}}, \code{\link{TOMsimilarityFromExpr}}, \code{fetchGrinnModuNetwork}, \code{fetchModuGrinnNetwork}, \code{fetchWGCNAModule}
 
-formatWGCNAModule <- function(datNorm, softPower, mdColors, threshold, nodetype, returnAs)
+formatWGCNAModule <- function(datX, softPower, mdColors, threshold, nodetype, returnAs)
 { 
   #Let users enter module color(s) they want at the terminal.
   cat("Waiting for user response ...\n")
@@ -15,11 +15,11 @@ formatWGCNAModule <- function(datNorm, softPower, mdColors, threshold, nodetype,
   modules = unlist(strsplit(md, '\\s+'))
   cat("Generating output from the selected module(s) ...\n")
   #Select entities of wanted module(s)
-  entities = colnames(datNorm)
+  entities = colnames(datX)
   inModule = is.finite(match(mdColors, modules))
   modEntities = entities[inModule]
   #Calculate topological overlap
-  TOM = WGCNA::TOMsimilarityFromExpr(datNorm, power=softPower)
+  TOM = WGCNA::TOMsimilarityFromExpr(datX, power=softPower)
   #Select the corresponding Topological Overlap
   modTOM = TOM[inModule, inModule]
   dimnames(modTOM) = list(modEntities, modEntities)

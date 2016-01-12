@@ -2,9 +2,9 @@
 % Please edit documentation in R/fetchGrinnModuNetwork.R
 \name{fetchGrinnModuNetwork}
 \alias{fetchGrinnModuNetwork}
-\title{Combine a grinn network queried from grinn internal database to a network module correlated to a phenotypic feature}
+\title{Combine a grinn network queried from Grinn internal database to a network module correlated to a phenotypic feature}
 \usage{
-fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNorm, datPheno, sfPower, minModuleSize, threshold)
+fetchGrinnModuNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datX, datPheno, sfPower, minModuleSize, threshold)
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
@@ -24,8 +24,7 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
 
-\item{datNorm}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
-The column names of datNorm are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
+\item{datX}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column.}
 
 \item{datPheno}{data frame containing phenotypic data e.g. weight, age, insulin sensitivity. Columns correspond to phenotypes and rows to samples e.g. normals, tumors.}
@@ -44,16 +43,33 @@ from the list of keywords, input omics data e.g. normalized expression data or m
 
 1. Build an integrated network (grinn network) by connecting these keywords to a specified node type, see \code{\link{fetchGrinnNetwork}}.
 The keywords can be any of these node types: metabolite, protein, gene and pathway.
-Grinn internal database contains the networks of the following types that can be quried: 
+The Grinn internal database contains the networks of the following types that can be quried: 
 metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway. 
 
-2. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight.
-The network module is the output of function \code{fetchWGCNAModule}. The function wraps around important aspects of \pkg{WGCNA} including 
-\code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
+2. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight. 
+The function wraps around important aspects of \pkg{WGCNA} including \code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
 These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations.
-A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAModule}}. 
+A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details below. 
 
 3. Combine the grinn network to the network module.
+}
+\details{
+The function encapsulates several methods from \pkg{WGCNA} so that module-phenoty correlation analysis can be fasten. These methods include:
+
+- \code{pickSoftThreshold} estimates soft-thresholding powers from scale free topology to build the correlation network.
+
+- \code{blockwiseModules} automatically calculates a correlation network and detects modules.
+Modules are the areas of the network where nodes are densely connected based on their topological overlap measure, see \pkg{WGCNA} for more details. 
+Each module is labeled by color. By using the color, a module or the combination of modules can be selected ("enter color to the terminal"), for including in the network output.
+
+- Module-phenotype correlations and significances are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
+The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
+
+- \code{labeledHeatmap} plots a heatmap of module-phenotype correlations. A row is a module and a column is a phynotype. 
+Each cell presents the corresponding correlation and the pvalue inside parenthesis. Each cell is colored by correlation, red means positive and blue means negative correlation.
+
+- \code{exportNetworkToCytoscape} exports a network for using in Cytoscape (\url{http://cytoscape.org/}).
+The selected module is exported as the network output in which an edge will be included if it similarity threshold above the cutoff, see \code{threshold}.
 }
 \examples{
 # Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a correlation of metabolite module to phenotypic data
@@ -61,7 +77,7 @@ kw <- c('G160','G300','G371','G16414','G17191')
 library(grinn)
 data(dummy)
 data(dummyPheno)
-result <- fetchGrinnModuNetwork(txtInput=kw, from="metabolite", to="gene", datNorm=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2)
+result <- fetchGrinnModuNetwork(txtInput=kw, from="metabolite", to="gene", datX=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2)
 # enter module color(s) seperate by space:yellow brown purple
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
@@ -78,6 +94,6 @@ Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.ge
 }
 \seealso{
 \code{\link{cor}}, \code{\link{corPvalueStudent}}, \code{\link{pickSoftThreshold}}, \code{\link{blockwiseModules}}, \code{\link{labeledHeatmap}}, 
-\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchWGCNAModule}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
+\code{\link{exportNetworkToCytoscape}}, \code{\link{fetchGrinnNetwork}}, \url{http://js.cytoscape.org/}
 }
 

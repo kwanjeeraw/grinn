@@ -4,10 +4,10 @@
 \alias{fetchWGCNAModule}
 \title{Compute a network module correlated to a phenotypic feature}
 \usage{
-fetchWGCNAModule(datNorm, datPheno, sfPower, minModuleSize, threshold, returnAs)
+fetchWGCNAModule(datX, datPheno, sfPower, minModuleSize, threshold, returnAs)
 }
 \arguments{
-\item{datNorm}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
+\item{datX}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column.}
 
 \item{datPheno}{data frame containing phenotypic data e.g. weight, age, insulin sensitivity. Columns correspond to phenotypes and rows to samples e.g. normals, tumors.}
@@ -50,10 +50,10 @@ The selected module is exported as the network output in which an edge will be i
 }
 \examples{
 # Compute a correlation of metabolite module to phenotypic data
-library(grinn)
-data(dummy)
-data(dummyPheno)
-result <- fetchWGCNAModule(datNorm=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2)
+#library(grinn)
+#data(dummy)
+#data(dummyPheno)
+#result <- fetchWGCNAModule(datX=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2)
 # enter module color(s) seperate by space:yellow brown purple
 #library(igraph)
 #plot(graph.data.frame(result$edges[,1:2], directed=FALSE))

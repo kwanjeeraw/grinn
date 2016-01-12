@@ -6,14 +6,14 @@
 #'Grinn internal database contains the networks of the following types that can be quried: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway. 
 #'
-#'2. Compute a differential correlation network of input omics data from two conditions, see \code{datNormX1}, \code{datNormX2}, \code{datNormY1}, \code{datNormY2}.
+#'2. Compute a differential correlation network of input omics data from two conditions, see \code{datX1}, \code{datX2}, \code{datY1}, \code{datY2}.
 #'Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
 #'The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
 #'Then correlation coefficients are test for differential correlations using Fisher's z-test based on \pkg{DiffCorr}.
 #'The differential correlation network is created by function \code{fetchDiffCorrNetwork}.
 #'
 #'3. Combine the grinn network to the correlation network.
-#'@usage fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
+#'@usage fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datX1, datX2, datY1, datY2, pDiff, method)
 #'@param txtInput list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
 #'The keyword ids are from the specified database, see \code{dbXref}. Default is grinn id e.g. G371.
 #'@param from string of start node. It can be one of "metabolite","protein","gene","pathway".
@@ -25,15 +25,15 @@
 #'@param dbXref string of database name. Specify the database name used for the txtInput ids, see \code{txtInput}. 
 #'It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 #'If pubchem is used, it has to be pubchem SID (substance ID).
-#'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
+#'@param datX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
-#'@param datNormX2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
-#'Use the same format as \code{datNormX1}.
-#'@param datNormY1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
-#'Use the same format as \code{datNormX1}. If there is only one type of dataset, it can be NULL. See below for details.
-#'@param datNormY2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
-#'Use the same format as \code{datNormX1}. If there is only one type of dataset, it can be NULL. See below for details.
+#'@param datX2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
+#'Use the same format as \code{datX1}.
+#'@param datY1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
+#'Use the same format as \code{datX1}. If there is only one type of dataset, it can be NULL. See below for details.
+#'@param datY2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
+#'Use the same format as \code{datX1}. If there is only one type of dataset, it can be NULL. See below for details.
 #'@param pDiff numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.
 #'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see \code{\link{cor}}.  
 #'@details To calculate the differential correlation network, require the input data from two conditions; 1 and 2. 
@@ -59,7 +59,7 @@
 #'dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
 #'colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 #'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-#'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05)
+#'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datX1=dummyX1, datX2=dummyX2, pDiff=0.05)
 #'library(igraph)
 #'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites and proteins
@@ -75,11 +75,11 @@
 #'dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
 #'colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
 #'rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
-#'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05)
+#'result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datX1=dummyX1, datX2=dummyX2, datY1=dummyY1, datY2=dummyY2, pDiff=0.05)
 
-fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datNormX1=datNormX1, datNormX2=datNormX2, datNormY1=NULL, datNormY2=NULL, pDiff=1e-4, method="spearman"){
+fetchGrinnDiffCorrNetwork <- function(txtInput, from, to, filterSource=list(), returnAs="tab", dbXref="grinn", datX1=datX1, datX2=datX2, datY1=NULL, datY2=NULL, pDiff=1e-4, method="spearman"){
   basicnw = fetchGrinnNetwork(txtInput=txtInput,from=from,to=to,filterSource=filterSource,returnAs=returnAs,dbXref=dbXref)
-  corrnw = fetchDiffCorrNetwork(datNormX1=datNormX1,datNormY1=datNormY1,datNormX2=datNormX2,datNormY2=datNormY2,pDiff=pDiff,method=method,returnAs=returnAs)
+  corrnw = fetchDiffCorrNetwork(datX1=datX1,datY1=datY1,datX2=datX2,datY2=datY2,pDiff=pDiff,method=method,returnAs=returnAs)
   if(nrow(corrnw$nodes)>0){
     #collect node info
     corrattb = data.frame()

@@ -2,13 +2,13 @@
 % Please edit documentation in R/fetchModuGrinnNetwork.R
 \name{fetchModuGrinnNetwork}
 \alias{fetchModuGrinnNetwork}
-\title{Compute a network module correlated to a phenotypic feature and expand the network with information from grinn internal database}
+\title{Compute a network module correlated to a phenotypic feature and expand the network with information from Grinn internal database}
 \usage{
-fetchModuGrinnNetwork(datNorm, datPheno, sfPower, minModuleSize, threshold, returnAs, targetTo, filterSource)
+fetchModuGrinnNetwork(datX, datPheno, sfPower, minModuleSize, threshold, returnAs, xTo, filterSource)
 }
 \arguments{
-\item{datNorm}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
-The column names of datNorm are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
+\item{datX}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
+The column names of datX are required to use grinn ids. \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column.}
 
 \item{datPheno}{data frame containing phenotypic data e.g. weight, age, insulin sensitivity. Columns correspond to phenotypes and rows to samples e.g. normals, tumors.}
@@ -22,9 +22,9 @@ Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g.
 \item{returnAs}{string of output type. Specify the type of the returned network. 
 It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js}
 
-\item{targetTo}{string of node type. It can be one of "metabolite","protein","gene","pathway". By default, the network module will expand to pathways.}
+\item{xTo}{string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.}
 
-\item{filterSource}{string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{targetTo = "pathway"}.
+\item{filterSource}{string or list of pathway databases. The argument is required, if \code{sourceTo} or \code{xTo = "pathway"}.
 The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").}
 }
 \value{
@@ -34,22 +34,44 @@ list of nodes and edges. The list is with the following componens: edges and nod
 from input omics data e.g. normalized expression data or metabolomics data, and phenotypic data it is a one step function to:
 
 1. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight.
-The network module is the output of function \code{fetchWGCNAModule}. The function wraps around important aspects of \pkg{WGCNA} including 
-\code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
+The function wraps around important aspects of \pkg{WGCNA} including \code{blockwiseModules}, \code{cor}, \code{corPvalueStudent}, \code{labeledHeatmap}.
 These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations.
-A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in \code{\link{fetchWGCNAModule}}.
+A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details below.
 
-2. Expand the network module using information from Grinn internal database.
+2. Expand the network module using information from the Grinn internal database.
 The nodes of the network module are the keywords input to query the grinn database.
-Grinn internal database contains the networks of the following types that can get expanded to: 
+The Grinn internal database contains the networks of the following types that can get expanded to: 
 metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also \code{\link{fetchGrinnNetwork}}.
+}
+\details{
+datX is a matrix in which rows are samples and columns are entities. 
+The network can be expand from datX entities to the specified nodetype by providing a value to \code{xTo}.
+
+If \code{xTo} = NULL, only the network module will be returned.
+
+The function encapsulates several methods from \pkg{WGCNA} so that module-phenoty correlation analysis can be fasten. These methods include:
+
+- \code{pickSoftThreshold} estimates soft-thresholding powers from scale free topology to build the correlation network.
+
+- \code{blockwiseModules} automatically calculates a correlation network and detects modules.
+Modules are the areas of the network where nodes are densely connected based on their topological overlap measure, see \pkg{WGCNA} for more details. 
+Each module is labeled by color. By using the color, a module or the combination of modules can be selected ("enter color to the terminal"), for including in the network output.
+
+- Module-phenotype correlations and significances are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
+The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
+
+- \code{labeledHeatmap} plots a heatmap of module-phenotype correlations. A row is a module and a column is a phynotype. 
+Each cell presents the corresponding correlation and the pvalue inside parenthesis. Each cell is colored by correlation, red means positive and blue means negative correlation.
+
+- \code{exportNetworkToCytoscape} exports a network for using in Cytoscape (\url{http://cytoscape.org/}).
+The selected module is exported as the network output in which an edge will be included if it similarity threshold above the cutoff, see \code{threshold}.
 }
 \examples{
 # Compute a correlation of metabolite module to phenotypic data and expand to a grinn network metabolite-pathway, using information from REACTOME and KEGG only
 library(grinn)
 data(dummy)
 data(dummyPheno)
-result <- fetchModuGrinnNetwork(datNorm=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2, returnAs="tab", targetTo="pathway", filterSource=c("REACTOME","KEGG"))
+result <- fetchModuGrinnNetwork(datX=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2, returnAs="tab", xTo="pathway", filterSource=c("REACTOME","KEGG"))
 #enter module color(s) seperate by space:yellow brown purple
 #library(igraph)
 #plot(graph.data.frame(result$edges[,1:2], directed=FALSE))

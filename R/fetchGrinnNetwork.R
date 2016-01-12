@@ -1,7 +1,7 @@
-#'Compute an integrated network using information from grinn internal database
+#'Compute an integrated network using information from Grinn internal database
 #'@description from the list of keywords, build an integrated network (grinn network) by connecting these keywords to a specified node type.
 #'The keywords can be any of these node types: metabolite, protein, gene and pathway.
-#'Grinn internal database contains the networks of the following types that can be quried: 
+#'The Grinn internal database contains the networks of the following types that can be quried: 
 #'metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
 #'@usage fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)
 #'@param txtInput vector of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 

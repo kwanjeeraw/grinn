@@ -4,21 +4,21 @@
 \alias{fetchDiffCorrNetwork}
 \title{Compute a differential correlation network}
 \usage{
-fetchDiffCorrNetwork(datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method, returnAs)
+fetchDiffCorrNetwork(datX1, datX2, datY1, datY2, pDiff, method, returnAs)
 }
 \arguments{
-\item{datNormX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
+\item{datX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.}
 
-\item{datNormX2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
-Use the same format as \code{datNormX1}.}
+\item{datX2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
+Use the same format as \code{datX1}.}
 
-\item{datNormY1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
-Use the same format as \code{datNormX1}. If there is only one type of dataset, \code{datNormY1} must be \code{datNormY1 = NULL}. See below for details.}
+\item{datY1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
+Use the same format as \code{datX1}. If there is only one type of dataset, \code{datY1} must be \code{datY1 = NULL}. See below for details.}
 
-\item{datNormY2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
-Use the same format as \code{datNormX1}. If there is only one type of dataset, \code{datNormY2} must be \code{datNormY2 = NULL}. See below for details.}
+\item{datY2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
+Use the same format as \code{datX1}. If there is only one type of dataset, \code{datY2} must be \code{datY2 = NULL}. See below for details.}
 
 \item{pDiff}{numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.}
 
@@ -47,29 +47,29 @@ If grinn functions will be used in further analyses, the column names of both da
 }
 \examples{
 # Compute a differential correlation network of metabolites
-dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
-colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
-rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
-dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
-colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
-rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchDiffCorrNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=NULL, datNormY2=NULL, pDiff=0.05, method="spearman", returnAs="tab")
-library(igraph)
-plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
+#dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
+#colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
+#rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+#dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
+#colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
+#rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+#result <- fetchDiffCorrNetwork(datX1=dummyX1, datX2=dummyX2, datY1=NULL, datY2=NULL, pDiff=0.05, method="spearman", returnAs="tab")
+#library(igraph)
+#plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Compute a differential correlation network of metabolites and proteins
-dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
-colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
-rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
-dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
-colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
-rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
-colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
-rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
-dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
-colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
-rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchDiffCorrNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab")
+#dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
+#colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
+#rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+#dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
+#colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
+#rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+#dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
+#colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+#rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
+#dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
+#colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+#rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
+#result <- fetchDiffCorrNetwork(datX1=dummyX1, datX2=dummyX2, datY1=dummyY1, datY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab")
 }
 \author{
 Kwanjeera W \email{kwanich@ucdavis.edu}

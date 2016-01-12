@@ -4,15 +4,15 @@
 \alias{fetchCorrNetwork}
 \title{Compute a weighted correlation network}
 \usage{
-fetchCorrNetwork(datNormX, datNormY, corrCoef, pval, method, returnAs)
+fetchCorrNetwork(datX, datY, corrCoef, pval, method, returnAs)
 }
 \arguments{
-\item{datNormX}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
+\item{datX}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. 
 Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. 
 Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.}
 
-\item{datNormY}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
-Use the same format as \code{datNormX}. If there is only one type of dataset, \code{datNormY} must be \code{datNormY = NULL}. See below for details.}
+\item{datY}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
+Use the same format as \code{datX}. If there is only one type of dataset, \code{datY} must be \code{datY = NULL}. See below for details.}
 
 \item{corrCoef}{numerical value to define the minimum value of absolute correlation, from 0 to 1, to include edges in the output.}
 
@@ -30,28 +30,28 @@ list of nodes and edges. The list is with the following componens: edges and nod
 from the input data e.g. normalized expression data, build the correlation network based on \pkg{WGCNA}. 
 Correlation coefficients, pvalues and relation directions are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
 The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
-datNormX and datNormY are matrices in which rows are samples and columns are entities.
+datX and datY are matrices in which rows are samples and columns are entities.
 }
 \details{
-datNormX and datNormY are matrices in which rows are samples and columns are entities.
-If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed.
-Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed. 
-If grinn functions will be used in further analyses, the column names of both datNormX and datNormY are suggested to use grinn ids. 
+datX and datY are matrices in which rows are samples and columns are entities.
+If datY is given, then the correlations between the columns of datX and the columns of datY are computed.
+Otherwise if datY is not given, the correlations of the columns of datX are computed. 
+If grinn functions will be used in further analyses, the column names of both datX and datY are suggested to use grinn ids. 
 \code{convertToGrinnID} is provided for id conversion, see \code{\link{convertToGrinnID}}.
 }
 \examples{
 # Compute a correlation network of metabolites
-dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
-colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
-result <- fetchCorrNetwork(datNormX=dummy, datNormY=NULL, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab")
-library(igraph)
-plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
+#dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
+#colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
+#result <- fetchCorrNetwork(datX=dummy, datY=NULL, corrCoef=0.7, pval=1e-12, method="spearman", returnAs="tab")
+#library(igraph)
+#plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Compute a correlation network of metabolites and proteins
-dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
-colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
-dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
-colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
-result <- fetchCorrNetwork(datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="tab")
+#dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
+#colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
+#dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
+#colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
+#result <- fetchCorrNetwork(datX=dummyX, datY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman", returnAs="tab")
 }
 \author{
 Kwanjeera W \email{kwanich@ucdavis.edu}

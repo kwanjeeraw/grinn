@@ -4,16 +4,16 @@
 #'Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
 #'The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
 #'Then correlation coefficients are test for differential correlations using Fisher's z-test based on \pkg{DiffCorr}.
-#'@usage fetchDiffCorrNetwork(datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method, returnAs)
-#'@param datNormX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
+#'@usage fetchDiffCorrNetwork(datX1, datX2, datY1, datY2, pDiff, method, returnAs)
+#'@param datX1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 #'Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 #'Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.
-#'@param datNormX2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
-#'Use the same format as \code{datNormX1}.
-#'@param datNormY1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
-#'Use the same format as \code{datNormX1}. If there is only one type of dataset, \code{datNormY1} must be \code{datNormY1 = NULL}. See below for details.
-#'@param datNormY2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
-#'Use the same format as \code{datNormX1}. If there is only one type of dataset, \code{datNormY2} must be \code{datNormY2 = NULL}. See below for details.
+#'@param datX2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
+#'Use the same format as \code{datX1}.
+#'@param datY1 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
+#'Use the same format as \code{datX1}. If there is only one type of dataset, \code{datY1} must be \code{datY1 = NULL}. See below for details.
+#'@param datY2 data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
+#'Use the same format as \code{datX1}. If there is only one type of dataset, \code{datY2} must be \code{datY2 = NULL}. See below for details.
 #'@param pDiff numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.
 #'@param method string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see \code{\link{cor}}.  
 #'@param returnAs string of output type. Specify the type of the returned network. 
@@ -30,39 +30,38 @@
 #'@references Dudoit S., Yang YH., Callow MJ. and Speed TP. (2002) Statistical methods for identifying differentially expressed genes in replicated cDNA microarray experiments, STATISTICA SINICA, 12:111
 #'@references Langfelder P. and Horvath S. Tutorials for the WGCNA package \url{http://labs.genetics.ucla.edu/horvath/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/index.html}
 #'@references Fukushima A. (2013) DiffCorr: an R package to analyze and visualize differential correlations in biological networks. Gene, 10;518(1):209-14.
-#'@export
 #'@seealso \code{\link{cor}}, \code{\link{corPvalueStudent}}, \pkg{\link{DiffCorr}}, \url{http://js.cytoscape.org/}
 #'@examples
 #'# Compute a differential correlation network of metabolites
-#'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
-#'colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
-#'rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
-#'dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
-#'colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
-#'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-#'result <- fetchDiffCorrNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=NULL, datNormY2=NULL, pDiff=0.05, method="spearman", returnAs="tab")
-#'library(igraph)
-#'plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
+#'#dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
+#'#colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
+#'#rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+#'#dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
+#'#colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
+#'#rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+#'#result <- fetchDiffCorrNetwork(datX1=dummyX1, datX2=dummyX2, datY1=NULL, datY2=NULL, pDiff=0.05, method="spearman", returnAs="tab")
+#'#library(igraph)
+#'#plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 #'# Compute a differential correlation network of metabolites and proteins
-#'dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
-#'colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
-#'rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
-#'dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
-#'colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
-#'rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-#'dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
-#'colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
-#'rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
-#'dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
-#'colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
-#'rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
-#'result <- fetchDiffCorrNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab")
+#'#dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
+#'#colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
+#'#rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
+#'#dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
+#'#colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
+#'#rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
+#'#dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
+#'#colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+#'#rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
+#'#dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
+#'#colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
+#'#rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
+#'#result <- fetchDiffCorrNetwork(datX1=dummyX1, datX2=dummyX2, datY1=dummyY1, datY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab")
 
-fetchDiffCorrNetwork <- function(datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method, returnAs){
-  n1 = nrow(datNormX1) - 1 #number of samples in condition 1, remove first row = it is nodetype
-  n2 = nrow(datNormX2) - 1 #number of samples in condition 2, remove first row = it is nodetype
-  corrnw1 = getCorrAdjacency(datNormX=datNormX1,datNormY=datNormY1,method=method)
-  corrnw2 = getCorrAdjacency(datNormX=datNormX2,datNormY=datNormY2,method=method)
+fetchDiffCorrNetwork <- function(datX1, datX2, datY1, datY2, pDiff, method, returnAs){
+  n1 = nrow(datX1) - 1 #number of samples in condition 1, remove first row = it is nodetype
+  n2 = nrow(datX2) - 1 #number of samples in condition 2, remove first row = it is nodetype
+  corrnw1 = getCorrAdjacency(datX=datX1,datY=datY1,method=method)
+  corrnw2 = getCorrAdjacency(datX=datX2,datY=datY2,method=method)
   #transform corr_coef for testing, using equation from DiffCorr
   z1 = atanh(corrnw1$corr_coef)
   z2 = atanh(corrnw2$corr_coef)

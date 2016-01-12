@@ -4,15 +4,15 @@
 \alias{getCorrAdjacency}
 \title{compute correlation coefficients, pvalues and directions}
 \usage{
-getCorrAdjacency(datNormX, datNormY, method)
+getCorrAdjacency(datX, datY, method)
 }
 \description{
 compute correlation coefficients, pvalues and relation directions from normalized data 
 using \code{WGCNA::cor} and \code{WGCNA::corPvalueStudent} to return outputs for further uses by 
 \code{fetchCorrNetwork}, \code{fetchDiffCorrNetwork}.
-datNormX and datNormY are matrices in which rows are samples and columns are entities, require the first row to specify entity types e.g. metabolite.
-If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed.
-Otherwise the correlations of the columns of datNormX are computed.
+datX and datY are matrices in which rows are samples and columns are entities, require the first row to specify entity types e.g. metabolite.
+If datY is given, then the correlations between the columns of datX and the columns of datY are computed.
+Otherwise the correlations of the columns of datX are computed.
 }
 \references{
 Langfelder P. and Horvath S. (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9:559
@@ -40,6 +40,6 @@ formatting input data
 datPrt = t(datPrt)
 colnames(datPrt) = datPrt[1,]
 datPrt = datPrt[-1,]
-corAdj = getCorrAdjacency(datNormX=datMet, datNormY=datPrt, method="spearman")
+corAdj = getCorrAdjacency(datX=datMet, datY=datPrt, method="spearman")
 }
 

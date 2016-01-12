@@ -4,7 +4,7 @@
 \alias{fetchGrinnDiffCorrNetwork}
 \title{Combine a grinn network queried from grinn internal database to a differential correlation network}
 \usage{
-fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX1, datNormX2, datNormY1, datNormY2, pDiff, method)
+fetchGrinnDiffCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datX1, datX2, datY1, datY2, pDiff, method)
 }
 \arguments{
 \item{txtInput}{list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). 
@@ -24,18 +24,18 @@ It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the 
 It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn".
 If pubchem is used, it has to be pubchem SID (substance ID).}
 
-\item{datNormX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
+\item{datX1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. 
 Columns correspond to entities e.g. genes, metabolites, and rows to samples. 
 Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.}
 
-\item{datNormX2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
-Use the same format as \code{datNormX1}.}
+\item{datX2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. 
+Use the same format as \code{datX1}.}
 
-\item{datNormY1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
-Use the same format as \code{datNormX1}. If there is only one type of dataset, it can be NULL. See below for details.}
+\item{datY1}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
+Use the same format as \code{datX1}. If there is only one type of dataset, it can be NULL. See below for details.}
 
-\item{datNormY2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
-Use the same format as \code{datNormX1}. If there is only one type of dataset, it can be NULL. See below for details.}
+\item{datY2}{data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition.
+Use the same format as \code{datX1}. If there is only one type of dataset, it can be NULL. See below for details.}
 
 \item{pDiff}{numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.}
 
@@ -53,7 +53,7 @@ The keywords can be any of these node types: metabolite, protein, gene and pathw
 Grinn internal database contains the networks of the following types that can be quried: 
 metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway. 
 
-2. Compute a differential correlation network of input omics data from two conditions, see \code{datNormX1}, \code{datNormX2}, \code{datNormY1}, \code{datNormY2}.
+2. Compute a differential correlation network of input omics data from two conditions, see \code{datX1}, \code{datX2}, \code{datY1}, \code{datY2}.
 Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions \code{cor} and \code{corPvalueStudent}.
 The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
 Then correlation coefficients are test for differential correlations using Fisher's z-test based on \pkg{DiffCorr}.
@@ -77,7 +77,7 @@ rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
 colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05)
+result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="gene", datX1=dummyX1, datX2=dummyX2, pDiff=0.05)
 library(igraph)
 plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
 # Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a differential correlation network of metabolites and proteins
@@ -93,7 +93,7 @@ rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
 dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
 colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
 rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05)
+result <- fetchGrinnDiffCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datX1=dummyX1, datX2=dummyX2, datY1=dummyY1, datY2=dummyY2, pDiff=0.05)
 }
 \author{
 Kwanjeera W \email{kwanich@ucdavis.edu}

@@ -4,7 +4,7 @@
 \alias{formatWGCNAModule}
 \title{\code{formatWGCNAModule} format resulting WGCNA module}
 \usage{
-formatWGCNAModule(datNorm, softPower, mdColors, threshold, nodetype, returnAs)
+formatWGCNAModule(datX, softPower, mdColors, threshold, nodetype, returnAs)
 }
 \description{
 Modify the R codes from WGCNA tutorials, to return module output for further uses by 

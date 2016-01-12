@@ -2,7 +2,7 @@
 % Please edit documentation in R/fetchGrinnNetwork.R
 \name{fetchGrinnNetwork}
 \alias{fetchGrinnNetwork}
-\title{Compute an integrated network using information from grinn internal database}
+\title{Compute an integrated network using information from Grinn internal database}
 \usage{
 fetchGrinnNetwork(txtInput, from, to, filterSource, returnAs, dbXref)
 }
@@ -30,7 +30,7 @@ list of nodes and edges. The list is with the following componens: edges and nod
 \description{
 from the list of keywords, build an integrated network (grinn network) by connecting these keywords to a specified node type.
 The keywords can be any of these node types: metabolite, protein, gene and pathway.
-Grinn internal database contains the networks of the following types that can be quried: 
+The Grinn internal database contains the networks of the following types that can be quried: 
 metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
 }
 \examples{
