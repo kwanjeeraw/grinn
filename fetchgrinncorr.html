@@ -18,54 +18,45 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="fetchGrinnCorrNetwork" class="anchor" href="#fetchGrinnCorrNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchGrinnCorrNetwork - Reconstruct a grinn network using information from grinn internal database, then compute and combine with a weighted correlation network</h2>
+          <h2><a id="fetchGrinnCorrNetwork" class="anchor" href="#fetchGrinnCorrNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchGrinnCorrNetwork - Combine a grinn network queried from Grinn internal database to a weighted correlation network</h2>
           <h3>Description</h3>
           <p>from the list of keywords and input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:<br>
-          1. Build an integrated network (grinn network) by connecting these keywords to a specified node type, see fetchGrinnNetwork.
-          The keywords can be any of these node types: metabolite, protein, gene and pathway. Grinn internal database contains the networks of the following types that can be quried:
-          metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
-          <br>2. Compute a weighted correlation network of input omics data, see datNormX and datNormY.
-          Correlation coefficients, pvalues and relation directions are calculated using WGCNA functions cor and corPvalueStudent.
-          The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation),
-          with numbers close to 1 or -1, meaning very closely correlated. Then the correlation network is built by function fetchCorrNetwork.
+          1. Build an integrated network (grinn network) by connecting these keywords to a specified node type, see fetchGrinnNetwork. The keywords can be any of these node types: metabolite, protein, gene and pathway. The Grinn internal database contains the networks of the following types that can be quried: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
+          <br>2. Compute a weighted correlation network of input omics data, see datX and datY. Correlation coefficients, pvalues and relation directions are calculated using WGCNA functions cor and corPvalueStudent. The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated.
           <br>3. Combine the grinn network to the correlation network.</p>
           <h3>Usage</h3>
-          <p>fetchGrinnCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datNormX, datNormY, corrCoef, pval, method)</p>
+          <p>fetchGrinnCorrNetwork(txtInput, from, to, filterSource, returnAs, dbXref, datX, datY, corrCoef, pval, method)</p>
           <h3>Arguments</h3>
           <table>
-            <tr><td>txtInput</td><td>list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. X371.</td></tr>
+            <tr><td>txtInput</td><td>list of keywords containing keyword ids e.g. txtInput = list('id1', 'id2'). The keyword ids are from the specified database, see dbXref. Default is grinn id e.g. G371.</td></tr>
             <tr><td>from</td><td>string of start node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
             <tr><td>to</td><td>string of end node. It can be one of "metabolite","protein","gene","pathway".</td></tr>
             <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if from or to = "pathway", see from and to. The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
             <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
             <tr><td>dbXref</td><td>string of database name. Specify the database name used for the txtInput ids, see txtInput. It can be one of "grinn","chebi","kegg","pubchem","inchi","hmdb","smpdb","reactome","uniprot","ensembl","entrezgene". Default is "grinn". If pubchem is used, it has to be pubchem SID (substance ID).</td></tr>
-            <tr><td>datNormX</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.</td></tr>
-            <tr><td>datNormY</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. Use the same format as datNormX or it can be NULL. See below for details.</td></tr>
+            <tr><td>datX</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors. Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.</td></tr>
+            <tr><td>datY</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities. Use the same format as datNormX or it can be NULL. See below for details.</td></tr>
             <tr><td>corrCoef</td><td>numerical value to define the minimum value of absolute correlation, from 0 to 1, to include edges in the output.</td></tr>
             <tr><td>pval</td><td>numerical value to define the maximum value of pvalues, to include edges in the output.</td></tr>
             <tr><td>method</td><td>string to define which correlation is to be used. It can be one of "pearson","kendall","spearman" (default), see cor.</td></tr>
           </table>   
           <h3>Details</h3>
-          <p>datNormX and datNormY are matrices in which rows are samples and columns are entities. If datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed. Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed.
-          The column names of both datNormX and datNormY are required to use grinn ids. convertToGrinnID is provided for id conversion, see convertToGrinnID.</p>
+          <p>datX and datY are matrices in which rows are samples and columns are entities. If datY is given, then the correlations between the columns of datX and the columns of datY are computed. Otherwise if datY is not given, the correlations of the columns of datX are computed.</p>
           <h3>Value</h3>
           <p>list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing</p>
           <h3>Examples</h3>
           <pre><code>
 # Create metabolite-gene network from the list of metabolites using grinn ids and combine the grinn network to a correlation network of metabolites
-kw <- c('X160','X300','X371')
+kw <- c('G160','G300','G371')
 dummy <- rbind(nodetype=rep("metabolite"),t(mtcars))
-colnames(dummy) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 28)))
-result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="gene", datNormX=dummy, corrCoef=0.7, pval=1e-10, method="spearman")
-library(igraph)
-plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
-
+colnames(dummy) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 28)))
+result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="gene", datX=dummy, corrCoef=0.7, pval=1e-10, method="spearman")
 # Create metabolite-pathway network from the list of metabolites using grinn ids and combine the grinn network to a correlation network of metabolites and proteins
 dummyX <- rbind(nodetype=rep("metabolite"),t(mtcars)[,1:16])
-colnames(dummyX) <- c('X1.1','X27967','X371','X4.1',paste0('X',sample(400:22000, 12)))
+colnames(dummyX) <- c('G1.1','G27967','G371','G4.1',paste0('G',sample(400:22000, 12)))
 dummyY <- rbind(nodetype=rep("protein"),t(mtcars)[,17:32])
 colnames(dummyY) <- c('P28845','P08235','Q08AG9','P80365',paste0('P',sample(10000:80000, 12)))
-result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datNormX=dummyX, datNormY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman")
+result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="pathway", datX=dummyX, datY=dummyY, corrCoef=0.7, pval=1e-4, method="spearman")
          </pre></code>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
           <p>Correlation-based analyses apply methods from the following publications:</p>
@@ -78,7 +69,7 @@ result <- fetchGrinnCorrNetwork(txtInput=kw, from="metabolite", to="pathway", da
           | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>
         <footer>
-          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          &copy;KW UC Davis, 2016, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
       </section>

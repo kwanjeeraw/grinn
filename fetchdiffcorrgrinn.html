@@ -18,58 +18,54 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="fetchDiffCorrGrinnNetwork" class="anchor" href="#fetchDiffCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchDiffCorrGrinnNetwork - Compute a differential correlation network and expand the network with information from grinn internal database</h2>
+          <h2><a id="fetchDiffCorrGrinnNetwork" class="anchor" href="#fetchDiffCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchDiffCorrGrinnNetwork - Compute a differential correlation network and expand the network with information from Grinn internal database</h2>
           <h3>Description</h3>
           <p>from input omics data e.g. normalized expression data or metabolomics data, it is a one step function to:<br>
-          1. Compute a differential correlation network of input omics data from two conditions, see datNormX1, datNormX2, datNormY1, datNormY2. Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions cor and corPvalueStudent. The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated. Then correlation coefficients are test for differential correlations using Fisher's z-test based on DiffCorr. The differential correlation network is created by function fetchDiffCorrNetwork.
-          <br>2. Expand the differential correlation network using information from grinn internal database. The nodes of the differential correlation network are the keywords input to query the grinn database. Grinn internal database contains the networks of the following types that can get expanded to: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also fetchGrinnNetwork.</p>
+          1. Compute a differential correlation network of input omics data from two conditions, see datX1, datX2, datY1, datY2. Correlation coefficients, pvalues and relation directions among entities in each condition are calculated using WGCNA functions cor and corPvalueStudent. The correlation coefficients are continuous values between -1 (negative correlation) and 1 (positive correlation), with numbers close to 1 or -1, meaning very closely correlated. Then correlation coefficients are test for differential correlations using Fisher's z-test based on DiffCorr.
+          <br>2. Expand the differential correlation network using information from the Grinn internal database. The nodes of the differential correlation network are the keywords input to query the grinn database. The Grinn internal database contains the networks of the following types that can get expanded to: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also fetchGrinnNetwork.</p>
           <h3>Usage</h3>
-          <p>fetchDiffCorrGrinnNetwork(datNormX1,  datNormX2, datNormY1, datNormY2, pDiff, method, returnAs, sourceTo, targetTo, filterSource)</p>
+          <p>fetchDiffCorrGrinnNetwork(datX1,  datX2, datY1, datY2, pDiff, method, returnAs, xTo, yTo, filterSource)</p>
           <h3>Arguments</h3>
           <table>
-            <tr><td>datNormX1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
+            <tr><td>datX1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition.
             Columns correspond to entities e.g. genes, metabolites, and rows to samples. Require 'nodetype' at the first row to indicate the type of entities in each column. See below for details.</td></tr>
-            <tr><td>datNormX2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datNormX1.</td></tr>
-            <tr><td>datNormY1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Use the same format as datNormX1.
+            <tr><td>datX2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datX1.</td></tr>
+            <tr><td>datY1</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of one condition. Use the same format as datX1.
             If there is only one type of dataset, it can be NULL. See below for details.</td></tr>
-            <tr><td>datNormY2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datNormX1.
+            <tr><td>datY2</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities of another condition. Use the same format as datX1.
             If there is only one type of dataset, it can be NULL. See below for details.</td></tr>
             <tr><td>pDiff</td><td>numerical value to define the maximum value of pvalues (pvalDiff), to include edges in the output.</td></tr>
             <tr><td>method</td><td>string to define which correlation is to be used. It can be one of "pearson","kendall","spearman", see cor.</td></tr>
             <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
-            <tr><td>sourceTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.</td></tr>
-            <tr><td>targetTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". By default, it will expand to pathways, see below for details.</td></tr>
+            <tr><td>xTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.</td></tr>
+            <tr><td>yTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.</td></tr>
             <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if sourceTo or targetTo = "pathway". The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
           </table>   
           <h3>Details</h3>
-          <p>To calculate the differential correlation network, require the input data from two conditions; 1 and 2. The input data are matrices in which rows are samples and columns are entities.
-          For each condition, if datNormY is given, then the correlations between the columns of datNormX and the columns of datNormY are computed before testing. In this case:
-          <br>- The differential correlation network can be expand from datNormX entites to a specific node type, by providing a value to sourceTo
-          <br>- The differential correlation network can be expand from datNormY entites to a specific node type, by providing a value to targetTo
-          <br>Otherwise if datNormY is not given, the correlations of the columns of datNormX are computed before testing. In this case:  
-          <br>- The correlation network can be expand from datNormX entites to a specific node type, by providing a value to targetTo and leave sourceTo = NULL.
-          The column names of the input data are required to use grinn ids. convertToGrinnID is provided for id conversion, see convertToGrinnID.</p>
+          <p>To calculate the differential correlation network, require the input data from two conditions; 1 and 2. The input data are matrices in which rows are samples and columns are entities. For each condition, if datY is given, then the correlations between the columns of datX and the columns of datY are computed before testing. In this case:
+          <br>- The differential correlation network can be expand from datX (by providing a value to xTo) or datY (by providing a value to yTo) or both entities to the specified nodetype.
+          <br>Otherwise if datY is not given, the correlations of the columns of datX are computed before testing. In this case:
+          <br>- The differential correlation network can be expand from datX entites to a specific nodetype, by providing a value to xTo.
+          <br>If xTo or yTo or both is given, the columns of both datX and datY are required to use grinn ids for extended queries on the Grinn internal database, see convertToGrinnID for id conversion.
+          <br>If xTo = NULL and yTo = NULL, only the correlation network will be returned.</p>
           <h3>Value</h3>
           <p>list of nodes and edges. The list is with the following componens: edges and nodes. Output includes correlation coefficients, pvalues and relation directions of each conditions, and the pvalues (pvalDiff) after testing. Return empty list if found nothing</p>
           <h3>Examples</h3>
           <pre><code>
 # Compute a differential correlation network of metabolites and expand to a grinn network of metabolite-protein
 dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,])
-colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,])
-colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1',letters[1:7])
+colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1',letters[1:7])
 rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, pDiff=0.05, method="spearman", returnAs="tab", targetTo="protein")
-library(igraph)
-plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
-
+result <- fetchDiffCorrGrinnNetwork(datX1=dummyX1, datX2=dummyX2, pDiff=0.05, method="spearman", returnAs="tab", xTo="protein")
 # Compute a differential correlation network of metabolites and proteins and expand to the grinn network of metabolite-pathway and protein-gene
 dummyX1 <- rbind(nodetype=rep("metabolite"),mtcars[1:16,1:5])
-colnames(dummyX1) <- c('X1.1','X27967','X371','X4.1','X16962')
+colnames(dummyX1) <- c('G1.1','G27967','G371','G4.1','G16962')
 rownames(dummyX1)[-1] <- paste0(rep("normal_"),1:16)
 dummyX2 <- rbind(nodetype=rep("metabolite"),mtcars[17:32,1:5])
-colnames(dummyX2) <- c('X1.1','X27967','X371','X4.1','X16962')
+colnames(dummyX2) <- c('G1.1','G27967','G371','G4.1','G16962')
 rownames(dummyX2)[-1] <- paste0(rep("cancer_"),1:16)
 dummyY1 <- rbind(nodetype=rep("protein"),mtcars[1:16,6:10])
 colnames(dummyY1) <- c('P28845','P08235','Q08AG9','P80365','P15538')
@@ -77,7 +73,7 @@ rownames(dummyY1)[-1] <- paste0(rep("normal_"),1:16)
 dummyY2 <- rbind(nodetype=rep("protein"),mtcars[17:32,6:10])
 colnames(dummyY2) <- c('P28845','P08235','Q08AG9','P80365','P15538')
 rownames(dummyY2)[-1] <- paste0(rep("cancer_"),1:16)
-result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNormY1=dummyY1, datNormY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab", sourceTo="pathway", targetTo="gene")
+result <- fetchDiffCorrGrinnNetwork(datX1=dummyX1, datX2=dummyX2, datY1=dummyY1, datY2=dummyY2, pDiff=0.05, method="spearman", returnAs="tab", xTo="pathway", yTo="gene")
          </pre></code>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
           <p>Correlation-based analyses apply methods from the following publications:</p>
@@ -91,7 +87,7 @@ result <- fetchDiffCorrGrinnNetwork(datNormX1=dummyX1, datNormX2=dummyX2, datNor
           | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>
         <footer>
-          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          &copy;KW UC Davis, 2016, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
       </section>

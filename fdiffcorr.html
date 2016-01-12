@@ -19,24 +19,24 @@
     <section class="main-content">
       <hr>
           <h2><a id="fetchDiffCorrGrinnNetwork" class="anchor" href="#fetchDiffCorrGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchDiffCorrGrinnNetwork</h2>
-          <p>This example shows how to compute a differential correlation network and expand the network with information from grinn internal database</p>
+          <p>This example shows how to compute a differential correlation network and expand the network with information from Grinn internal database</p>
           <ol>
             <li><b>INPUT</b><br>
             <p>The table summarizes important arguments</p>
             <table>
               <tr><th>Argument</th><th>Value</th><th>Description</th></tr>
-              <tr><td><em>datNormX1</em></td><td>data frame containing normalized-omic data of one condition</td><td>Columns correspond to entities e.g. genes and rows to samples.
+              <tr><td><em>datX1</em></td><td>data frame containing normalized-omic data of one condition</td><td>Columns correspond to entities e.g. genes and rows to samples.
               Require 'nodetype' at the first row to indicate the type of entities in each column.</td></tr>
-              <tr><td><em>datNormX2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.</td></tr>
-              <tr><td><em>datNormY1</em></td><td>data frame containing normalized-omic data of one condition</td><td>It uses the same format as <em>datNormX1</em>.
+              <tr><td><em>datX2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datX1</em>.</td></tr>
+              <tr><td><em>datY1</em></td><td>data frame containing normalized-omic data of one condition</td><td>It uses the same format as <em>datX1</em>.
               Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
-              <tr><td><em>datNormY2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datNormX1</em>.
+              <tr><td><em>datY2</em></td><td>data frame containing normalized-omic data of another condition</td><td>It uses the same format as <em>datX1</em>.
               Or it can be <em>NULL</em>, if there is only one omic data type</td></tr>
               <tr><td><em>pDiff</em></td><td>numerical value</td><td>The maximum pvalues (pvalDiff), to include edges in the output</td></tr>                        
-              <tr><td><em>sourceTo</em></td><td>entity type e.g. metabolite</td><td>The correlation network can be expand from <em>datNormX</em> entites to a specific entity type,
+              <tr><td><em>xTo</em></td><td>entity type e.g. metabolite</td><td>The correlation network can be expanded from <em>datX</em> entites to a specific entity type,
               by providing a value to <em>sourceTo</em></td></tr>
-              <tr><td><em>targetTo</em></td><td>entity type e.g. gene</td><td>The correlation network can be expand from <em>datNormY</em> entites (if not <em>NULL</em>) to a specific entity type,
-              by providing a value to <em>targetTo</em></td></tr>
+              <tr><td><em>yTo</em></td><td>entity type e.g. gene</td><td>The correlation network can be expanded from <em>datY</em> entites (if not <em>NULL</em>) to a specific entity type,
+              by providing a value to <em>yTo</em></td></tr>
             </table>
             </li><br>
             <li><b>EXECUTE FUNCTION</b><br>
@@ -57,7 +57,7 @@ colnames(datMet) = lapply(colnames(datMet),function(x) ifelse(length(which(grinn
 
 datMetNormal = datMet[1:40,] #normal condition
 datMetTumor = rbind(nodetype=rep("metabolite"),datMet[41:79,]) #tumor condition
-result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, pDiff=1e-4, method="spearman", returnAs="tab", targetTo="gene")
+result <- fetchDiffCorrGrinnNetwork(datX1=datMetNormal, datX2=datMetTumor, pDiff=1e-4, method="spearman", returnAs="tab", xTo="gene")
 #display the first 10 edgelists
 result$edges[1:10,]
 datMet2 = datMet[c(1:7,42:50),]
@@ -65,7 +65,7 @@ datMetNormal = datMet2[1:7,]
 datMetTumor = rbind(nodetype=rep("metabolite"),datMet2[8:13,])
 datGeneNormal = datGene[1:7,]
 datGeneTumor = rbind(nodetype=rep("gene"),datGene[8:13,])
-result <- fetchDiffCorrGrinnNetwork(datNormX1=datMetNormal, datNormX2=datMetTumor, datNormY1=datGeneNormal, datNormY2=datGeneTumor, pDiff=1e-5, method="spearman", returnAs="tab", sourceTo="protein", targetTo="pathway")
+result <- fetchDiffCorrGrinnNetwork(datX1=datMetNormal, datX2=datMetTumor, datY1=datGeneNormal, datY2=datGeneTumor, pDiff=1e-5, method="spearman", returnAs="tab", xTo="protein", yTo="pathway")
  
              </code></pre>
             </li>
@@ -100,7 +100,7 @@ write.table(as.matrix(result$nodes),"diffcorrNwNode.txt",sep="\t",row.names = F,
           | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>
         <footer>
-          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          &copy;KW UC Davis, 2016, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
       </section>

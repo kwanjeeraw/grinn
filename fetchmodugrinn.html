@@ -18,16 +18,16 @@
     </section>
     <section class="main-content">
       <hr>
-          <h2><a id="fetchModuGrinnNetwork" class="anchor" href="#fetchModuGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchModuGrinnNetwork - Compute a network module correlated to a phenotypic feature and expand the network with information from grinn internal database</h2>
+          <h2><a id="fetchModuGrinnNetwork" class="anchor" href="#fetchModuGrinnNetwork" aria-hidden="true"><span class="octicon octicon-link"></span></a>fetchModuGrinnNetwork - Compute a network module correlated to a phenotypic feature and expand the network with information from Grinn internal database</h2>
           <h3>Description</h3>
           <p>from input omics data e.g. normalized expression data or metabolomics data, and phenotypic data it is a one step function to:
-          <br>1. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight. The network module is the output of function fetchWGCNAModule. The function wraps around important aspects of WGCNA including blockwiseModules, cor, corPvalueStudent, labeledHeatmap. These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations. A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output, see more details in fetchWGCNAModule.
-          <br>2. Expand the network module using information from Grinn internal database. The nodes of the network module are the keywords input to query the grinn database. Grinn internal database contains the networks of the following types that can get expanded to: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also fetchGrinnNetwork.</p>
+          <br>1. Identify correlation between the input omics data e.g. normalized gene expression data, and phenotypic data e.g. weight. The function wraps around important aspects of WGCNA including blockwiseModules, cor, corPvalueStudent, labeledHeatmap. These aspects automatically perform correlation network construction, module detection, and display module-phenotype correlations. A module or the combination of modules can be selected from the heatmap of module-phenotype correlations for including in the network output.
+          <br>2. Expand the network module using information from the Grinn internal database. The nodes of the network module are the keywords input to query the grinn database. The Grinn internal database contains the networks of the following types that can get expanded to: metabolite-protein, metabolite-protein-gene, metabolite-pathway, protein-gene, protein-pathway and gene-pathway, see also fetchGrinnNetwork.</p>
           <h3>Usage</h3>
-          <p>fetchModuGrinnNetwork(datNorm, datPheno, sfPower, minModuleSize, threshold, returnAs, targetTo, filterSource)</p>
+          <p>fetchModuGrinnNetwork(datX, datPheno, sfPower, minModuleSize, threshold, returnAs, xTo, filterSource)</p>
           <h3>Arguments</h3>
           <table>
-            <tr><td>datNorm</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
+            <tr><td>datX</td><td>data frame containing normalized, quantified omics data e.g. expression data, metabolite intensities.
             The column names of datNorm are required to use grinn ids. convertToGrinnID is provided for id conversion, see convertToGrinnID.
             Columns correspond to entities e.g. genes, metabolites, and rows to samples e.g. normals, tumors.
             Require 'nodetype' at the first row to indicate the type of entities in each column.</td></tr>
@@ -36,9 +36,11 @@
             <tr><td>minModuleSize</td><td>numerical value of minimum module size for module detection.</td></tr>
             <tr><td>threshold</td><td>numerical value to define the minimum value of similarity threshold, from 0 to 1, to include edges in the output.</td></tr>
             <tr><td>returnAs</td><td>string of output type. Specify the type of the returned network. It can be one of "tab","json","cytoscape", default is "tab". "cytoscape" is the format used in Cytoscape.js</td></tr>
-            <tr><td>targetTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". By default, the network module will expand to pathways.</td></tr>
+            <tr><td>xTo</td><td>string of node type. It can be one of "metabolite","protein","gene","pathway". See below for details.</td></tr>
             <tr><td>filterSource</td><td>string or list of pathway databases. The argument is required, if sourceTo or targetTo = "pathway". The argument value can be any of "SMPDB","KEGG","REACTOME" or combination of them e.g. list("KEGG","REACTOME").</td></tr>
-          </table>   
+          </table>
+          <h3>Details</h3>
+          <p>datX is a matrix in which rows are samples and columns are entities. The network can be expand from datX entities to the specified nodetype by providing a value to xTo. If xTo = NULL, only the network module will be returned. The function encapsulates several methods from WGCNA so that module-phenoty correlation analysis can be fasten. </p>
           <h3>Value</h3>
           <p>list of nodes and edges. The list is with the following componens: edges and nodes. Return empty list if found nothing</p>
           <h3>Examples</h3>
@@ -47,10 +49,8 @@
 library(grinn)
 data(dummy)
 data(dummyPheno)
-result <- fetchModuGrinnNetwork(datNorm=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2, returnAs="tab", targetTo="pathway", filterSource=c("REACTOME","KEGG"))
+result <- fetchModuGrinnNetwork(datX=dummy, datPheno=dummyPheno, minModuleSize=5, threshold=0.2, returnAs="tab", xTo="pathway", filterSource=c("REACTOME","KEGG"))
 #enter module color(s) seperate by space:yellow brown purple
-library(igraph)
-plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
           </pre></code>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
           <p>Correlation-based analyses apply methods from the following publications:</p>
@@ -63,7 +63,7 @@ plot(graph.data.frame(result$edges[,1:2], directed=FALSE))
           | <a href="fmodule.html">fetchModuGrinnNetwork</a> | <a href="fgrinncorr.html">fetchGrinnCorrNetwork</a> | <a href="finput.html">input formats</a></p>
         <hr>
         <footer>
-          &copy;KW UC Davis, 2015, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
+          &copy;KW UC Davis, 2016, Grinn is maintained by <a href="https://github.com/kwanjeeraw">kwanjeeraw</a><br>
           This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
         </footer>
       </section>
