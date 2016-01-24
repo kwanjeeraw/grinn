@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>grinn R package</title>
+    <title>Grinn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -18,12 +18,12 @@
     </section>
 <section class="main-content">
       <hr>
-          <h2><a id="grinn" class="anchor" href="#grinn" aria-hidden="true"><span class="octicon octicon-link"></span></a>grinn</h2>
-          <p>Grinn is a bioinformatics platform contains an internal graph database (Neo4j), and the R package for omics studies.
-          Grinn databases incorporate data from several databases including KEGG, SMPDB, HMDB, REACTOME, CheBI, UniProt and ENSEMBL.
-          The R package allows reconstruction of different network types e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
-          Grinn applies different correlation-based network analyses to estimate relationships among different omics levels independently from domain knowledge,
-          and with the internal graph database it provides rapid integration of domain knowledge i.e. to aid annotation of unknown metabolites.</p>
+          <h2><a id="grinn" class="anchor" href="#grinn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grinn</h2>
+          <p>Grinn is a bioinformatics platform contains an internal graph database (Neo4j), and the R package for -omic studies.
+The graph database incorporates data from several databases including KEGG, SMPDB, HMDB, REACTOME, CheBI, UniProt and ENSEMBL.
+The R package allows reconstruction of different network types e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway.
+Grinn applies different correlation-based network analyses to estimate relationships among different omics levels independently from domain knowledge, and with the internal graph database it provides rapid integration of domain knowledge i.e. to aid annotation of unknown metabolites.
+</p>
           <p>The grinn R package provides several functions for:</p>
           <ol>
             <li> Reconstruction of biological networks in different level e.g. metabolite-protein-gene, metabolite-protein, metabolite-pathway, protein-gene, protein-pathway and gene-pathway</li>
@@ -34,7 +34,7 @@
               <li style="list-style-type:square">relationships between omics data and phenotypic data</li>
               </ul>
             </li>
-            <li> Rapid integration of domain knowledges to unknowns</li>
+            <li> Network integration</li>
           </ol>
           <h3><a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
           <ul>
@@ -50,13 +50,12 @@ devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
                 </code></pre>
           </ul>
-          <h3><a id="grinndb" class="anchor" href="#grinndb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grinn databases</h3>
-          <p>Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12.
-          The human database is provided by default and can be accessed directly after package installation.
-          Alternatively the Grinn databases can be installed locally. The Grinn databases are available <a href="https://sourceforge.net/projects/grinn/files/grinnDatabases/" target="_blank">here</a>.</p>
+          <h3><a id="grinndb" class="anchor" href="#grinndb" aria-hidden="true"><span class="octicon octicon-link"></span></a>Graph databases</h3>
+          <p>The internal graph database is a part of the Grinn software to compute the networks. Graph databases are available for Human, Arabidopsis, Mouse, Rat, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation.
+          Alternatively the graph databases can be installed locally. The graph databases are available <a href="https://sourceforge.net/projects/grinn/files/grinnDatabases/" target="_blank">here</a>.</p>
           <h4>Local database installation</h4>
           <ul>
-            <li>Require Neo4j-community >= 2.2.0 for the Grinn internal database, please send us an email for the database files
+            <li>Require Neo4j-community >= 2.2.0 for the internal graph database
               <ul>
                 <li>Download and then unzip <a href="http://neo4j.com/download/" target="_blank">Neo4j server</a></li>
                 <li>Extract and move the grinn database files to the Neo4j server directory</li>
@@ -65,10 +64,10 @@ library(grinn)
             </li>
             <li>Switch between databases</li>
                 <pre><code>
-#Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
+#Change the internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
 setGrinnDb("http://localhost:7474/db/data/")
 
-#Check current Grinn internal database location
+#Check current internal database location
 getGrinnDb()
                 </code></pre>
           </ul>
@@ -85,12 +84,15 @@ getGrinnDb()
               <li><a href="finput.html">input formats</a> - figures of different input formats used in Grinn</li>
           </ol>
           <h3><a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h3>
-          <p>Grinn databases integrate data from the following resources:</p>
+          <p>The graph databases integrate data from the following resources:</p>
           <ul>
             <li>Croft D, <em>et al.</em> The Reactome pathway knowledgebase. <a href="http://nar.oxfordjournals.org/content/42/D1/D472.abstract" target="_blank">Nucleic Acids Res. 2014 Jan;42(Database issue):D472-7</a>.</li>
+            acids research 2015, 43(Database issue):D204-212</a>.</li>
+            <li>Cunningham F, <em>et al.</em>Ensembl 2015. <a href="http://www.ncbi.nlm.nih.gov/pubmed/25352552" target="_blank">Nucleic acids research 2015, 43(Database issue):D662-669</a>.</li>
             <li>Degtyarenko K, <em>et al.</em> ChEBI: a database and ontology for chemical entities of biological interest. <a href="http://nar.oxfordjournals.org/content/36/suppl_1/D344.abstract" target="_blank">Nucleic Acids Res 2008. 36, D344-D350</a>.</li>
             <li>Jewison T, <em>et al.</em> SMPDB 2.0: Big Improvements to the Small Molecule Pathway Database. <a href="http://nar.oxfordjournals.org/content/42/D1/D478.abstract" target="_blank">Nucleic Acids Res 2014 Jan;42(Database issue):D478-84</a>.</li>
             <li>Kanehisa M, <em>et al.</em> Data, information, knowledge and principle: back to metabolism in KEGG. <a href="http://nar.oxfordjournals.org/content/42/D1/D199.abstract" target="_blank">Nucleic Acids Res 2014. 42, D199-D205</a>.</li>
+            <li>UniProt C: UniProt: a hub for protein information. <a href="http://www.ncbi.nlm.nih.gov/pubmed/25348405" target="_blank">Nucleic 
             <li>Wishart DS, <em>et al.</em> HMDB 3.0 - The Human Metabolome Database in 2013. <a href="http://nar.oxfordjournals.org/content/41/D1/D801.abstract" target="_blank">Nucleic Acids Res 2013. Jan 1;41(D1):D801-7</a>.</li>
           </ul>
           <p>Correlation-based analyses apply methods from the following publications:</p>
