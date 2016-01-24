@@ -1,4 +1,4 @@
-# grinn
+# Grinn
 a Graph database and R package for omic data integration
 
 Version: 2.5 (12 January 2016)
@@ -23,18 +23,18 @@ library(devtools)
 devtools::install_github("kwanjeeraw/grinn")
 library(grinn)
 ```
-Grinn databases
+Graph databases
 =========
-Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Rat, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
+The internal graph database is a part of the Grinn software to compute the networks. Graph databases are available for Human, Arabidopsis, Mouse, Rat, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
 
-Alternatively the Grinn databases can be installed <b>locally</b>. The Grinn databases are available at https://sourceforge.net/projects/grinn/files/grinnDatabases/. 
+Alternatively the graph databases can be installed <b>locally</b>. The graph databases are available at https://sourceforge.net/projects/grinn/files/grinnDatabases/. 
 
 <b>Local database installation</b>
-  1. Require Neo4j-community >= 2.2.0 for the Grinn internal database
+  1. Require Neo4j-community >= 2.2.0 for the internal graph database
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
 
-    - Extract and move the grinn database files to the Neo4j server directory
+    - Extract and move the graph database files to the Neo4j server directory
 
     - Start the Neo4j server, 
     
@@ -45,10 +45,10 @@ Alternatively the Grinn databases can be installed <b>locally</b>. The Grinn dat
     for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
   2. Switch between databases
 ```
-#Change Grinn internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
+#Change the internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
 setGrinnDb("http://localhost:7474/db/data/")
 
-#Check current Grinn internal database location
+#Check current internal database location
 getGrinnDb()
 ```
 
