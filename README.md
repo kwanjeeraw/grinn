@@ -25,7 +25,7 @@ library(grinn)
 ```
 Grinn databases
 =========
-Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
+Grinn internal database is a part of the Grinn software to compute the networks. Grinn databases are available for Human, Arabidopsis, Mouse, Rat, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
 
 Alternatively the Grinn databases can be installed <b>locally</b>. The Grinn databases are available at https://sourceforge.net/projects/grinn/files/grinnDatabases/. 
 
@@ -64,6 +64,16 @@ Updates
 * Bug fixed
 
 see all [features](NEWS.md)
+
+References
+=========
+- Kanehisa M, Goto S, Sato Y, Furumichi M, Tanabe M: KEGG for integration and interpretation of large-scale molecular data sets. Nucleic acids research 2012, 40(Database issue):D109-114.
+- Jewison T, Su Y, Disfany FM, Liang Y, Knox C, Maciejewski A, Poelzer J, Huynh J, Zhou Y, Arndt D et al: SMPDB 2.0: big improvements to the Small Molecule Pathway Database. Nucleic acids research 2014, 42(Database issue):D478-484.
+- Croft D, Mundo AF, Haw R, Milacic M, Weiser J, Wu G, Caudy M, Garapati P, Gillespie M, Kamdar MR et al: The Reactome pathway knowledgebase. Nucleic acids research 2014, 42(Database issue):D472-477.
+- Hastings J, de Matos P, Dekker A, Ennis M, Harsha B, Kale N, Muthukrishnan V, Owen G, Turner S, Williams M et al: The ChEBI reference database and ontology for biologically relevant chemistry: enhancements for 2013. Nucleic acids research 2013, 41(Database issue):D456-463.
+- Wishart DS, Jewison T, Guo AC, Wilson M, Knox C, Liu Y, Djoumbou Y, Mandal R, Aziat F, Dong E et al: HMDB 3.0--The Human Metabolome Database in 2013. Nucleic acids research 2013, 41(Database issue):D801-807.
+- UniProt C: UniProt: a hub for protein information. Nucleic acids research 2015, 43(Database issue):D204-212.
+- Cunningham F, Amode MR, Barrell D, Beal K, Billis K, Brent S, Carvalho-Silva D, Clapham P, Coates G, Fitzgerald S et al: Ensembl 2015. Nucleic acids research 2015, 43(Database issue):D662-669.
 
 License
 =========
