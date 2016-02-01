@@ -6,3 +6,4 @@ extra
 gitweb
 dev
 .Rproj.user
+inst/doc

@@ -13,11 +13,11 @@ Description: Grinn is a bioinformatics platform contains an internal graph
     estimate relationships among different omics levels independently from domain
     knowledge, and with the internal graph database it allows fast integration of
     domain knowledge to annotate unknown metabolites.
-Depends:
+Depends: 
     R (>= 3.1.1)
 License: GNU GENERAL PUBLIC LICENSE Version 3
 LazyData: true
-Imports:
+Imports: 
     RCurl,
     jsonlite,
     igraph,
@@ -30,3 +30,6 @@ Imports:
     shiny,
     DT
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown,  R.rsp
+VignetteBuilder: knitr,  R.rsp
