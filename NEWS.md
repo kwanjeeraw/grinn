@@ -1,4 +1,7 @@
 ### Features
+#### version 2.6 (31/01/16)
+* Include graphical user interface (GUI) with shiny
+
 #### version 2.5 (12/01/16)
 * Change parameter names in all correlation-related functions
 * Update manual

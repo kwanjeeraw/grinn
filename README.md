@@ -1,7 +1,7 @@
 # Grinn
 a Graph database and R package for omic data integration
 
-Version: 2.5 (12 January 2016)
+Version: 2.6 (31 January 2016)
 
 Description
 =========
@@ -13,7 +13,8 @@ Grinn applies different correlation-based network analyses to estimate relations
 Installation
 =========
   1. Require [R software](https://www.r-project.org/)
-  2. Install grinn R package using the following commands
+  2. Require [shiny](http://shiny.rstudio.com/)
+  3. Install grinn R package using the following commands
 ```
 #Install devtools R package, if not exist
 install.packages("devtools")
@@ -58,10 +59,8 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-#### version 2.5 (12/01/16)
-* Change parameter names in all correlation-related functions
-* Update manual
-* Bug fixed
+#### version 2.6 (31/01/16)
+* Include graphical user interface (GUI) with shiny
 
 see all [features](NEWS.md)
 
