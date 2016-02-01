@@ -1,4 +1,4 @@
-#'@import RCurl jsonlite igraph WGCNA RJSONIO
+#'@import RCurl jsonlite igraph WGCNA RJSONIO DT shiny
 #'@importFrom Hmisc capitalize
 #'@importFrom plyr rbind.fill
 #'@importFrom stringr str_trim
