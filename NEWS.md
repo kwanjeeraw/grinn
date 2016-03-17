@@ -1,4 +1,7 @@
 ### Features
+#### version 2.7 (16/03/16)
+* New look of graphical user interface (GUI)
+
 #### version 2.6 (31/01/16)
 * Include graphical user interface (GUI) with shiny
 

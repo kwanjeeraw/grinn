@@ -1,8 +1,8 @@
 Package: grinn
 Type: Package
 Title: graph database and R package for omics data integration
-Version: 2.6
-Date: 2016-01-31
+Version: 2.7
+Date: 2016-03-16
 Authors@R: "Kwanjeera W <kwanich@ucdavid.edu> [aut, cre]"
 Description: Grinn is a bioinformatics platform contains an internal graph
     database (Neo4j), and the R package for omics studies. The package allows

@@ -1,0 +1,30 @@
+.shiny-progress .progress-text {
+  position: absolute;
+  right: 18px;
+  height: 35px;
+  width: 300px;
+  background-color: #F5A9A9;
+  margin: 0px;
+  padding: 2px 3px;
+  opacity: 0.8;
+}
+
+.shiny-progress .progress-text .progress-message {
+  padding: 0px 3px;
+  font-weight: bold;
+  font-size: 110%;
+}
+
+.shiny-progress .progress-text .progress-detail {
+  padding: 0px 3px;
+  font-size: 100%;
+}
+
+.shiny-progress .bar {
+  opacity: 0.7;
+  background-color: #F5A9A9;
+}
+
+.shiny-progress .progress {
+  height: 7px;
+}
