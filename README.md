@@ -28,7 +28,7 @@ Graph databases
 =========
 The internal graph database is a part of the Grinn software to compute the networks. Graph databases are available for Human, Arabidopsis, Mouse, Rat, Saccharomyces cerevisiae and Escherichia coli k-12. The human database is provided by default and can be accessed directly after package installation. 
 
-Alternatively the graph databases can be installed <b>locally</b>. The graph databases are available at https://sourceforge.net/projects/grinn/files/grinnDatabases/. 
+Alternatively the graph databases can be installed <b>locally</b>. The graph databases are available on request. 
 
 <b>Local database installation</b>
   1. Require Neo4j-community >= 2.2.0 for the internal graph database
@@ -46,7 +46,7 @@ Alternatively the graph databases can be installed <b>locally</b>. The graph dat
     for more details see [here](http://neo4j.com/docs/stable/server-installation.html)  
   2. Switch between databases
 ```
-#Change the internal database by providing the database url, default location is "http://grinn.genomecenter.ucdavis.edu:7474/db/data/"
+#Change the internal database by providing the database url, e.g. "http://database.location:7474/db/data/"
 setGrinnDb("http://localhost:7474/db/data/")
 
 #Check current internal database location
