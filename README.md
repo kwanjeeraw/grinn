@@ -1,7 +1,7 @@
 # Grinn
 a Graph database and R package for omic data integration
 
-Version: 2.7 (16 March 2016)
+Version: 2.8 (13 October 2016)
 
 Description
 =========
@@ -59,8 +59,8 @@ see [homepage](http://kwanjeeraw.github.io/grinn/)
 
 Updates
 =========
-#### version 2.7 (16/03/16)
-* New look of graphical user interface (GUI)
+#### version 2.8 (13/10/16)
+* Include partial correlation analysis
 
 see all [features](NEWS.md)
 

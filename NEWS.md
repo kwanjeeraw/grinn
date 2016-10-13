@@ -1,4 +1,7 @@
 ### Features
+#### version 2.8 (13/10/16)
+* Include partial correlation analysis
+
 #### version 2.7 (16/03/16)
 * New look of graphical user interface (GUI)
 
