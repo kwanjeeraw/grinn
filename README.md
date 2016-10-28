@@ -31,7 +31,7 @@ The internal graph database is a part of the Grinn software to compute the netwo
 Alternatively the graph databases can be installed <b>locally</b>. The graph databases are available on request. 
 
 <b>Local database installation</b>
-  1. Require Neo4j-community >= 2.2.0 for the internal graph database
+  1. Require Neo4j-community 2.2.0 to 2.3.0 for the internal graph database
 
     - Download and then unzip [Neo4j server](http://neo4j.com/download/)
 
@@ -77,3 +77,7 @@ References
 License
 =========
 [GNU General Public License (v3)](https://github.com/kwanjeeraw/grinn/blob/master/LICENSE)
+
+Citation
+=========
+- Wanichthanarak K, Fahrmann JF, Grapov D: Genomic, Proteomic, and Metabolomic Data Integration Strategies. Biomark Insights 2015, 10:1-6, doi:10.4137/BMI.S29511.

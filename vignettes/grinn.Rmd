@@ -41,10 +41,9 @@ devtools::install_github("kwanjeeraw/grinn")
 
 **1.2 INSTALL Neo4j database server *(optional)***
 
-This step is only required when setting up a graph database on local machine. The graph database is a part of the Grinn software tool to support network queries and network integration. Currently the precompiled da-tabases are available for human, arabidopsis, mouse, rat, S. cerevisiae and E. coli k-12 at 
-http://sourceforge.net/projects/grinn/files/grinnDatabases/. The human database is connected by default and can be accessed directly after installing the R package grinn. 
+This step is only required when setting up a graph database on local machine. The graph database is a part of the Grinn software tool to support network queries and network integration. Currently the precompiled databases are available for human, arabidopsis, mouse, rat, S. cerevisiae and E. coli k-12. The human database is provided by default and can be accessed directly after package installation. The other graph databases are available on request. 
 
-   1)	Require Neo4j-community server (2.2.0 or higher)
+   1)	Require Neo4j-community server (2.2.0 to 2.3.0)
    2)	Download and then unzip the Neo4j server
    3)	Download the database file, extract and move to Neo4j_directory/data
    4)	Start the Neo4j server
