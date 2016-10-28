@@ -81,3 +81,4 @@ License
 Citation
 =========
 - Wanichthanarak K, Fahrmann JF, Grapov D: Genomic, Proteomic, and Metabolomic Data Integration Strategies. Biomark Insights 2015, 10:1-6, doi:10.4137/BMI.S29511.
+[![DOI](https://zenodo.org/badge/35578358.svg)](https://zenodo.org/badge/latestdoi/35578358)
